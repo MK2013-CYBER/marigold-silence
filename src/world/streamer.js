@@ -30,7 +30,7 @@ export class Streamer {
       if (it.root) it.root.visible = d < (it.cull ?? 600);
       // a building's own lamps only light while you are close (lights cost frames everywhere)
       if (it.lamps?.length) {
-        const on = d < (it.lightRadius ?? 16);
+        const on = d < (it.lightRadius ?? 16) && !this.lampsOff; // lampsOff: the intro's night scene
         for (const l of it.lamps) l.light.visible = on;
       }
     }

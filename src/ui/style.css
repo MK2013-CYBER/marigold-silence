@@ -262,3 +262,43 @@ kbd {
 .settings { margin-top: 16px; font-size: 13px; color: var(--muted); }
 .settings button { margin: 0 2px; padding: 4px 10px; background: none; color: var(--muted); border: 1px solid rgba(233, 223, 200, 0.25); border-radius: 3px; font: 12px Georgia, serif; cursor: pointer; }
 .settings button.on { color: var(--ink); border-color: var(--amber); background: rgba(217, 162, 90, 0.15); }
+
+/* ---------------------------------------------------------------- cinematic intro (Stage C) */
+.intro { position: fixed; inset: 0; z-index: 40; pointer-events: none; font-family: Georgia, 'Times New Roman', serif; color: #efe6d2; }
+.intro.hidden { display: none; }
+.intro-black { position: absolute; inset: 0; background: #000; opacity: 0; transition: opacity 0.8s ease; }
+.intro-black.on { opacity: 1; }
+.intro-bar { position: absolute; left: 0; right: 0; height: 0; background: #000; transition: height 1.6s ease; z-index: 2; }
+.intro-bar.top { top: 0; } .intro-bar.bottom { bottom: 0; }
+.intro.bars .intro-bar { height: 11vh; }
+.intro-caption { position: absolute; top: calc(11vh + 18px); left: 4vw; font-size: 15px; letter-spacing: 0.06em; font-style: italic;
+  opacity: 0; transition: opacity 1.2s ease; text-shadow: 0 1px 6px #000; z-index: 3; }
+.intro-sub { position: absolute; left: 50%; bottom: calc(11vh + 22px); transform: translateX(-50%); max-width: min(900px, 86vw);
+  text-align: center; font-size: clamp(16px, 2.1vw, 22px); line-height: 1.45; opacity: 0; transition: opacity 0.4s ease;
+  text-shadow: 0 1px 4px #000, 0 0 14px #000; z-index: 3; }
+.intro-sub b { color: #e8c27a; font-weight: normal; letter-spacing: 0.03em; }
+.intro-name { position: absolute; left: 4vw; bottom: calc(11vh + 70px); font-size: 17px; opacity: 0; transition: opacity 0.5s ease;
+  text-shadow: 0 1px 5px #000; z-index: 3; }
+.intro-name b { font-weight: normal; letter-spacing: 0.08em; text-transform: uppercase; font-size: 14px; color: #e8c27a; }
+.intro-name span { font-style: italic; }
+.on.intro-caption, .on.intro-sub, .on.intro-name { opacity: 1; }
+.intro-telegram { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-1.2deg); width: min(560px, 84vw);
+  background: #e9dfc4; color: #2a2116; padding: 26px 32px 34px; box-shadow: 0 10px 50px rgba(0,0,0,0.8);
+  font-family: 'Courier New', monospace; opacity: 0; transition: opacity 1.2s ease; z-index: 3;
+  background-image: repeating-linear-gradient(0deg, rgba(90,70,40,0.05) 0 1px, transparent 1px 3px); }
+.intro-telegram.on { opacity: 1; }
+.tg-head { font-size: 11px; letter-spacing: 0.12em; border-bottom: 1px solid #8a7656; padding-bottom: 8px; margin-bottom: 18px; }
+.tg-body { white-space: pre-line; font-size: clamp(15px, 2vw, 20px); font-weight: bold; letter-spacing: 0.08em; line-height: 1.6; min-height: 8em; }
+.intro-title { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 1.4s ease; z-index: 3; }
+.intro-title.on { opacity: 1; }
+.intro-title h1 { font-weight: normal; letter-spacing: 0.32em; font-size: clamp(26px, 5vw, 58px); margin: 0 0 14px; color: #fff; }
+.intro-title p { font-style: italic; letter-spacing: 0.1em; color: #b9ab90; margin: 0; }
+.intro-dawn { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: clamp(20px, 3vw, 34px);
+  letter-spacing: 0.3em; opacity: 0; transition: opacity 1.2s ease; z-index: 3; }
+.intro-dawn.on { opacity: 1; }
+.intro-skip { position: absolute; right: 3vw; bottom: calc(11vh + 18px); pointer-events: auto; z-index: 4; background: rgba(0,0,0,0.45);
+  color: #d8ccb2; border: 1px solid rgba(232,194,122,0.45); padding: 7px 14px; font-family: inherit; font-size: 13px; letter-spacing: 0.06em; cursor: pointer; }
+.intro-skip:hover { background: rgba(232,194,122,0.2); color: #fff; }
+.intro-hold { position: absolute; right: 3vw; bottom: calc(11vh + 10px); width: 110px; height: 2px; z-index: 4; }
+.intro-hold i { display: block; height: 100%; width: 0; background: #e8c27a; }

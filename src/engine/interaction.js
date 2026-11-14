@@ -87,6 +87,20 @@ export class InteractionSystem {
     for (const [name, isOpen] of open) this.world.setEnabled(name, !isOpen);
   }
 
+  /** The door (toggle definition) that owns a collision box, if any. */
+  doorForCollider(name) {
+    return this.defs.find((d) => d.type === 'toggle' && d.collider && [].concat(d.collider).includes(name) && this.toggles.has(d.id)) ?? null;
+  }
+
+  /** Someone other than the player (Danny) opens or closes a door. */
+  npcSetDoor(id, open, loudness = 1) {
+    if (this.state.isOpen(id) === open) return;
+    this.state.setOpen(id, open);
+    this._syncCollider();
+    this.audio?.creak(open ? loudness : loudness * 0.6);
+    this.state.save();
+  }
+
   /** True while a door that opens onto the storm (wind, dust) stands open. */
   stormExposed() {
     for (const def of this.defs) if (def.exposesStorm && this.state.isOpen(def.id)) return true;

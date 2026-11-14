@@ -761,6 +761,17 @@
       -149.0
     ],
     "yaw": -1.5708,
-    "followDistance": 2.2
+    "followDistance": 2.2,
+    "door": "COL_Door_HQ",
+    "hqRect": {
+      "x": [
+        27.37,
+        32.63
+      ],
+      "z": [
+        -153.38,
+        -146.62
+      ]
+    }
   }
 }

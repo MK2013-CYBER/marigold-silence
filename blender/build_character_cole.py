@@ -9,14 +9,28 @@ The Mixamo downloads live in ../mixamo downloads (outside the project). They are
 (A proper 1930s suit and loosened tie are planned for the realism pass, addendum section D.)
 """
 import os
+import re
 
 import bpy
+
+
+def fcurves(act):
+    """All F-curves of an action (Blender 4.4+ keeps them in layers / strips / channel bags)."""
+    if len(getattr(act, 'fcurves', []) or []) > 0:
+        return list(act.fcurves)
+    out = []
+    for layer in getattr(act, 'layers', []):
+        for strip in layer.strips:
+            for bag in getattr(strip, 'channelbags', []):
+                out += list(bag.fcurves)
+    return out
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROJECT = os.path.dirname(HERE)
 MIXAMO = os.path.join(os.path.dirname(PROJECT), 'mixamo downloads')
 OUT = os.path.join(PROJECT, 'public', 'models', 'cole.glb')
-ANIMS = {'Idle': 'Idle.fbx', 'Walk': 'Walking.fbx', 'Talk': 'Talking.fbx', 'LookAround': 'Nervously Look Around.fbx'}
+ANIMS = {'Idle': 'Idle.fbx', 'Walk': 'Walking.fbx', 'Talk': 'Talking.fbx', 'LookAround': 'Nervously Look Around.fbx',
+         'Sit': 'Sitting Idle.fbx', 'Nod': 'Head Nod Yes.fbx', 'Point': 'Pointing.fbx', 'Glance': 'Looking Around.fbx'}
 MAX_TEX = 1024
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -33,6 +47,13 @@ for name, file in ANIMS.items():
     new = [a for a in bpy.data.actions if a not in before]
     act = new[0]
     act.name = name
+    # some Mixamo downloads name the bones "mixamorig9:Hips" instead of "mixamorig:Hips";
+    # rename the channels so they drive Remy's skeleton
+    for fc in fcurves(act):
+        if 'mixamorig' in fc.data_path:
+            fc.data_path = re.sub(r'mixamorig\d+:', 'mixamorig:', fc.data_path)
+    for grp in getattr(act, 'groups', []):
+        grp.name = re.sub(r'mixamorig\d+:', 'mixamorig:', grp.name)
     act.use_fake_user = True
     for o in list(bpy.data.objects):
         if o not in keep:

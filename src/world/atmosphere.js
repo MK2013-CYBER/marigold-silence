@@ -4,6 +4,7 @@ import { valueNoise } from './noise.js';
 
 const OUT_FOG = new THREE.Color('#8c7150');   // brown-yellow storm haze
 const IN_FOG = new THREE.Color('#3a2d1e');    // dim, dusty interior air (lets daylight read through open doors)
+const NIGHT_FOG = new THREE.Color('#14110e'); // the storm after dark (intro)
 const FLASH = new THREE.Color('#d9d6e8');
 
 /**
@@ -30,6 +31,8 @@ export class Atmosphere {
     scene.fog = new THREE.FogExp2(OUT_FOG.clone(), 0.012);
     scene.background = OUT_FOG.clone();
 
+    this.night = 0;
+    this.extraFog = 0;
     this.hemi = new THREE.HemisphereLight('#cfae80', '#4d3c29', 1.4);
     scene.add(this.hemi);
 
@@ -197,6 +200,17 @@ export class Atmosphere {
     this.sun.intensity = 1.15 * (1 - w.gust * 0.25);
     this.renderer.toneMappingExposure = THREE.MathUtils.lerp(0.95, 1.05, ind);
     for (const rdg of this.ridges) rdg.visible = ind < 0.95;
+
+    // the cinematic intro: dusk / night (0..1) and a thicker wall of dust (0..1)
+    if (this.night > 0 || this.extraFog > 0) {
+      const n = this.night ?? 0;
+      fogC.lerp(NIGHT_FOG, n);
+      this.scene.background.copy(fogC);
+      this.scene.fog.density *= 1 + (this.extraFog ?? 0) * 2.2;
+      this.hemi.intensity *= 1 - n * 0.88;
+      this.sun.intensity *= 1 - n * 0.97;
+      this.renderer.toneMappingExposure *= 1 + n * 0.25;
+    }
 
     // sun + shadow box follow the player (snapped to texels to stop shimmering)
     const snap = 140 / 2048;

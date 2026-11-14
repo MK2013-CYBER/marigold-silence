@@ -1,0 +1,34 @@
+{
+  "skipLabel": "Skip intro",
+  "skipHold": "Hold Space to skip",
+  "telegram": {
+    "header": "WESTERN UNION · NIGHT LETTER · 17 NOV 1933 · 4.52 PM",
+    "lines": ["INSPECTOR HART", "COME TO SABLE FLAT STOP", "THE TRUTH ABOUT THE MARIGOLD STOP", "TELL NO ONE STOP", "C PRYCE"],
+    "vo": "Inspector Hart. Come to Sable Flat. The truth about the Marigold. Tell no one. C. Pryce."
+  },
+  "title": "THE MARIGOLD SILENCE",
+  "titleSub": "Nevada · Friday, 17 November 1933",
+  "lines": {
+    "coleSky": { "speaker": "Danny Cole", "text": "Chief, I can't see the ground." },
+    "hartSky": { "speaker": "Hart", "text": "Neither can the ground see us." },
+    "hobbs": { "speaker": "Walter Hobbs", "text": "Mr. Pryce said you'd come. He didn't say the storm would, too." },
+    "pryce": { "speaker": "Cornelius Pryce", "text": "To Marigold. May she forgive me." }
+  },
+  "captions": {
+    "sky": "Somewhere over the Nevada desert. Friday, late afternoon.",
+    "landing": "Sable Flat airfield.",
+    "dinner": "Friday night. The mess hall.",
+    "night": "Later that night."
+  },
+  "closeups": [
+    { "id": "vivienne", "note": "a smile that doesn't reach her eyes" },
+    { "id": "billie", "note": "a tight jaw" },
+    { "id": "lindqvist", "note": "a trembling hand" },
+    { "id": "julian", "note": "a polite stare" },
+    { "id": "ox", "note": "sets down two cups" },
+    { "id": "tamsin", "note": "her cigarette" }
+  ],
+  "scream": "[A scream, somewhere in the dark]",
+  "dawn": "SATURDAY, 6:10 A.M.",
+  "placeholderNote": "Characters are placeholder silhouettes until their models are ready."
+}

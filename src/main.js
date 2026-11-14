@@ -20,6 +20,8 @@ import { Minimap } from './ui/minimap.js';
 import { Cole } from './world/cole.js';
 import { HQ } from './game/hq.js';
 import { Quality } from './engine/quality.js';
+import { Intro } from './game/intro.js';
+import introData from './data/scenes/intro.json';
 import config from './data/game.json';
 import interactables from './data/interactables.json';
 import placeholderInteractables from './data/interactables_placeholder.json';
@@ -121,8 +123,9 @@ const flashlight = new Flashlight(camera);
 
 // ---------- Agent Danny Cole and the HQ (addendum v2: sections C, D, G) ----------
 status.textContent = 'Waking Danny\u2026';
-const cole = await Cole.create(scene, world, ground, worldCfg.cole);
+const cole = await Cole.create(scene, world, ground, worldCfg.cole, camera);
 interaction.addLocation('npc', cole.root);
+cole.interaction = interaction; // Danny opens doors himself
 const hq = new HQ({
   state, hud, audio, cole, controller,
   puzzles: puzzlesData, clues, characters, places: placesData.places, reports: reportsData.reports, lines: coleLines,
@@ -144,6 +147,9 @@ hq.onFreezeChange = (rest) => { if (rest !== undefined) resting = rest; syncFree
 const quality = new Quality({ renderer, post, atmosphere, scene });
 quality.mount(document.getElementById('settings'));
 const minimap = new Minimap(worldCfg, placesData.places);
+
+// ---------- the cinematic intro (addendum v2, section E) ----------
+const intro = new Intro({ scene, camera, post, atmosphere, streamer, ground, cole, audio, hangar, data: introData, characters });
 controller.onFootstep = (amt) => audio.footstep(amt);
 atmosphere.onLightning = (delay) => audio.thunder(delay, 0.6 + Math.random() * 0.5);
 
@@ -168,6 +174,7 @@ function hangarDistance(p) {
 function savePlayer() {
   const pos = controller.position;
   state.data.player = { x: +pos.x.toFixed(2), z: +pos.z.toFixed(2), yaw: +controller.yaw.toFixed(3) };
+  Object.assign(state.data.cole, cole.snapshot());
   state.save();
 }
 
@@ -185,7 +192,7 @@ const hint = document.getElementById('hint');
 const debugEl = document.getElementById('debug');
 const actions = document.getElementById('overlay-actions');
 const newGame = document.getElementById('new-game');
-const HINT = 'E interact · Tab notebook · M map · R radio Danny · F flashlight · Shift sprint';
+const HINT = 'E interact · Tab notebook · J case file · M map · R radio Danny · F flashlight · Shift sprint';
 const DRAG_HINT = 'Hold mouse button and drag to look · ' + HINT;
 
 status.textContent = 'Click to enter Sable Flat';
@@ -218,7 +225,33 @@ function pause() {
   status.textContent = 'Paused — click to resume';
 }
 
-overlay.addEventListener('click', enter);
+function playIntro() {
+  audio.start();
+  controller.setActive(false);
+  overlay.classList.add('hidden');
+  actions.classList.add('hidden');
+  hud.showClock(false);
+  minimap.show(false);
+  hint.classList.add('hidden');
+  document.getElementById('crosshair').classList.add('hidden');
+  intro.start(() => {
+    // gameplay begins at the hangar at 06:10 on Saturday (a new game), or where you were
+    if (!state.data.introSeen && !state.data.player) controller.setPosition(hangar.spawn.x, hangar.spawn.z, hangar.spawn.yaw);
+    state.data.introSeen = true;
+    state.save();
+    hint.classList.remove('hidden');
+    document.getElementById('crosshair').classList.remove('hidden');
+    enter();
+  });
+}
+
+overlay.addEventListener('click', () => {
+  if (intro.active) return;
+  if (!state.data.introSeen && !hasSave) playIntro(); // a brand-new game opens with the intro
+  else enter();
+});
+const watchIntro = document.getElementById('watch-intro');
+watchIntro.addEventListener('click', (e) => { e.stopPropagation(); savePlayer(); playIntro(); });
 let confirmArmed = false;
 newGame.addEventListener('click', (e) => {
   e.stopPropagation(); // don't also enter the game
@@ -258,6 +291,7 @@ window.addEventListener('keydown', (e) => {
   if (hq.screen) { if (e.code === 'Escape') hq.closeScreen(); return; }
   // talking to Danny: number keys pick, E or Esc closes
   if (hq.dialogue.key(e)) { e.preventDefault(); syncFreeze(); return; }
+  if (e.code === 'KeyJ' && !e.repeat && !hud.readerOpen && !hud.notebookOpen) { hq.openScreen(hq.caseFile); audio.paper(); return; }
   if (e.code === 'KeyR' && !e.repeat && !hud.readerOpen && !hud.notebookOpen) { hq.talk(true); syncFreeze(); return; }
   if (e.code === 'Tab') {
     e.preventDefault();
@@ -314,6 +348,7 @@ const lastShadowPos = new THREE.Vector3(1e9, 0, 0);
 renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.05);
   const t = clock.elapsedTime;
+  if (intro.active) { introFrame(dt, t); return; }
   const pos = controller.position;
   boundaryCool = Math.max(0, boundaryCool - dt);
 
@@ -331,7 +366,7 @@ renderer.setAnimationLoop(() => {
   hangar.setLights?.(inside || hangarDistance(pos) < 10);
   hangar.update(dt, t, atmosphere.flash);
   interaction.update(dt, controller.active && !controller.frozen);
-  cole.update(dt, pos, controller.yaw);
+  cole.update(dt, pos);
   hq.update();
   const qmsg = quality.update(dt, controller.active);
   if (qmsg) hud.toast(qmsg);
@@ -366,5 +401,25 @@ renderer.setAnimationLoop(() => {
   }
 });
 
+/** While the intro plays, the camera is the director's: stream, light and sound around it. */
+function introFrame(dt, t) {
+  intro.update(dt);
+  const pos = intro.focus;
+  atmosphere.update(dt, t, pos, intro.indoor);
+  airfield.update(dt, t, atmosphere.wind);
+  streamer.update(dt, pos);
+  if (hangar.props) hangar.props.visible = pos.distanceTo(hangarCentre) < worldCfg.hangar.propsCull;
+  hangar.setLights?.(hangarDistance(pos) < 10);
+  hangar.update(dt, t, atmosphere.flash);
+  interaction.update(dt, false);
+  cole.update(dt, controller.position);
+  audio.setExposure(intro.exposure);
+  audio.setReverb(intro.indoor ? 0.3 : worldCfg.outdoorReverb);
+  audio.update(dt);
+  post.grain.uniforms.time.value = t % 100;
+  renderer.shadowMap.needsUpdate = true;
+  post.composer.render();
+}
+
 // Test hook for automated checks in dev builds only.
-if (import.meta.env.DEV) window.__game = { THREE, scene, camera, controller, world, flashlight, renderer, state, interaction, hud, atmosphere, ground, streamer, hangar, cole, hq, quality };
+if (import.meta.env.DEV) window.__game = { intro, THREE, scene, camera, controller, world, flashlight, renderer, state, interaction, hud, atmosphere, ground, streamer, hangar, cole, hq, quality };

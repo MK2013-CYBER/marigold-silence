@@ -29,7 +29,7 @@ export class HQ {
     this.fade = document.createElement('div');
     this.fade.className = 'fade';
     document.body.appendChild(this.fade);
-    this.cole.setFollow(this.state.data.cole.follow);
+    this.cole.restore(this.state.data.cole);
   }
 
   /** Something is open that should stop the player walking. */
@@ -91,22 +91,28 @@ export class HQ {
     this.cole.talking = !remote;
     const L = this.lines;
     const unread = this.reportsScreen.unreadCount();
-    const following = this.state.data.cole.follow;
+    const mode = this.cole.mode;
     const choices = [
       { label: L.menu.hint, onPick: () => this.hint() },
       { label: L.menu.reports + (unread ? ` (${unread} new)` : ''), onPick: () => this.menu(unread ? L.reportsNew.replace('{n}', unread) : L.reportsNone) },
-      following
-        ? { label: L.menu.stay, onPick: () => { this._follow(false); this.menu(L.stay); } }
-        : { label: L.menu.follow, onPick: () => { this._follow(true); this.menu(L.follow); } },
-      { label: L.menu.bye, onPick: () => { this.dialogue.close(); this.danny(L.bye, 2); } },
+      { label: L.menu.caseFile, onPick: () => { this.dialogue.close(); this.openScreen(this.caseFile); } },
     ];
+    if (mode !== 'follow') choices.push({ label: L.menu.follow, onPick: () => { this._mode('follow'); this.menu(remote ? L.radioFollow : L.follow); } });
+    if (mode === 'follow' && !remote) choices.push({ label: L.menu.stay, onPick: () => { this._mode('wait'); this.menu(L.stay); } });
+    if (mode === 'follow' || mode === 'wait') choices.push({ label: L.menu.home, onPick: () => { this._mode('home'); this.menu(L.home); } });
+    choices.push({ label: L.menu.bye, onPick: () => { this.dialogue.close(); this.danny(L.bye, 2); } });
     this.dialogue.show(L.speaker + (remote ? ' (radio)' : ''), line, choices);
     this.onFreezeChange?.();
   }
 
-  _follow(on) {
-    this.state.data.cole.follow = on;
-    this.cole.setFollow(on);
+  _mode(mode) {
+    if (!this.remote) this.cole.gesture('Nod', 2);
+    this.cole.setMode(mode, this.controller.position);
+    this.saveCole();
+  }
+
+  saveCole() {
+    Object.assign(this.state.data.cole, this.cole.snapshot());
     this.state.save();
   }
 
@@ -124,6 +130,7 @@ export class HQ {
     this._spend(this.puzzles.hintCost);
     this.state.data.hints[p.id] = level + 1;
     this.state.save();
+    if (!this.remote) this.cole.gesture(level >= 1 ? 'Point' : 'Talk', 3);
     const text = `${pick(L.hintIntro)}\n\n${p.name} (hint ${level + 1} of 3): ${p.hints[level]}`;
     const choices = [];
     if (level + 1 < 3) choices.push({ label: L.hintMore, onPick: () => this.hint() });

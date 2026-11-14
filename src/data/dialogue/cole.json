@@ -13,8 +13,10 @@
     "hint": "What do you think, Danny?",
     "reports": "Anything new on the desk?",
     "follow": "Come with me.",
-    "stay": "Wait here at HQ.",
-    "bye": "That's all for now."
+    "stay": "Wait here.",
+    "bye": "That's all for now.",
+    "home": "Head back to HQ.",
+    "caseFile": "Show me the case file."
   },
   "hintIntro": [
     "Here's how I see it, Chief.",
@@ -27,7 +29,7 @@
   "reportsNew": "There's {n} new on the desk. I typed them up neat, Chief. Don't spill anything on them.",
   "reportsNone": "Nothing new yet. I'll keep the wire warm.",
   "follow": "Right behind you, Chief.",
-  "stay": "I'll hold the fort. Watch yourself out there.",
+  "stay": "Right here, Chief. I won’t wander off.",
   "bye": "Chief.",
   "reminders": {
     "15:00": "Chief, it's three o'clock. Storm's due to lift around half past five. Then everybody flies home, including whoever did this.",
@@ -46,5 +48,7 @@
   "rest": "I'll wake you in half an hour, Chief.",
   "typewriter": "Not yet, Chief. When we've got the who, the how, the where and the why, I'll type it up and we'll file it.",
   "lab": "Fingerprint kit, powder, brushes and the good magnifier. Bring me something to dust, Chief.",
-  "timelineEmpty": "We'll need harder facts before we can pin the night down. Right now it's all 'about nine-ish'."
+  "timelineEmpty": "We'll need harder facts before we can pin the night down. Right now it's all 'about nine-ish'.",
+  "home": "Back to the shed, then. I’ll keep the stove going.",
+  "radioFollow": "On my way, Chief. Give me a minute to find you in this soup."
 }

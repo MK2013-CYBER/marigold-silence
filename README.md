@@ -21,7 +21,8 @@ Open http://localhost:5173 in Chrome or Safari, then click the screen.
 | E | Interact with what you're looking at |
 | Tab | Notebook |
 | M | Full airfield map (a minimap is always in the corner) |
-| R | Radio Danny Cole (walkie-talkie, 5 min); 1-4 pick a reply |
+| R | Radio Danny Cole (walkie-talkie, 5 min); 1-6 pick a reply |
+| J | Case file (all your evidence) |
 | F | Flashlight |
 | Esc | Pause |
 | ` (backtick) | Debug view: colliders, position, frame rate; then 1-6 teleport (hangar, apron, runway, beacon, gate, dunes) |
@@ -82,6 +83,20 @@ apron, windsock, sun, Raven Ridge, streamed models, indoor zones, planned buildi
 - **Quality**: Auto / Low / Medium / High on the title and pause screen (`src/engine/quality.js`).
 - **Debug cheats** (press ` first): P solves the next puzzle, O resets puzzles, T adds 30 minutes,
   7 jumps to the HQ, 8 to the Quarters.
+
+## Stage C: the cinematic intro (addendum section E)
+
+- Plays the first time you click into a new game (about 2 min 20 s). **Skip intro** button, hold
+  **Space** for a second, or **Esc** to skip. **Watch the intro** on the title screen replays it.
+- Shots: telegram, title, the mail plane in the dust (outside and in the cabin with Danny), the
+  landing, beacon tower, windsock, Hobbs and his lantern at the hangar, Friday dinner (Pryce's toast
+  and six close-ups), dust on a window at night with a music box, the scream, "SATURDAY, 6:10 A.M.".
+- Code: `src/game/intro.js` (shots and camera), `src/world/plane.js` (the plane, built in code),
+  `src/world/silhouettes.js` (placeholder figures), `src/engine/introAudio.js` (sounds made in code).
+  Words: `src/data/scenes/intro.json`. Voices come in Stage H; for now the lines are subtitles.
+- Danny now walks like a person: follows your footsteps through doors, opens and closes doors,
+  turns before walking, eases in and out of his stride, looks at you, nods and points. He can
+  wait where you leave him or walk back to HQ. **J** opens the case file anywhere.
 
 ## Clues
 
