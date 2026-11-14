@@ -112,6 +112,8 @@ the door, the doctor's bag and Hart's camera case. Press E on anything to examin
 | S4 The Bench Test | doctor's bag | get the chart (persuade / book / force), 6 drops, 5 samples, 3 chemicals |
 | S5 The Safe | the safe | three-number dial (clues on the walls and the watch), or drill it |
 | S6 Box and Latch | bookshelf | knock the floor, play the music box, pull the books in tune order |
+| S23 The Prints | HQ lab table | collect prints (openly or covertly), measure with callipers, match pattern/width/scars |
+| S25 The Timeline | HQ timeline wall | put the events you've learned in order around the fixed points |
 
 Evidence (v4 section 4): findings need independent sources (sequences, documents, testimony).
 With enough (usually 3) a finding is Established and goes on the HQ board. Tab shows your leads and

@@ -1,127 +1,680 @@
 {
   "_note": "Stage D: the office sequences S1-S6 (v4 section 3). Answer keys live here; the game never shows them directly.",
   "examine": {
-    "body": { "name": "Cornelius Pryce", "prompt": "Examine the body", "text": "Cornelius Pryce sits slumped over his desk, one hand still near his glass. His face is flushed pink, not the grey you'd expect.", "note": "Pryce's face is pink, not grey." },
-    "decanter": { "name": "Brandy decanter and glass", "prompt": "Look at the decanter", "text": "A cut-glass decanter, a third full, and a single glass with a little brandy left in the bottom. There's a faint bitter smell, like crushed almonds.", "note": "The brandy smells faintly of bitter almonds." },
-    "musicbox": { "name": "Music box", "prompt": "Open the music box", "text": "A little walnut music box. Its comb teeth are numbered 1 to 8 in pencil. The key has been wound recently: there is still tension in the spring.", "note": "The music box was wound recently, and its comb teeth are numbered 1 to 8." },
-    "calendar": { "name": "Desk calendar", "prompt": "Read the calendar", "text": "Saturday 18 November is circled hard, twice. In Pryce's hand: END IT.", "note": "Pryce's calendar for today says END IT.", "sources": [["F22", "calendar"]] },
-    "blotter": { "name": "Blotter", "prompt": "Read the blotter", "text": "Rubbed with pencil, the indent of the last thing he wrote comes up: ZÜRICH 0500 / 2 PASS.", "note": "Blotter: ZÜRICH 0500 / 2 PASS.", "sources": [["F21", "S1"]] },
-    "note": { "name": "Typed note under the door", "prompt": "Pick up the note", "text": "Typed on yellow paper and pushed under the door: 'Five hundred by Saturday or the papers get the real Marigold weather report. You know I kept a copy.' No signature. The letter 'e' is chipped throughout.", "note": "A typed demand note was pushed under the door. The 'e' is chipped." },
-    "revolver": { "name": "Desk drawer", "prompt": "Open the drawer", "text": "A revolver lies in the drawer: all six chambers loaded, the barrel clean and cold. It hasn't been fired.", "note": "The revolver in the drawer is fully loaded and has not been fired.", "sources": [["F09", "S1"]] },
-    "watch": { "name": "Pocket watch", "prompt": "Look at the pocket watch", "text": "Pryce's gold pocket watch lies by the blotter. It stopped at seventeen minutes past three. Engraved inside the lid: 'The minute the sky stopped.'", "note": "His pocket watch stopped at 3:17. 'The minute the sky stopped.'" },
-    "photo": { "name": "Photograph", "prompt": "Look at the photograph", "text": "A girl in a flying jacket laughs in front of a big three-engined plane. Written under it: 'My girl, nineteen today. The Marigold, May 1931.'", "note": "Photo: 'My girl, nineteen today.' The plane behind her has three engines." },
-    "book": { "name": "Hollow book", "prompt": "Take down the odd book", "text": "One book is lighter than it should be: it's hollow. Inside, a card in Pryce's hand: 'Left, her years. Right, the wings' hearts. Left, the minute the sky stopped.'", "note": "Safe riddle: left, her years; right, the wings' hearts; left, the minute the sky stopped." },
-    "stove": { "name": "Stove and flue", "prompt": "Look at the stove pipe", "text": "The stove is cold. Its pipe is barely ten centimetres across. Nothing bigger than a cat goes through that.", "exit": "flue" },
-    "window": { "name": "Barred window", "prompt": "Check the window", "text": "Iron bars set deep in mortar, and the dust on the sill is unbroken. Nobody has been through here.", "exit": "window" },
-    "bolt": { "name": "Door bolt", "prompt": "Test the bolt", "text": "A heavy brass bolt, thrown from the inside. You try to work it from outside with a thread through the gap over the door: the thread slips off every time.", "exit": "bolt" },
-    "ceiling": { "name": "Ceiling", "prompt": "Look at the ceiling", "text": "Tongue-and-groove boards, nailed tight, with an undisturbed film of dust in every joint.", "exit": "ceiling" },
-    "vent": { "name": "Floor vent", "prompt": "Look at the floor vent", "text": "A small iron grille, twenty centimetres by ten. Too small for a person, but you feel a cold draught rising through it. From where?", "exit": "vent", "note": "A cold draught comes up through the office floor vent." },
-    "floor": { "name": "The floor", "prompt": "Knock on the floor", "text": "You kneel and knock across the boards. Solid... solid... and then, under the rug, a hollow knock.", "exit": "floor", "note": "The floor sounds hollow under the rug.", "sound": "hollow" }
+    "body": {
+      "name": "Cornelius Pryce",
+      "prompt": "Examine the body",
+      "text": "Cornelius Pryce sits slumped over his desk, one hand still near his glass. His face is flushed pink, not the grey you'd expect.",
+      "note": "Pryce's face is pink, not grey."
+    },
+    "decanter": {
+      "name": "Brandy decanter and glass",
+      "prompt": "Look at the decanter",
+      "text": "A cut-glass decanter, a third full, and a single glass with a little brandy left in the bottom. There's a faint bitter smell, like crushed almonds.",
+      "note": "The brandy smells faintly of bitter almonds."
+    },
+    "musicbox": {
+      "name": "Music box",
+      "prompt": "Open the music box",
+      "text": "A little walnut music box. Its comb teeth are numbered 1 to 8 in pencil. The key has been wound recently: there is still tension in the spring.",
+      "note": "The music box was wound recently, and its comb teeth are numbered 1 to 8."
+    },
+    "calendar": {
+      "name": "Desk calendar",
+      "prompt": "Read the calendar",
+      "text": "Saturday 18 November is circled hard, twice. In Pryce's hand: END IT.",
+      "note": "Pryce's calendar for today says END IT.",
+      "sources": [
+        [
+          "F22",
+          "calendar"
+        ]
+      ]
+    },
+    "blotter": {
+      "name": "Blotter",
+      "prompt": "Read the blotter",
+      "text": "Rubbed with pencil, the indent of the last thing he wrote comes up: ZÜRICH 0500 / 2 PASS.",
+      "note": "Blotter: ZÜRICH 0500 / 2 PASS.",
+      "sources": [
+        [
+          "F21",
+          "S1"
+        ]
+      ]
+    },
+    "note": {
+      "name": "Typed note under the door",
+      "prompt": "Pick up the note",
+      "text": "Typed on yellow paper and pushed under the door: 'Five hundred by Saturday or the papers get the real Marigold weather report. You know I kept a copy.' No signature. The letter 'e' is chipped throughout.",
+      "note": "A typed demand note was pushed under the door. The 'e' is chipped."
+    },
+    "revolver": {
+      "name": "Desk drawer",
+      "prompt": "Open the drawer",
+      "text": "A revolver lies in the drawer: all six chambers loaded, the barrel clean and cold. It hasn't been fired.",
+      "note": "The revolver in the drawer is fully loaded and has not been fired.",
+      "sources": [
+        [
+          "F09",
+          "S1"
+        ]
+      ]
+    },
+    "watch": {
+      "name": "Pocket watch",
+      "prompt": "Look at the pocket watch",
+      "text": "Pryce's gold pocket watch lies by the blotter. It stopped at seventeen minutes past three. Engraved inside the lid: 'The minute the sky stopped.'",
+      "note": "His pocket watch stopped at 3:17. 'The minute the sky stopped.'"
+    },
+    "photo": {
+      "name": "Photograph",
+      "prompt": "Look at the photograph",
+      "text": "A girl in a flying jacket laughs in front of a big three-engined plane. Written under it: 'My girl, nineteen today. The Marigold, May 1931.'",
+      "note": "Photo: 'My girl, nineteen today.' The plane behind her has three engines."
+    },
+    "book": {
+      "name": "Hollow book",
+      "prompt": "Take down the odd book",
+      "text": "One book is lighter than it should be: it's hollow. Inside, a card in Pryce's hand: 'Left, her years. Right, the wings' hearts. Left, the minute the sky stopped.'",
+      "note": "Safe riddle: left, her years; right, the wings' hearts; left, the minute the sky stopped."
+    },
+    "stove": {
+      "name": "Stove and flue",
+      "prompt": "Look at the stove pipe",
+      "text": "The stove is cold. Its pipe is barely ten centimetres across. Nothing bigger than a cat goes through that.",
+      "exit": "flue"
+    },
+    "window": {
+      "name": "Barred window",
+      "prompt": "Check the window",
+      "text": "Iron bars set deep in mortar, and the dust on the sill is unbroken. Nobody has been through here.",
+      "exit": "window"
+    },
+    "bolt": {
+      "name": "Door bolt",
+      "prompt": "Test the bolt",
+      "text": "A heavy brass bolt, thrown from the inside. You try to work it from outside with a thread through the gap over the door: the thread slips off every time.",
+      "exit": "bolt"
+    },
+    "ceiling": {
+      "name": "Ceiling",
+      "prompt": "Look at the ceiling",
+      "text": "Tongue-and-groove boards, nailed tight, with an undisturbed film of dust in every joint.",
+      "exit": "ceiling"
+    },
+    "vent": {
+      "name": "Floor vent",
+      "prompt": "Look at the floor vent",
+      "text": "A small iron grille, twenty centimetres by ten. Too small for a person, but you feel a cold draught rising through it. From where?",
+      "exit": "vent",
+      "note": "A cold draught comes up through the office floor vent."
+    },
+    "floor": {
+      "name": "The floor",
+      "prompt": "Knock on the floor",
+      "text": "You kneel and knock across the boards. Solid... solid... and then, under the rug, a hollow knock.",
+      "exit": "floor",
+      "note": "The floor sounds hollow under the rug.",
+      "sound": "hollow"
+    }
   },
   "S1": {
     "title": "Walk the Room",
     "intro": "Before anything is moved, test every way in or out of this room, and photograph what matters. You have 12 camera plates.",
     "exits": [
-      { "id": "bolt", "name": "The door bolt", "answer": "impossible" },
-      { "id": "window", "name": "The barred window", "answer": "impossible" },
-      { "id": "flue", "name": "The stove pipe", "answer": "impossible" },
-      { "id": "ceiling", "name": "The ceiling", "answer": "impossible" },
-      { "id": "vent", "name": "The floor vent", "answer": "impossible" },
-      { "id": "floor", "name": "The floor", "answer": "possible" }
+      {
+        "id": "bolt",
+        "name": "The door bolt",
+        "answer": "impossible"
+      },
+      {
+        "id": "window",
+        "name": "The barred window",
+        "answer": "impossible"
+      },
+      {
+        "id": "flue",
+        "name": "The stove pipe",
+        "answer": "impossible"
+      },
+      {
+        "id": "ceiling",
+        "name": "The ceiling",
+        "answer": "impossible"
+      },
+      {
+        "id": "vent",
+        "name": "The floor vent",
+        "answer": "impossible"
+      },
+      {
+        "id": "floor",
+        "name": "The floor",
+        "answer": "possible"
+      }
     ],
     "plates": 12,
-    "mustPhotograph": ["body", "decanter", "bolt", "note", "musicbox"],
+    "mustPhotograph": [
+      "body",
+      "decanter",
+      "bolt",
+      "note",
+      "musicbox"
+    ],
     "notExamined": "You haven't examined this yet. Find it in the room first (E).",
     "wrong": "Danny frowns at your sheet. \"Chief, one of these doesn't add up. Have another look.\"",
     "done": "Every way in or out is accounted for, and the important things are on film.",
-    "sources": [["F01", "S1"], ["F02", "S1"], ["F27", "S1"]]
+    "sources": [
+      [
+        "F01",
+        "S1"
+      ],
+      [
+        "F02",
+        "S1"
+      ],
+      [
+        "F27",
+        "S1"
+      ]
+    ]
   },
   "S2": {
     "title": "The Body",
     "intro": "Doctor Lindqvist examines the body while you direct him. He is sure it was heart failure. Mark each sign: does it fit a heart attack, or not?",
     "areas": [
-      { "id": "eyes", "name": "Eyes", "doc": "Pupils dilated. Quite normal after death.", "see": "The pupils are wide open.", "fits": true },
-      { "id": "skin", "name": "Skin", "doc": "A little flushed. The heat of the stove, I expect.", "see": "His skin is a healthy pink, almost rosy. The stove has been cold all night.", "fits": false },
-      { "id": "mouth", "name": "Mouth and breath", "doc": "Nothing of note. Brandy, of course.", "see": "Under the brandy, a faint smell of bitter almonds.", "fits": false },
-      { "id": "hands", "name": "Hands", "doc": "Clenched. The pain of the attack.", "see": "The fingers are clenched tight.", "fits": true },
-      { "id": "nails", "name": "Fingernails", "doc": "Let's move on, Inspector.", "see": "The nail beds are pink, not blue.", "fits": false },
-      { "id": "rigor", "name": "Stiffness (rigor)", "doc": "Fully stiff. He has been dead for some hours.", "see": "The jaw and limbs are fully rigid.", "fits": true },
-      { "id": "lividity", "name": "Settled blood (lividity)", "doc": "Where the blood has settled. Perfectly ordinary.", "see": "The settled blood is a bright cherry red, not the usual purple.", "fits": false },
-      { "id": "chest", "name": "Chest", "doc": "No marks. No wounds. A heart, giving out.", "see": "No wounds, no bruising.", "fits": true }
+      {
+        "id": "eyes",
+        "name": "Eyes",
+        "doc": "Pupils dilated. Quite normal after death.",
+        "see": "The pupils are wide open.",
+        "fits": true
+      },
+      {
+        "id": "skin",
+        "name": "Skin",
+        "doc": "A little flushed. The heat of the stove, I expect.",
+        "see": "His skin is a healthy pink, almost rosy. The stove has been cold all night.",
+        "fits": false
+      },
+      {
+        "id": "mouth",
+        "name": "Mouth and breath",
+        "doc": "Nothing of note. Brandy, of course.",
+        "see": "Under the brandy, a faint smell of bitter almonds.",
+        "fits": false
+      },
+      {
+        "id": "hands",
+        "name": "Hands",
+        "doc": "Clenched. The pain of the attack.",
+        "see": "The fingers are clenched tight.",
+        "fits": true
+      },
+      {
+        "id": "nails",
+        "name": "Fingernails",
+        "doc": "Let's move on, Inspector.",
+        "see": "The nail beds are pink, not blue.",
+        "fits": false
+      },
+      {
+        "id": "rigor",
+        "name": "Stiffness (rigor)",
+        "doc": "Fully stiff. He has been dead for some hours.",
+        "see": "The jaw and limbs are fully rigid.",
+        "fits": true
+      },
+      {
+        "id": "lividity",
+        "name": "Settled blood (lividity)",
+        "doc": "Where the blood has settled. Perfectly ordinary.",
+        "see": "The settled blood is a bright cherry red, not the usual purple.",
+        "fits": false
+      },
+      {
+        "id": "chest",
+        "name": "Chest",
+        "doc": "No marks. No wounds. A heart, giving out.",
+        "see": "No wounds, no bruising.",
+        "fits": true
+      }
     ],
     "need": 3,
     "wrong": "Lindqvist looks relieved. \"You see? Nothing unusual there.\" (That one fits a heart attack.)",
     "done": "Pink skin, pink nails, cherry-red settled blood and bitter almonds. That isn't a heart attack. Lindqvist has gone very pale.",
-    "sources": [["F04", "S2"], ["F03", "S2"]]
+    "sources": [
+      [
+        "F04",
+        "S2"
+      ],
+      [
+        "F03",
+        "S2"
+      ]
+    ]
   },
   "S3": {
     "title": "Time of Death",
     "intro": "Work out when he died. A body cools about 1.5°F an hour from the normal 98.6°F. Stiffness and settled blood must agree with your answer. Set the earliest and latest possible times.",
-    "reading": { "temp": 85.0, "time": "07:00", "deathMinutes": 1306 },
+    "reading": {
+      "temp": 85.0,
+      "time": "07:00",
+      "deathMinutes": 1306
+    },
     "facts": [
       "Thermometer, 07:00: 85.0°F.",
       "Normal body temperature: 98.6°F. Cooling: about 1.5°F per hour (the stove was cold).",
       "Stiffness: complete. That takes six to twelve hours.",
       "Settled blood: fixed, does not move when pressed. That takes eight hours or more."
     ],
-    "range": ["18:00", "02:00"],
-    "check": { "mustInclude": "21:46", "earliest": "21:00", "latest": "22:45", "maxWidth": 90 },
+    "range": [
+      "18:00",
+      "02:00"
+    ],
+    "check": {
+      "mustInclude": "21:46",
+      "earliest": "21:00",
+      "latest": "22:45",
+      "maxWidth": 90
+    },
     "wrong": "Danny runs the numbers on his pad. \"Chief, that window doesn't fit the thermometer. Try again.\"",
     "tooWide": "\"That's true, but it's too wide to be any use, Chief. Narrow it down.\"",
     "done": "He died between half past nine and quarter past ten last night. So who was playing the music box at ten?",
-    "sources": [["F03", "S3"], ["F07", "S3"]]
+    "sources": [
+      [
+        "F03",
+        "S3"
+      ],
+      [
+        "F07",
+        "S3"
+      ]
+    ]
   },
   "S4": {
     "title": "The Bench Test",
     "intro": "Doctor Lindqvist's field kit: three test chemicals (A, B, C) and enough for six drops. Test the samples. You'll need the chart that says what each chemical shows.",
     "chartRoutes": [
-      { "id": "ask", "label": "Ask Doctor Lindqvist for his chart (5 min)", "minutes": 5, "trustNeeded": 45, "who": "lindqvist", "ok": "He hesitates, then hands it over. \"I should have stopped him drinking after ten,\" he murmurs.", "no": "\"I, er, seem to have mislaid it.\" He won't meet your eye." },
-      { "id": "book", "label": "Use Danny's reference book (15 min)", "minutes": 15, "ok": "Danny finds the table in his chemistry manual and copies it out for you." },
-      { "id": "force", "label": "Prise the kit's lid open and find it yourself (2 min, Lindqvist won't like it)", "minutes": 2, "trustCost": 20, "who": "lindqvist", "ok": "The chart was in the lid all along. Lindqvist stiffens." }
+      {
+        "id": "ask",
+        "label": "Ask Doctor Lindqvist for his chart (5 min)",
+        "minutes": 5,
+        "trustNeeded": 45,
+        "who": "lindqvist",
+        "ok": "He hesitates, then hands it over. \"I should have stopped him drinking after ten,\" he murmurs.",
+        "no": "\"I, er, seem to have mislaid it.\" He won't meet your eye."
+      },
+      {
+        "id": "book",
+        "label": "Use Danny's reference book (15 min)",
+        "minutes": 15,
+        "ok": "Danny finds the table in his chemistry manual and copies it out for you."
+      },
+      {
+        "id": "force",
+        "label": "Prise the kit's lid open and find it yourself (2 min, Lindqvist won't like it)",
+        "minutes": 2,
+        "trustCost": 20,
+        "who": "lindqvist",
+        "ok": "The chart was in the lid all along. Lindqvist stiffens."
+      }
     ],
-    "chart": ["A: turns green with sugar (useless here).", "B: turns deep 'Prussian' blue with cyanide.", "C: turns brown with plant alkaloids, like digitalis heart drops."],
+    "chart": [
+      "A: turns green with sugar (useless here).",
+      "B: turns deep 'Prussian' blue with cyanide.",
+      "C: turns brown with plant alkaloids, like digitalis heart drops."
+    ],
     "samples": [
-      { "id": "decanter", "name": "Brandy from the decanter" },
-      { "id": "glass", "name": "Dregs in his glass" },
-      { "id": "tonic", "name": "His tonic bottle" },
-      { "id": "coffee", "name": "Cold coffee" },
-      { "id": "drops", "name": "His heart drops" }
+      {
+        "id": "decanter",
+        "name": "Brandy from the decanter"
+      },
+      {
+        "id": "glass",
+        "name": "Dregs in his glass"
+      },
+      {
+        "id": "tonic",
+        "name": "His tonic bottle"
+      },
+      {
+        "id": "coffee",
+        "name": "Cold coffee"
+      },
+      {
+        "id": "drops",
+        "name": "His heart drops"
+      }
     ],
-    "reagents": ["A", "B", "C"],
-    "results": { "decanter:B": "Deep Prussian blue!", "glass:B": "Deep Prussian blue!", "drops:C": "Muddy brown.", "default": "No change." },
+    "reagents": [
+      "A",
+      "B",
+      "C"
+    ],
+    "results": {
+      "decanter:B": "Deep Prussian blue!",
+      "glass:B": "Deep Prussian blue!",
+      "drops:C": "Muddy brown.",
+      "default": "No change."
+    },
     "drops": 6,
     "question": "Which samples held the poison?",
-    "answer": ["decanter", "glass"],
+    "answer": [
+      "decanter",
+      "glass"
+    ],
     "refill": "Danny can fetch a fresh vial from the doctor's room (30 min).",
     "wrong": "That doesn't match your results, Chief.",
     "done": "Cyanide, in the brandy decanter and his glass. Not his tonic, not his heart drops. Someone poisoned the decanter.",
-    "sources": [["F04", "S4"], ["F05", "S4"]]
+    "sources": [
+      [
+        "F04",
+        "S4"
+      ],
+      [
+        "F05",
+        "S4"
+      ]
+    ]
   },
   "S5": {
     "title": "The Safe",
     "intro": "A heavy safe with a dial from 0 to 39. Three numbers: left, right, left.",
-    "combo": [19, 3, 17],
+    "combo": [
+      19,
+      3,
+      17
+    ],
     "tryMinutes": 2,
-    "drill": { "label": "Drill it open (60 min, loud, may damage papers)", "minutes": 60, "note": "Drilling scorched the papers inside: the letter is half lost." },
+    "drill": {
+      "label": "Drill it open (60 min, loud, may damage papers)",
+      "minutes": 60,
+      "note": "Drilling scorched the papers inside: the letter is half lost."
+    },
     "wrong": "The handle won't move.",
     "contents": [
-      { "id": "letter", "name": "A half-burnt letter", "text": "\"...tomorrow I end the silence. I have kept it too long and it has cost too much. Forgive me, my girl, and forgive me for the years...\" The rest is charred.", "sources": [["F22", "S5"]] },
-      { "id": "log", "name": "Maintenance log, torn corner", "text": "The Marigold's log, May 1931. Engine mount No. 2: 'Hairline crack, monitor.' Below it, in another hand: 'Passed. A. Brennan.' The corner with the next entry is torn away.", "sources": [["F24", "S5"]] },
-      { "id": "stubs", "name": "Bank stubs", "text": "Cheque stubs: two hundred dollars a month for two years, each initialled 'T.Q.'", "sources": [["F27", "S5"]] },
-      { "id": "envelope", "name": "Meridian Air envelope", "text": "Meridian Air letterhead. A carbon of the 1931 accident inquiry's last page, and a note: 'Signature attended to. J.F-B.' The weather report clipped to it reads 'Clear by noon'.", "sources": [["F25", "S5"], ["F23", "S5"]] }
+      {
+        "id": "letter",
+        "name": "A half-burnt letter",
+        "text": "\"...tomorrow I end the silence. I have kept it too long and it has cost too much. Forgive me, my girl, and forgive me for the years...\" The rest is charred.",
+        "sources": [
+          [
+            "F22",
+            "S5"
+          ]
+        ]
+      },
+      {
+        "id": "log",
+        "name": "Maintenance log, torn corner",
+        "text": "The Marigold's log, May 1931. Engine mount No. 2: 'Hairline crack, monitor.' Below it, in another hand: 'Passed. A. Brennan.' The corner with the next entry is torn away.",
+        "sources": [
+          [
+            "F24",
+            "S5"
+          ]
+        ]
+      },
+      {
+        "id": "stubs",
+        "name": "Bank stubs",
+        "text": "Cheque stubs: two hundred dollars a month for two years, each initialled 'T.Q.'",
+        "sources": [
+          [
+            "F27",
+            "S5"
+          ]
+        ]
+      },
+      {
+        "id": "envelope",
+        "name": "Meridian Air envelope",
+        "text": "Meridian Air letterhead. A carbon of the 1931 accident inquiry's last page, and a note: 'Signature attended to. J.F-B.' The weather report clipped to it reads 'Clear by noon'.",
+        "sources": [
+          [
+            "F25",
+            "S5"
+          ],
+          [
+            "F23",
+            "S5"
+          ]
+        ]
+      }
     ],
     "done": "The safe is open. Four things inside, and every one of them is somebody's motive."
   },
   "S6": {
     "title": "The Floor, the Box and the Latch",
     "intro": "Listen to the music box. Its comb teeth are numbered 1 to 8, and the bookshelf has eight pull-books. Pull the books in the order the tune plays.",
-    "tune": [5, 3, 1, 3, 5, 8, 5, 3],
-    "books": ["I. Navigation", "II. Meteorology", "III. Engines", "IV. Law of the Air", "V. Wings", "VI. Radio", "VII. Maps", "VIII. Memoirs"],
+    "tune": [
+      5,
+      3,
+      1,
+      3,
+      5,
+      8,
+      5,
+      3
+    ],
+    "books": [
+      "I. Navigation",
+      "II. Meteorology",
+      "III. Engines",
+      "IV. Law of the Air",
+      "V. Wings",
+      "VI. Radio",
+      "VII. Maps",
+      "VIII. Memoirs"
+    ],
     "needsKnock": "You don't know what you're looking for yet. Maybe check the floor first.",
     "wrongBook": "Clunk. The books slide back. Wrong order.",
-    "crowbar": { "label": "Crowbar the floorboards (15 min, very loud)", "minutes": 15 },
+    "crowbar": {
+      "label": "Crowbar the floorboards (15 min, very loud)",
+      "minutes": 15
+    },
     "done": "A latch clicks under the floor. The rug sags: there is a trapdoor beneath it, and a breath of cold air comes up from the dark.",
     "trapdoor": "A trapdoor, and iron rungs going down into darkness. You'll need a proper light and a reason to go down there. Later.",
-    "sources": [["F02", "S6"], ["F07", "S6"], ["F13", "S6"]]
+    "sources": [
+      [
+        "F02",
+        "S6"
+      ],
+      [
+        "F07",
+        "S6"
+      ],
+      [
+        "F13",
+        "S6"
+      ]
+    ]
+  },
+  "S23": {
+    "title": "The Prints",
+    "intro": "Fingerprints lifted in the office, under the lab lamp. First get comparison prints from everyone, then match each lifted print: pattern, width (use the callipers) and scars.",
+    "needs": "S1",
+    "needsText": "You need to bag the decanter, glass and music box first. Walk the room (S1) in the office.",
+    "collect": [
+      {
+        "id": "open",
+        "label": "Ask everyone for their prints, openly (20 min, they won't like it)",
+        "minutes": 20,
+        "trust": -6,
+        "text": "Everyone grumbles and rolls their fingers on the card. Billie bristles at being measured."
+      },
+      {
+        "id": "covert",
+        "label": "Lift them quietly from last night's dinner glasses (35 min)",
+        "minutes": 35,
+        "text": "Ox never washed up after dinner. The glasses are still on the drying rack, each at its owner's place."
+      }
+    ],
+    "people": {
+      "pryce": {
+        "pattern": "whorl",
+        "width": 18,
+        "scar": false
+      },
+      "vivienne": {
+        "pattern": "arch",
+        "width": 14,
+        "scar": false
+      },
+      "billie": {
+        "pattern": "loop",
+        "width": 16,
+        "scar": true
+      },
+      "lindqvist": {
+        "pattern": "loop",
+        "width": 17,
+        "scar": false
+      },
+      "julian": {
+        "pattern": "whorl",
+        "width": 17,
+        "scar": false
+      },
+      "ox": {
+        "pattern": "arch",
+        "width": 21,
+        "scar": false
+      },
+      "tamsin": {
+        "pattern": "loop",
+        "width": 14,
+        "scar": false
+      },
+      "hobbs": {
+        "pattern": "whorl",
+        "width": 17,
+        "scar": false
+      }
+    },
+    "lifted": [
+      {
+        "id": "glass",
+        "name": "Print from his glass",
+        "pattern": "whorl",
+        "width": 18,
+        "scar": false,
+        "answer": "pryce"
+      },
+      {
+        "id": "decanter",
+        "name": "Print from the decanter",
+        "pattern": "loop",
+        "width": 13,
+        "scar": true,
+        "answer": "nobody"
+      },
+      {
+        "id": "musicbox",
+        "name": "Print from the music box key",
+        "pattern": "loop",
+        "width": 13,
+        "scar": true,
+        "answer": "nobody"
+      }
+    ],
+    "nobody": "Nobody here",
+    "measureFirst": "Measure it with the callipers first.",
+    "wrong": "Danny holds the two cards side by side. \"They don't match, Chief. Look at the pattern, the width and the scars.\"",
+    "done": "The decanter and the music box carry the same print: small, narrow, the ridges smoothed by old burns. It belongs to nobody at that dinner. Billie's hands are scarred too, but three millimetres wider.",
+    "sources": [
+      [
+        "F08",
+        "S23"
+      ],
+      [
+        "F28",
+        "S23"
+      ]
+    ]
+  },
+  "S25": {
+    "title": "The Timeline",
+    "intro": "Pin last night's events on the time strip in the order they happened. You can only pin what you've actually learned. Fixed points: the bolt was thrown at 21:25, the tune was heard at 22:00, the door was broken down at 06:10.",
+    "cards": [
+      {
+        "id": "dinner",
+        "text": "19:00 Dinner in the mess hall; Pryce's toast",
+        "t": 1140
+      },
+      {
+        "id": "bolt",
+        "text": "21:25 Pryce bolts his office door",
+        "t": 1285,
+        "fixed": true
+      },
+      {
+        "id": "death",
+        "text": "21:30-22:15 Pryce dies",
+        "t": 1306,
+        "requires": "solved:S3"
+      },
+      {
+        "id": "tune",
+        "text": "22:00 The music box is heard through the wall",
+        "t": 1320,
+        "fixed": true,
+        "requires": "F07"
+      },
+      {
+        "id": "bang",
+        "text": "About 22:45 A bang: a backfire, not a shot",
+        "t": 1365,
+        "requires": "F09"
+      },
+      {
+        "id": "julian",
+        "text": "23:15 Julian knocks; no answer",
+        "t": 1395,
+        "requires": "heard:julian.night"
+      },
+      {
+        "id": "note",
+        "text": "23:30 A typed demand note is pushed under the door",
+        "t": 1410,
+        "requires": "examined:note"
+      },
+      {
+        "id": "door",
+        "text": "06:10 Billie breaks the door down; the bolt is still thrown",
+        "t": 1810,
+        "fixed": true
+      }
+    ],
+    "need": [
+      "dinner",
+      "bolt",
+      "death",
+      "tune",
+      "bang",
+      "julian",
+      "note",
+      "door"
+    ],
+    "locked": "You haven't learned this yet.",
+    "missing": "You can't finish the strip yet: some events are still unknown. Talk to people and keep investigating.",
+    "wrong": "The strip won't hold: something is out of order. Remember, nobody can be in two places, and the bolt stayed thrown from 21:25 until 06:10.",
+    "done": "The night holds together: the room was bolted at 21:25, he died soon after, and someone wound the music box at ten in a locked room.",
+    "sources": [
+      [
+        "F01",
+        "S25"
+      ],
+      [
+        "F03",
+        "S25"
+      ],
+      [
+        "F07",
+        "S25"
+      ]
+    ]
   }
 }

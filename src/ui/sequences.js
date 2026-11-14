@@ -343,6 +343,121 @@ export class SequenceScreen {
     this.body.appendChild(sec);
   }
 
+  // ------------------------------------------------------------------ S23 The Prints
+  /** A fingerprint drawing: loop, whorl or arch ridges, scaled to its width; scars break the ridges. */
+  _print(p, px = 4) {
+    const w = p.width * px, h = w * 1.35, cx = w / 2 + 6, cy = h / 2 + 6;
+    let path = '';
+    for (let i = 1; i <= 9; i++) {
+      const r = (i / 9) * (w / 2 - 2);
+      if (p.pattern === 'whorl') path += `<ellipse cx="${cx}" cy="${cy}" rx="${r}" ry="${r * 1.3}"/>`;
+      else if (p.pattern === 'loop') path += `<path d="M${cx - r} ${cy + h / 2 - 4} L${cx - r} ${cy - r * 0.3} A${r} ${r * 1.2} 0 0 1 ${cx + r} ${cy - r * 0.3} L${cx + r * 0.6} ${cy + h / 2 - 4}"/>`;
+      else path += `<path d="M6 ${cy + h / 2 - i * (h / 11)} Q${cx} ${cy + h / 2 - i * (h / 11) - r * 0.9} ${w + 6} ${cy + h / 2 - i * (h / 11)}"/>`;
+    }
+    const scars = p.scar ? `<path d="M${cx - w * 0.3} ${cy - 6} L${cx + w * 0.25} ${cy + 10}" stroke="#e9dfc6" stroke-width="5"/><path d="M${cx - w * 0.1} ${cy + 18} L${cx + w * 0.3} ${cy + 8}" stroke="#e9dfc6" stroke-width="4"/>` : '';
+    return `<svg class="seq-print" width="${w + 12}" height="${h + 12}" viewBox="0 0 ${w + 12} ${h + 12}"><g fill="none" stroke="#2a2116" stroke-width="1.6">${path}</g>${scars}</svg>`;
+  }
+
+  renderS23(d) {
+    const st = this.s();
+    if (!this.solved(d.needs)) { this.body.insertAdjacentHTML('beforeend', `<p class="seq-dim">${esc(d.needsText)}</p>`); return; }
+    if (!st.collected) {
+      const sec = document.createElement('div');
+      sec.className = 'seq-section';
+      sec.innerHTML = '<h3>Comparison prints</h3>';
+      for (const c of d.collect) sec.appendChild(this._btn(c.label, () => {
+        this.spend(c.minutes);
+        if (c.trust) for (const id of Object.keys(d.people)) if (id !== 'pryce') this.trust.change(id, c.trust);
+        st.collected = c.id;
+        this.render();
+        this.msg(c.text, true);
+      }));
+      this.body.appendChild(sec);
+      return;
+    }
+    st.measured ??= {};
+    st.match ??= {};
+    const names = { nobody: d.nobody };
+    for (const id of Object.keys(d.people)) names[id] = id[0].toUpperCase() + id.slice(1);
+    // the reference cards
+    const ref = document.createElement('div');
+    ref.className = 'seq-section';
+    ref.innerHTML = '<h3>Everyone\'s prints</h3><div class="seq-cards">' + Object.entries(d.people).map(([id, p]) =>
+      `<div class="seq-pcard">${this._print(p, 2.4)}<b>${names[id]}</b><span>${p.pattern}, ${p.width} mm${p.scar ? ', scarred' : ''}</span></div>`).join('') + '</div>';
+    this.body.appendChild(ref);
+    // each lifted print: measure with callipers, then match
+    for (const L of d.lifted) {
+      const sec = document.createElement('div');
+      sec.className = 'seq-section';
+      sec.innerHTML = `<h3>${esc(L.name)}</h3><div class="seq-lift">${this._print(L, 4)}<div class="seq-cal"><div class="seq-jaws"><i></i><i></i></div>
+        <label>Callipers: <b class="mm"></b> mm <input type="range" min="8" max="24" step="1"></label></div></div>`;
+      const inp = sec.querySelector('input'), mm = sec.querySelector('.mm'), jaws = sec.querySelector('.seq-jaws');
+      inp.value = st.measured[L.id] ?? 10;
+      const draw = () => { mm.textContent = inp.value; jaws.style.width = `${inp.value * 4}px`; };
+      inp.addEventListener('input', () => { draw(); st.measured[L.id] = +inp.value; });
+      inp.addEventListener('keydown', (e) => e.stopPropagation());
+      draw();
+      if (st.match[L.id]) sec.insertAdjacentHTML('beforeend', `<p class="seq-ok">Matched: ${esc(names[st.match[L.id]])}</p>`);
+      else {
+        const row = document.createElement('div');
+        for (const id of [...Object.keys(d.people), 'nobody']) row.appendChild(this._btn(names[id], () => {
+          if (st.measured[L.id] !== L.width) return this.msg(st.measured[L.id] ? `Your callipers say ${st.measured[L.id]} mm. Close them on the print's edges first.` : d.measureFirst);
+          this.spend(3);
+          if (id !== L.answer) return this.msg(d.wrong);
+          st.match[L.id] = id;
+          this.render();
+          if (d.lifted.every((x) => st.match[x.id])) { this.solve('S23'); this.render(); this.msg(d.done, true); }
+        }));
+        sec.appendChild(row);
+      }
+      this.body.appendChild(sec);
+    }
+  }
+
+  // ------------------------------------------------------------------ S25 The Timeline
+  _knows(req) {
+    if (!req) return true;
+    const [k, v] = req.includes(':') ? req.split(':') : ['F', req];
+    if (k === 'solved') return this.solved(v);
+    if (k === 'heard') return !!this.state.data.heard?.[v];
+    if (k === 'examined') return this.state.data.examined.includes(v);
+    return this.evidence.sources(req).length > 0;
+  }
+
+  renderS25(d) {
+    const st = this.s();
+    const known = d.cards.filter((c) => this._knows(c.requires));
+    st.order = (st.order ?? []).filter((id) => known.some((c) => c.id === id));
+    // newly learned events arrive in a scrambled spot: putting them in order is the puzzle
+    for (const c of known) {
+      if (st.order.includes(c.id)) continue;
+      const h = [...c.id].reduce((a, ch) => (a * 31 + ch.charCodeAt(0)) >>> 0, 7);
+      st.order.splice(h % (st.order.length + 1), 0, c.id);
+    }
+    const sec = document.createElement('div');
+    sec.className = 'seq-section seq-strip';
+    st.order.forEach((id, i) => {
+      const c = d.cards.find((x) => x.id === id);
+      const r = this._row(sec, `<span class="seq-label seq-pin">${c.fixed ? '📌 ' : ''}${esc(c.text)}</span>`);
+      if (this.solved('S25')) return;
+      r.appendChild(this._btn('▲ earlier', () => { if (i > 0) { [st.order[i - 1], st.order[i]] = [st.order[i], st.order[i - 1]]; this.render(); } }));
+      r.appendChild(this._btn('▼ later', () => { if (i < st.order.length - 1) { [st.order[i + 1], st.order[i]] = [st.order[i], st.order[i + 1]]; this.render(); } }));
+    });
+    for (const c of d.cards.filter((x) => !this._knows(x.requires))) this._row(sec, `<span class="seq-label seq-dim">? ${esc(d.locked)}</span>`);
+    this.body.appendChild(sec);
+    if (this.solved('S25')) return;
+    this.body.appendChild(this._btn('Pin it up', () => {
+      this.spend(5);
+      const cards = st.order.map((id) => d.cards.find((x) => x.id === id));
+      const inOrder = cards.every((c, i) => i === 0 || cards[i - 1].t <= c.t);
+      if (!inOrder) return this.msg(d.wrong);
+      if (!d.need.every((id) => st.order.includes(id))) return this.msg(`${d.missing} (${st.order.length} of ${d.need.length} events known.)`);
+      this.solve('S25');
+      this.render();
+      this.msg(d.done, true);
+    }, 'primary'));
+  }
+
   /** The music box: each comb tooth is a note; the tune lights the teeth as it plays. */
   playTune(tune, teeth) {
     if (this._playing) return;

@@ -321,11 +321,11 @@
       "name": "The Prints",
       "place": "hq_shed",
       "mechanic": "Fingerprint measurement",
-      "built": false,
+      "built": true,
       "hints": [
-        "",
-        "",
-        ""
+        "Dust the things from the office and compare them with everyone's prints, Chief. Pattern, width and scars all have to match.",
+        "Use the callipers to measure each print. A loop is a little U shape, a whorl goes round in circles, an arch is a hump.",
+        "His glass is his own print. The decanter and the music box carry a small scarred loop, thirteen millimetres: that matches nobody at the dinner. Billie's is scarred but sixteen."
       ],
       "clues": []
     },
@@ -347,11 +347,11 @@
       "name": "The Timeline",
       "place": "hq_shed",
       "mechanic": "Constraint timeline",
-      "built": false,
+      "built": true,
       "hints": [
-        "",
-        "",
-        ""
+        "Put the night in order, Chief. Start from the fixed points: the bolt at 21:25, the tune at ten, the door at 06:10.",
+        "Every card needs something you've actually found. Talk to Billie about the bang, Julian about where he was, and solve the time of death.",
+        "Dinner, the bolt, his death, the tune, the bang, Julian at the door, the note, the door broken down. In that order."
       ],
       "clues": []
     },

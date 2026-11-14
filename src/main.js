@@ -149,6 +149,8 @@ const hq = new HQ({
 interaction.onUI = (def) => {
   if (def.ui === 'npc') { people.talk(def.npc); syncFreeze(); return; }
   if (crime.handle(def)) { syncFreeze(); return; }
+  if (def.ui === 'lab') { hq.openScreen(seqScreen.setId('S23')); syncFreeze(); return; } // the prints (v4 S23)
+  if (def.ui === 'timeline') { hq.openScreen(seqScreen.setId('S25')); syncFreeze(); return; } // the time strip (v4 S25)
   hq.handle(def);
 };
 
