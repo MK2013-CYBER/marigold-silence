@@ -302,3 +302,5 @@ kbd {
 .intro-skip:hover { background: rgba(232,194,122,0.2); color: #fff; }
 .intro-hold { position: absolute; right: 3vw; bottom: calc(11vh + 10px); width: 110px; height: 2px; z-index: 4; }
 .intro-hold i { display: block; height: 100%; width: 0; background: #e8c27a; }
+.dlg-choices.waiting { opacity: 0.35; }
+.dlg-text { white-space: pre-line; min-height: 3.2em; }

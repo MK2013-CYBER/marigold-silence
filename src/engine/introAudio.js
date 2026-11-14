@@ -267,3 +267,62 @@ export class IntroAudio {
     for (const n of [src, vib, breath]) { n.start(t); n.stop(t + 2); }
   }
 }
+
+/**
+ * A small film score made in code: a slow minor-key string pad (detuned saw waves through a
+ * soft filter) moving Am - F - Dm - E, with a low cello-like root. setScore(level) fades it.
+ */
+IntroAudio.prototype.scoreOn = function scoreOn() {
+  if (!this.ctx || this.score) return;
+  const ctx = this.ctx;
+  const out = this._out(0, true);
+  const lp = ctx.createBiquadFilter();
+  lp.type = 'lowpass';
+  lp.frequency.value = 900;
+  lp.Q.value = 0.4;
+  lp.connect(out);
+  const A = 220;
+  const chords = [[0, 3, 7, -12], [-4, 0, 3, -16], [-7, -4, 0, -19], [-5, -1, 2, -17]]; // Am F Dm E (semitones from A3)
+  const voices = [0, 1, 2, 3].map(() => {
+    const g = ctx.createGain();
+    g.gain.value = 0.0;
+    g.connect(lp);
+    const oscs = [-6, 6].map((det) => {
+      const o = ctx.createOscillator();
+      o.type = 'sawtooth';
+      o.detune.value = det;
+      o.connect(g);
+      o.start();
+      return o;
+    });
+    return { g, oscs };
+  });
+  let i = 0;
+  const step = () => {
+    const t = ctx.currentTime;
+    const ch = chords[i++ % chords.length];
+    voices.forEach((v, k) => {
+      const f = A * 2 ** (ch[k] / 12);
+      for (const o of v.oscs) o.frequency.setTargetAtTime(f, t, 0.6);
+      v.g.gain.cancelScheduledValues(t);
+      v.g.gain.setTargetAtTime(k === 3 ? 0.07 : 0.045, t, 1.2);
+    });
+  };
+  step();
+  this.score = { out, voices, timer: setInterval(step, 7000) };
+};
+
+IntroAudio.prototype.setScore = function setScore(level, secs = 2) {
+  if (!this.score) return;
+  this.score.out.gain.setTargetAtTime(level, this.ctx.currentTime, secs / 3);
+};
+
+IntroAudio.prototype.scoreOff = function scoreOff(secs = 2) {
+  const s = this.score;
+  if (!s) return;
+  clearInterval(s.timer);
+  const t = this.ctx.currentTime;
+  s.out.gain.setTargetAtTime(0, t, secs / 3);
+  for (const v of s.voices) for (const o of v.oscs) o.stop(t + secs * 2);
+  this.score = null;
+};

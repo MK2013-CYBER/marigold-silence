@@ -19,9 +19,12 @@ export class DialogueBox {
     this.onClose = null;
   }
 
+  /**
+   * Show a line and the replies. The line types itself out (about as fast as it is spoken);
+   * the replies appear once it has finished. Press a number, or click, to finish it early.
+   */
   show(speaker, line, choices) {
     this.name.textContent = speaker;
-    this.text.textContent = line;
     this.list.replaceChildren();
     this.choices = choices;
     choices.forEach((c, i) => {
@@ -31,11 +34,30 @@ export class DialogueBox {
       li.addEventListener('click', () => this.pick(i));
       this.list.appendChild(li);
     });
+    clearInterval(this._typer);
+    this._full = line;
+    let n = 0;
+    this.text.textContent = '';
+    this.list.classList.add('waiting');
+    this._typer = setInterval(() => {
+      n += 2;
+      this.text.textContent = line.slice(0, n);
+      if (n >= line.length) this._finishTyping();
+    }, 28);
     this.el.classList.remove('hidden');
     this.open = true;
+    this.onLine?.(speaker, line);
+  }
+
+  _finishTyping() {
+    clearInterval(this._typer);
+    this._typer = null;
+    this.text.textContent = this._full;
+    this.list.classList.remove('waiting');
   }
 
   pick(i) {
+    if (this._typer) { this._finishTyping(); return; } // first press shows the whole line
     const c = this.choices[i];
     if (c) c.onPick();
   }
@@ -51,6 +73,8 @@ export class DialogueBox {
 
   close() {
     if (!this.open) return;
+    clearInterval(this._typer);
+    this._typer = null;
     this.el.classList.add('hidden');
     this.open = false;
     this.onClose?.();

@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { loadGLTF } from '../engine/assets.js';
+import { Character } from './character.js';
 
 /**
  * Agent Danny Cole (addendum v2, section D). Mixamo "Remy" with Idle / Walk / Talk /
@@ -18,17 +19,17 @@ import { loadGLTF } from '../engine/assets.js';
  * Modes: 'home' (at his HQ spot), 'follow', 'wait' (standing where you left him),
  * 'return' (walking back to HQ).
  */
-const WALK = 1.35;     // m/s, a calm walk
-const BRISK = 2.4;     // m/s, catching up
+const WALK = 1.2;      // m/s, a calm walk
+const BRISK = 1.9;     // m/s, a brisk walk to catch up
 const RADIUS = 0.28;
 
 export class Cole {
-  static async create(scene, world, ground, cfg, camera) {
-    const gltf = await loadGLTF('cole.glb');
-    return new Cole(scene, world, ground, cfg, gltf, camera);
+  static async create(scene, world, ground, cfg, camera, castSpec) {
+    const person = await Character.load('cole', castSpec);
+    return new Cole(scene, world, ground, cfg, person, camera);
   }
 
-  constructor(scene, world, ground, cfg, gltf, camera) {
+  constructor(scene, world, ground, cfg, person, camera) {
     this.world = world;
     this.ground = ground;
     this.camera = camera;
@@ -41,25 +42,14 @@ export class Cole {
     this.interaction = null; // set by main.js so he can open doors
     this.paused = false;     // the cinematic intro borrows him
 
+    // his body, clothes, fedora and animations come from the shared Character loader
+    this.person = person;
     this.root = new THREE.Group();
     this.root.name = 'ColeNPC';
-    const model = gltf.scene;
-    model.traverse((o) => {
-      if (o.isMesh) {
-        o.castShadow = true;
-        o.receiveShadow = true;
-        o.frustumCulled = false; // skinned meshes: the bind-pose bounds are not reliable
-      }
-    });
-    const box = new THREE.Box3().setFromObject(model);
-    const h = box.max.y - box.min.y;
-    const k = h > 0 ? 1.78 / h : 1;
-    model.scale.multiplyScalar(k);
-    model.position.y -= box.min.y * k;
-    this.root.add(model);
-    this.model = model;
-    this.head = model.getObjectByName('mixamorigHead') ?? model.getObjectByName('mixamorig:Head');
-    this.neck = model.getObjectByName('mixamorigNeck') ?? model.getObjectByName('mixamorig:Neck');
+    this.root.add(person.root);
+    this.model = person.body;
+    this.head = person.bone('Head');
+    this.neck = person.bone('Neck');
     this._look = 0; // current head turn (radians)
 
     const hit = new THREE.Mesh(new THREE.BoxGeometry(0.6, 1.8, 0.6), new THREE.MeshBasicMaterial({ visible: false }));
@@ -68,12 +58,9 @@ export class Cole {
     hit.userData.hitProxy = true;
     this.root.add(hit);
 
-    this.mixer = new THREE.AnimationMixer(model);
-    this.actions = {};
-    for (const clip of gltf.animations) {
-      if (clip.name === 'Walk') stripRootMotion(clip);
-      this.actions[clip.name] = this.mixer.clipAction(clip);
-    }
+    this.mixer = person.mixer;
+    this.actions = person.actions;
+    this.strideSpeed = person.strideSpeed;
     this.current = null;
     this.play('Idle');
 
@@ -246,7 +233,7 @@ export class Cole {
   _animate() {
     if (this.speed > 0.08) {
       this.play('Walk', 0.25);
-      if (this.actions.Walk) this.actions.Walk.timeScale = THREE.MathUtils.clamp(this.speed / WALK, 0.55, 1.75);
+      if (this.actions.Walk) this.actions.Walk.timeScale = THREE.MathUtils.clamp(this.speed / (this.strideSpeed ?? 1.1), 0.5, 2.2);
     } else if (this.current === this.actions.Walk) {
       this.play('Idle', 0.4);
     }
@@ -254,7 +241,7 @@ export class Cole {
 
   // ------------------------------------------------------------------ per frame
   update(dt, player) {
-    if (this.paused) { this.mixer.update(dt); return; }
+    if (this.paused) { this.person.update(dt); return; }
     const toPlayer = Math.hypot(player.x - this.pos.x, player.z - this.pos.z);
 
     // remember your footsteps while he follows you (one every 0.5 m)
@@ -278,7 +265,7 @@ export class Cole {
     }
     if (!this.talking) this._animate();
     this.pos.y = this.ground.heightAt(this.pos.x, this.pos.z);
-    this.mixer.update(dt);
+    this.person.update(dt);
     this._headLook(dt, player, toPlayer);
   }
 
@@ -398,14 +385,4 @@ function segBox(x, z, dx, dz, minX, minZ, maxX, maxZ) {
     if (t0 > t1) return false;
   }
   return true;
-}
-
-/** Mixamo walks move the hips forward; keep him walking in place (we move the root). */
-function stripRootMotion(clip) {
-  for (const t of clip.tracks) {
-    if (!/Hips\.position$/.test(t.name)) continue;
-    const v = t.values;
-    const x0 = v[0], z0 = v[2];
-    for (let i = 0; i < v.length; i += 3) { v[i] = x0; v[i + 2] = z0; }
-  }
 }

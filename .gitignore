@@ -6,3 +6,4 @@ blender/textures/
 *.blend1
 __pycache__/
 *.pyc
+blender/textures/cast/

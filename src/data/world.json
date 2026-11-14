@@ -282,6 +282,23 @@
         7,
         5.5
       ]
+    },
+    {
+      "id": "mail_plane",
+      "label": "Mail plane NC-11427 (the plane you arrived in)",
+      "file": "mail_plane.glb",
+      "position": [
+        16,
+        0,
+        44
+      ],
+      "rotationY": -2.4,
+      "load": 420,
+      "cull": 320,
+      "footprint": [
+        12.4,
+        8.6
+      ]
     }
   ],
   "hangar": {

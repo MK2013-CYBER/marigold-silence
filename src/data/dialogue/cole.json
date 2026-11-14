@@ -1,35 +1,79 @@
 {
   "speaker": "Danny Cole",
+  "voice": {
+    "prefer": [
+      "Evan",
+      "Aaron",
+      "Nathan",
+      "Tom",
+      "Alex",
+      "Reed (English (United States))",
+      "Eddy (English (United States))",
+      "Daniel"
+    ],
+    "pitch": 1.08,
+    "rate": 1.04
+  },
+  "greetingFirst": "Morning, Chief. Well, I wouldn't call it morning, exactly. You can't see the sun for all this dust.",
   "greetings": [
-    "Chief. Coffee's terrible, but it's hot.",
-    "Back already? I've been staring at that board so long it's staring back.",
-    "Chief. Wind's taken another shingle off the roof. Anything I can do?"
+    "Chief. The coffee's terrible, but at least it's hot.",
+    "There you are, Chief. Anything you need?",
+    "Chief. The wind's taken another shingle off the roof. What can I do for you?",
+    "Back again, Chief? I've been staring at that board so long it's starting to stare back."
   ],
   "walkieOpen": [
-    "*crackle* Cole here. Go ahead, Chief.",
-    "*crackle* Reading you, Chief. Mostly."
+    "Cole here. Go ahead, Chief.",
+    "I hear you, Chief. Mostly. This storm's chewing up the signal."
   ],
   "menu": {
-    "hint": "What do you think, Danny?",
+    "situation": "What's going on, Danny?",
+    "people": "Tell me about the people here.",
+    "next": "What should I do next?",
     "reports": "Anything new on the desk?",
+    "caseFile": "Show me the case file.",
     "follow": "Come with me.",
     "stay": "Wait here.",
+    "home": "Go back to the HQ.",
     "bye": "That's all for now.",
-    "home": "Head back to HQ.",
-    "caseFile": "Show me the case file."
+    "back": "Let's talk about something else.",
+    "thanks": "Thanks, Danny.",
+    "more": "Can you be more specific?"
   },
+  "situation": [
+    "Here's where we stand, Chief. Cornelius Pryce, the man who owns this airfield, was found dead this morning, locked inside his office in the hangar.",
+    "Nobody can leave. The dust storm has grounded every plane, and the road's buried. It should clear around half past five this evening.",
+    "When it does, everyone flies home, including whoever killed him. So we've got until then to work out who did it, how they did it, and why."
+  ],
+  "situationLater": "We've still got until about half past five, Chief. Every bit of evidence you find goes up on the board here, and you can read everything we've got in the case file. Press J for it anytime.",
+  "peopleIntro": "Who do you want to know about?",
+  "people": {
+    "pryce": "Cornelius Pryce. Sixty-two. He built Pryce Transcontinental Air from nothing. Charming, loved a big show, and used to getting his own way. He's the one who's dead.",
+    "vivienne": "Vivienne Pryce, his wife. Used to be an actress on the stage. Very elegant, very sharp tongue. She calls everybody 'darling', and I don't think she means it.",
+    "billie": "Captain Billie Strand, the company's pilot. Loud, funny, a bit superstitious. She has burn scars on her hands, and she clams up if you mention the Marigold.",
+    "lindqvist": "Doctor Lindqvist, Pryce's physician. Gentle, nervous, very careful. His hands shake. He's the one who examined the body this morning.",
+    "julian": "Julian Ferreira-Blake. He's from Meridian Air, the rival airline. Smooth, very polite, never raises his voice. He hums opera when he thinks no one's listening.",
+    "ox": "Abel Brennan, but everyone calls him Ox. The mechanic. Huge fellow, but gentle, slow to speak, goes to church. Keeps pigeons. I'd bet he's a terrible liar.",
+    "tamsin": "Tamsin Quill, Pryce's secretary. Blunt, smokes like a chimney, and says straight out that she hated him. Either very honest or very clever.",
+    "hobbs": "Walter Hobbs runs the radio. Old fellow, kind, a bit hard of hearing, and he wanders off the subject. He thinks the radio wires are haunted. He met us at the hangar last night."
+  },
+  "nextNone": [
+    "Right now? Get to know the place, Chief. Walk around, see who's where, and come back here when you've found something. Anything you find goes on the board.",
+    "Have a look around the airfield and talk to people when they're about. The reports on my desk will fill in some background as the day goes on."
+  ],
   "hintIntro": [
     "Here's how I see it, Chief.",
     "Okay. Don't laugh.",
-    "If it were my case, which it isn't, thank God..."
+    "If it were my case, which, thank God, it isn't..."
   ],
-  "hintMore": "Want me to spell it out a bit more? That'll cost us another few minutes.",
+  "hintMore": "Want me to spell it out a bit more? It'll cost us a few more minutes.",
   "hintMaxed": "That's everything I've got on that one, Chief. The rest is up to you.",
-  "hintNone": "Honestly? I think we've done all we can for now. Maybe sleep on it.",
-  "reportsNew": "There's {n} new on the desk. I typed them up neat, Chief. Don't spill anything on them.",
+  "hintNone": "Honestly? I think we've done all we can for now.",
+  "reportsNew": "There's {n} new on the desk, Chief. Typed up nice and neat. Don't spill anything on them.",
   "reportsNone": "Nothing new yet. I'll keep the wire warm.",
   "follow": "Right behind you, Chief.",
-  "stay": "Right here, Chief. I won’t wander off.",
+  "stay": "I'll wait right here. I won't wander off.",
+  "home": "Back to the shed, then. I'll keep the stove going.",
+  "radioFollow": "On my way, Chief. Give me a minute to find you in this soup.",
   "bye": "Chief.",
   "reminders": {
     "15:00": "Chief, it's three o'clock. Storm's due to lift around half past five. Then everybody flies home, including whoever did this.",
@@ -45,10 +89,9 @@
     "C27": "Six on the manifest, five certificates... Chief, that's not a clerical error.",
     "default": "Pinning it up on the board, Chief."
   },
-  "rest": "I'll wake you in half an hour, Chief.",
+  "rest": "Get some rest, Chief. I'll wake you in half an hour.",
   "typewriter": "Not yet, Chief. When we've got the who, the how, the where and the why, I'll type it up and we'll file it.",
-  "lab": "Fingerprint kit, powder, brushes and the good magnifier. Bring me something to dust, Chief.",
-  "timelineEmpty": "We'll need harder facts before we can pin the night down. Right now it's all 'about nine-ish'.",
-  "home": "Back to the shed, then. I’ll keep the stove going.",
-  "radioFollow": "On my way, Chief. Give me a minute to find you in this soup."
+  "lab": "That's the fingerprint kit, Chief: powder, brushes and the good magnifying glass. Bring me something to dust.",
+  "timelineEmpty": "We'll need some hard facts before we can pin the night down. Right now it's all 'about nine-ish'.",
+  "wake": "Rise and shine, Chief. Half an hour, like I promised."
 }

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><title>Model viewer</title>
+<style>html,body{margin:0;background:#2a2622;overflow:hidden}canvas{display:block}</style></head>
+<body><script type="module">
+// Dev tool: look at one model. ?m=mail_plane  window.view(pos, look) to aim the camera.
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+const r = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+r.setSize(1280, 800); r.toneMapping = THREE.ACESFilmicToneMapping; r.shadowMap.enabled = true;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color('#6a5a48');
+scene.environment = new THREE.PMREMGenerator(r).fromScene(new RoomEnvironment(), 0.04).texture;
+const cam = new THREE.PerspectiveCamera(40, 1280 / 800, 0.02, 500);
+scene.add(new THREE.HemisphereLight('#e8d8c0', '#403020', 1.2));
+const sun = new THREE.DirectionalLight('#fff0dc', 2.5); sun.position.set(6, 10, 8); sun.castShadow = true; scene.add(sun);
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), new THREE.MeshStandardMaterial({ color: '#8a7860', roughness: 1 }));
+ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+const draco = new DRACOLoader(); draco.setDecoderPath('/draco/');
+const loader = new GLTFLoader(); loader.setDRACOLoader(draco);
+const m = new URLSearchParams(location.search).get('m') || 'mail_plane';
+const gltf = await loader.loadAsync(`/models/${m}.glb`);
+gltf.scene.traverse((o) => { if (o.isMesh) { o.castShadow = o.receiveShadow = true; if (o.name.startsWith('COL_')) o.visible = false; } });
+scene.add(gltf.scene);
+// characters: stand them 1.75 m tall on the ground and pose them with an animation
+let mixer = null;
+if (gltf.animations.length) {
+  const b = new THREE.Box3().setFromObject(gltf.scene); const h = b.max.y - b.min.y;
+  gltf.scene.scale.multiplyScalar(1.75 / h); gltf.scene.updateMatrixWorld(true);
+  const b2 = new THREE.Box3().setFromObject(gltf.scene); gltf.scene.position.y -= b2.min.y;
+  mixer = new THREE.AnimationMixer(gltf.scene);
+  window.pose = (name, t = 1) => { mixer.stopAllAction(); const c = gltf.animations.find((a) => a.name === name); mixer.clipAction(c).play(); mixer.setTime(t); gltf.scene.updateMatrixWorld(true); };
+  pose('Idle', 1);
+  window.head = () => { let hb = null; gltf.scene.traverse((o) => { if (!hb && /Head$/.test(o.name)) hb = o; }); const v = new THREE.Vector3(); hb.getWorldPosition(v); return v.toArray(); };
+}
+window.THREE = THREE; window.scene = scene; window.cam = cam; window.gltf = gltf; window.renderer = r;
+window.view = (p, l, fov = 40) => { cam.position.set(...p); cam.fov = fov; cam.updateProjectionMatrix(); cam.lookAt(...l); r.render(scene, cam); };
+window.snap = async (name) => { r.render(scene, cam); const url = r.domElement.toDataURL('image/jpeg', 0.85); return (await fetch('http://127.0.0.1:5199/' + name, { method: 'POST', body: url })).status; };
+window.ready = true;
+view([9, 4, 9], [0, 1.5, 0]);
+</script></body></html>

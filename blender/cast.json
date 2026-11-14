@@ -1,0 +1,1219 @@
+{
+  "_note": "Who plays whom and their 1930s clothes. Units: metres. Bones without the 'mixamorig:' prefix. See build_characters.py.",
+  "cole": {
+    "body": "remy",
+    "fabrics": {
+      "shirt": {
+        "kind": "cotton",
+        "color": [
+          0.86,
+          0.84,
+          0.78
+        ]
+      },
+      "suit": {
+        "kind": "tweed",
+        "color": [
+          0.3,
+          0.24,
+          0.17
+        ]
+      },
+      "tie": {
+        "kind": "silk",
+        "color": [
+          0.35,
+          0.08,
+          0.07
+        ]
+      },
+      "trousers": {
+        "kind": "tweed",
+        "color": [
+          0.27,
+          0.22,
+          0.16
+        ]
+      }
+    },
+    "layers": [
+      {
+        "name": "Shirt",
+        "from": [
+          "Tops"
+        ],
+        "all": true,
+        "push": 0.002,
+        "fabric_id": "shirt"
+      },
+      {
+        "name": "Tie",
+        "from": [
+          "Tops"
+        ],
+        "bones": [
+          "Spine1",
+          "Spine2"
+        ],
+        "min": 0.5,
+        "push": 0.006,
+        "fabric_id": "tie",
+        "vcut": {
+          "to": "Spine",
+          "width": 0.0,
+          "base": 0.028,
+          "below": 0.3,
+          "keep": "inside"
+        }
+      },
+      {
+        "name": "Jacket",
+        "from": [
+          "Tops"
+        ],
+        "all": true,
+        "push": 0.012,
+        "fabric_id": "suit",
+        "vcut": {
+          "to": "Spine1",
+          "width": 0.3,
+          "below": 0.35
+        }
+      },
+      {
+        "name": "Sleeves",
+        "from": [
+          "Body"
+        ],
+        "bones": [
+          "LeftForeArm",
+          "RightForeArm",
+          "LeftArm",
+          "RightArm"
+        ],
+        "min": 0.5,
+        "exclude": [
+          "LeftHand",
+          "RightHand"
+        ],
+        "excludeMax": 0.3,
+        "push": 0.016,
+        "fabric_id": "suit"
+      },
+      {
+        "name": "Trousers",
+        "from": [
+          "Bottoms"
+        ],
+        "all": true,
+        "push": 0.003,
+        "fabric_id": "trousers"
+      },
+      {
+        "name": "TrouserLegs",
+        "from": [
+          "Body"
+        ],
+        "bones": [
+          "LeftLeg",
+          "RightLeg",
+          "LeftUpLeg",
+          "RightUpLeg"
+        ],
+        "min": 0.5,
+        "exclude": [
+          "LeftFoot",
+          "RightFoot",
+          "LeftToeBase",
+          "RightToeBase"
+        ],
+        "excludeMax": 0.3,
+        "taper": [
+          0.05,
+          0.026
+        ],
+        "fabric_id": "trousers"
+      }
+    ],
+    "hide": [
+      "Bottoms",
+      "Tops"
+    ],
+    "recolor": [
+      {
+        "material": "Shoesmat",
+        "rules": [
+          {
+            "to": [
+              0.09,
+              0.06,
+              0.04
+            ],
+            "contrast": 1.3
+          }
+        ]
+      }
+    ]
+  },
+  "pryce": {
+    "body": "boss",
+    "remove": [
+      "Cigar",
+      "Hat_Geo"
+    ],
+    "recolor": [
+      {
+        "material": "Clothes_MAT",
+        "rules": [
+          {
+            "uv": [
+              0,
+              0.41,
+              0.69,
+              0.76
+            ],
+            "to": [
+              0.12,
+              0.12,
+              0.14
+            ],
+            "contrast": 1.15
+          },
+          {
+            "uv": [
+              0.08,
+              0.68,
+              0.64,
+              0.77
+            ],
+            "hue": [
+              330,
+              25
+            ],
+            "sat": [
+              0.35,
+              1.0
+            ],
+            "to": [
+              0.86,
+              0.84,
+              0.78
+            ]
+          },
+          {
+            "uv": [
+              0.3,
+              0.76,
+              0.6,
+              1.0
+            ],
+            "to": [
+              0.86,
+              0.84,
+              0.78
+            ]
+          },
+          {
+            "uv": [
+              0,
+              0,
+              0.69,
+              0.41
+            ],
+            "to": [
+              0.11,
+              0.11,
+              0.13
+            ],
+            "contrast": 1.1
+          }
+        ]
+      }
+    ],
+    "fabrics": {
+      "suit": {
+        "kind": "pinstripe",
+        "color": [
+          0.11,
+          0.11,
+          0.13
+        ]
+      },
+      "shirt": {
+        "kind": "cotton",
+        "color": [
+          0.86,
+          0.84,
+          0.78
+        ]
+      }
+    },
+    "layers": [
+      {
+        "name": "Sleeves",
+        "from": [
+          "Arms_Geo"
+        ],
+        "bones": [
+          "LeftArm",
+          "RightArm",
+          "LeftForeArm",
+          "RightForeArm"
+        ],
+        "min": 0.5,
+        "exclude": [
+          "LeftHand",
+          "RightHand"
+        ],
+        "excludeMax": 0.3,
+        "push": 0.012,
+        "fabric_id": "shirt"
+      }
+    ]
+  },
+  "lindqvist": {
+    "body": "boss",
+    "remove": [
+      "Cigar",
+      "Hat_Geo"
+    ],
+    "recolor": [
+      {
+        "material": "Clothes_MAT",
+        "rules": [
+          {
+            "uv": [
+              0,
+              0.41,
+              0.69,
+              0.76
+            ],
+            "to": [
+              0.36,
+              0.34,
+              0.3
+            ],
+            "contrast": 1.15
+          },
+          {
+            "uv": [
+              0.08,
+              0.68,
+              0.64,
+              0.77
+            ],
+            "hue": [
+              330,
+              25
+            ],
+            "sat": [
+              0.35,
+              1.0
+            ],
+            "to": [
+              0.86,
+              0.84,
+              0.78
+            ]
+          },
+          {
+            "uv": [
+              0.3,
+              0.76,
+              0.6,
+              1.0
+            ],
+            "to": [
+              0.86,
+              0.84,
+              0.78
+            ]
+          },
+          {
+            "uv": [
+              0,
+              0,
+              0.69,
+              0.41
+            ],
+            "to": [
+              0.25,
+              0.24,
+              0.22
+            ],
+            "contrast": 1.1
+          }
+        ]
+      }
+    ],
+    "fabrics": {
+      "suit": {
+        "kind": "tweed",
+        "color": [
+          0.36,
+          0.34,
+          0.3
+        ]
+      },
+      "shirt": {
+        "kind": "cotton",
+        "color": [
+          0.86,
+          0.84,
+          0.78
+        ]
+      }
+    },
+    "layers": [
+      {
+        "name": "Sleeves",
+        "from": [
+          "Arms_Geo"
+        ],
+        "bones": [
+          "LeftArm",
+          "RightArm",
+          "LeftForeArm",
+          "RightForeArm"
+        ],
+        "min": 0.5,
+        "exclude": [
+          "LeftHand",
+          "RightHand"
+        ],
+        "excludeMax": 0.3,
+        "push": 0.012,
+        "fabric_id": "shirt"
+      }
+    ]
+  },
+  "hobbs": {
+    "body": "boss",
+    "remove": [
+      "Cigar"
+    ],
+    "recolor": [
+      {
+        "material": "Clothes_MAT",
+        "rules": [
+          {
+            "uv": [
+              0,
+              0.41,
+              0.69,
+              0.76
+            ],
+            "to": [
+              0.33,
+              0.25,
+              0.16
+            ],
+            "contrast": 1.15
+          },
+          {
+            "uv": [
+              0.08,
+              0.68,
+              0.64,
+              0.77
+            ],
+            "hue": [
+              330,
+              25
+            ],
+            "sat": [
+              0.35,
+              1.0
+            ],
+            "to": [
+              0.78,
+              0.74,
+              0.64
+            ]
+          },
+          {
+            "uv": [
+              0.3,
+              0.76,
+              0.6,
+              1.0
+            ],
+            "to": [
+              0.78,
+              0.74,
+              0.64
+            ]
+          },
+          {
+            "uv": [
+              0,
+              0,
+              0.69,
+              0.41
+            ],
+            "to": [
+              0.2,
+              0.16,
+              0.11
+            ],
+            "contrast": 1.1
+          },
+          {
+            "uv": [
+              0.74,
+              0,
+              1,
+              0.4
+            ],
+            "to": [
+              0.28,
+              0.27,
+              0.25
+            ],
+            "contrast": 1.1
+          }
+        ]
+      }
+    ],
+    "fabrics": {
+      "cardigan": {
+        "kind": "wool",
+        "color": [
+          0.33,
+          0.25,
+          0.16
+        ]
+      }
+    },
+    "layers": [
+      {
+        "name": "Sleeves",
+        "from": [
+          "Arms_Geo"
+        ],
+        "bones": [
+          "LeftArm",
+          "RightArm",
+          "LeftForeArm",
+          "RightForeArm"
+        ],
+        "min": 0.5,
+        "exclude": [
+          "LeftHand",
+          "RightHand"
+        ],
+        "excludeMax": 0.3,
+        "push": 0.012,
+        "fabric_id": "cardigan"
+      }
+    ]
+  },
+  "ox": {
+    "body": "brute",
+    "remove": [
+      "BattleAxe",
+      "Earrings"
+    ],
+    "fabrics": {
+      "shirt": {
+        "kind": "denim",
+        "color": [
+          0.32,
+          0.4,
+          0.5
+        ]
+      },
+      "trousers": {
+        "kind": "denim",
+        "color": [
+          0.25,
+          0.2,
+          0.14
+        ]
+      }
+    },
+    "layers": [
+      {
+        "name": "WorkShirt",
+        "from": [
+          "MaleBruteA_Body"
+        ],
+        "bones": [
+          "Spine",
+          "Spine1",
+          "Spine2",
+          "Neck",
+          "LeftShoulder",
+          "RightShoulder",
+          "LeftArm",
+          "RightArm",
+          "Hips"
+        ],
+        "min": 0.5,
+        "exclude": [
+          "Head",
+          "LeftForeArm",
+          "RightForeArm",
+          "LeftUpLeg",
+          "RightUpLeg"
+        ],
+        "excludeMax": 0.45,
+        "push": 0.01,
+        "fabric_id": "shirt"
+      },
+      {
+        "name": "Trousers",
+        "from": [
+          "MaleBruteA_Bottoms"
+        ],
+        "all": true,
+        "push": 0.002,
+        "fabric_id": "trousers"
+      }
+    ],
+    "hide": [
+      "MaleBruteA_Bottoms"
+    ]
+  },
+  "julian": {
+    "body": "ch31",
+    "fabrics": {
+      "shirt": {
+        "kind": "cotton",
+        "color": [
+          0.88,
+          0.87,
+          0.84
+        ]
+      },
+      "suit": {
+        "kind": "pinstripe",
+        "color": [
+          0.1,
+          0.12,
+          0.19
+        ]
+      },
+      "tie": {
+        "kind": "silk",
+        "color": [
+          0.55,
+          0.45,
+          0.15
+        ]
+      }
+    },
+    "layers": [
+      {
+        "name": "Shirt",
+        "from": [
+          "Ch31_Sweater"
+        ],
+        "all": true,
+        "push": 0.002,
+        "fabric_id": "shirt"
+      },
+      {
+        "name": "Tie",
+        "from": [
+          "Ch31_Sweater"
+        ],
+        "bones": [
+          "Spine1",
+          "Spine2"
+        ],
+        "min": 0.5,
+        "push": 0.006,
+        "fabric_id": "tie",
+        "vcut": {
+          "to": "Spine",
+          "width": 0.0,
+          "base": 0.028,
+          "below": 0.3,
+          "keep": "inside"
+        }
+      },
+      {
+        "name": "Jacket",
+        "from": [
+          "Ch31_Sweater"
+        ],
+        "all": true,
+        "push": 0.012,
+        "fabric_id": "suit",
+        "vcut": {
+          "to": "Spine1",
+          "width": 0.3,
+          "below": 0.35
+        }
+      },
+      {
+        "name": "Trousers",
+        "from": [
+          "Ch31_Pants"
+        ],
+        "all": true,
+        "push": 0.003,
+        "fabric_id": "suit"
+      }
+    ],
+    "hide": [
+      "Ch31_Sweater",
+      "Ch31_Pants"
+    ]
+  },
+  "vivienne": {
+    "body": "lola",
+    "recolor": [
+      {
+        "material": "phong1",
+        "rules": [
+          {
+            "hue": [
+              5,
+              40
+            ],
+            "sat": [
+              0.5,
+              1.0
+            ],
+            "val": [
+              0.25,
+              1.0
+            ],
+            "to": [
+              0.05,
+              0.04,
+              0.035
+            ],
+            "contrast": 1.2,
+            "notuv": [
+              [
+                0.6,
+                0.5,
+                1.0,
+                0.76
+              ]
+            ]
+          },
+          {
+            "uv": [
+              0.6,
+              0.5,
+              1.0,
+              0.76
+            ],
+            "hue": [
+              20,
+              32
+            ],
+            "sat": [
+              0.75,
+              1.0
+            ],
+            "val": [
+              0.4,
+              1.0
+            ],
+            "to": [
+              0.05,
+              0.04,
+              0.035
+            ],
+            "contrast": 1.2
+          },
+          {
+            "uv": [
+              0.68,
+              0.78,
+              1.0,
+              1.0
+            ],
+            "to": [
+              0.06,
+              0.045,
+              0.035
+            ],
+            "contrast": 1.2
+          },
+          {
+            "notuv": [
+              [
+                0.6,
+                0.5,
+                1.0,
+                0.76
+              ]
+            ],
+            "sat": [
+              0,
+              0.22
+            ],
+            "val": [
+              0.45,
+              1.0
+            ],
+            "to": [
+              0.07,
+              0.2,
+              0.15
+            ],
+            "contrast": 0.8
+          }
+        ]
+      }
+    ],
+    "fabrics": {
+      "gown": {
+        "kind": "satin",
+        "color": [
+          0.07,
+          0.22,
+          0.16
+        ]
+      }
+    },
+    "layers": [
+      {
+        "name": "Bodice",
+        "from": [
+          "Lola"
+        ],
+        "bones": [
+          "Spine",
+          "Spine1",
+          "Spine2",
+          "Hips",
+          "LeftShoulder",
+          "RightShoulder",
+          "LeftArm",
+          "RightArm",
+          "LeftForeArm",
+          "RightForeArm"
+        ],
+        "min": 0.5,
+        "exclude": [
+          "Neck",
+          "Head",
+          "LeftHand",
+          "RightHand",
+          "LeftUpLeg",
+          "RightUpLeg"
+        ],
+        "excludeMax": 0.4,
+        "push": 0.006,
+        "fabric_id": "gown"
+      }
+    ],
+    "skirt": {
+      "fabric_id": "gown",
+      "hem": 0.05,
+      "flare": 0.5,
+      "ease": 1.1
+    }
+  },
+  "billie": {
+    "body": "lola",
+    "recolor": [
+      {
+        "material": "phong1",
+        "rules": [
+          {
+            "hue": [
+              5,
+              40
+            ],
+            "sat": [
+              0.5,
+              1.0
+            ],
+            "val": [
+              0.25,
+              1.0
+            ],
+            "to": [
+              0.62,
+              0.48,
+              0.26
+            ],
+            "contrast": 1.2,
+            "notuv": [
+              [
+                0.6,
+                0.5,
+                1.0,
+                0.76
+              ]
+            ]
+          },
+          {
+            "uv": [
+              0.6,
+              0.5,
+              1.0,
+              0.76
+            ],
+            "hue": [
+              20,
+              32
+            ],
+            "sat": [
+              0.75,
+              1.0
+            ],
+            "val": [
+              0.4,
+              1.0
+            ],
+            "to": [
+              0.62,
+              0.48,
+              0.26
+            ],
+            "contrast": 1.2
+          },
+          {
+            "uv": [
+              0.68,
+              0.78,
+              1.0,
+              1.0
+            ],
+            "to": [
+              0.06,
+              0.045,
+              0.035
+            ],
+            "contrast": 1.2
+          },
+          {
+            "notuv": [
+              [
+                0.6,
+                0.5,
+                1.0,
+                0.76
+              ]
+            ],
+            "sat": [
+              0,
+              0.22
+            ],
+            "val": [
+              0.45,
+              1.0
+            ],
+            "to": [
+              0.14,
+              0.08,
+              0.05
+            ],
+            "contrast": 0.8
+          }
+        ]
+      }
+    ],
+    "fabrics": {
+      "jacket": {
+        "kind": "leather",
+        "color": [
+          0.3,
+          0.17,
+          0.09
+        ]
+      },
+      "breeches": {
+        "kind": "cotton",
+        "color": [
+          0.52,
+          0.46,
+          0.33
+        ]
+      },
+      "boots": {
+        "kind": "leather",
+        "color": [
+          0.12,
+          0.07,
+          0.04
+        ]
+      }
+    },
+    "layers": [
+      {
+        "name": "FlightJacket",
+        "from": [
+          "Lola"
+        ],
+        "bones": [
+          "Spine",
+          "Spine1",
+          "Spine2",
+          "Hips",
+          "LeftShoulder",
+          "RightShoulder",
+          "LeftArm",
+          "RightArm",
+          "LeftForeArm",
+          "RightForeArm",
+          "Neck"
+        ],
+        "min": 0.5,
+        "exclude": [
+          "Head",
+          "LeftHand",
+          "RightHand",
+          "LeftUpLeg",
+          "RightUpLeg"
+        ],
+        "excludeMax": 0.4,
+        "push": 0.013,
+        "fabric_id": "jacket"
+      },
+      {
+        "name": "Breeches",
+        "from": [
+          "Lola"
+        ],
+        "bones": [
+          "Hips",
+          "LeftUpLeg",
+          "RightUpLeg"
+        ],
+        "min": 0.5,
+        "exclude": [
+          "Spine1",
+          "LeftLeg",
+          "RightLeg"
+        ],
+        "excludeMax": 0.5,
+        "push": 0.008,
+        "fabric_id": "breeches"
+      },
+      {
+        "name": "Boots",
+        "from": [
+          "Lola"
+        ],
+        "bones": [
+          "LeftLeg",
+          "RightLeg",
+          "LeftFoot",
+          "RightFoot",
+          "LeftToeBase",
+          "RightToeBase"
+        ],
+        "min": 0.5,
+        "push": 0.01,
+        "fabric_id": "boots"
+      }
+    ]
+  },
+  "tamsin": {
+    "body": "lola",
+    "recolor": [
+      {
+        "material": "phong1",
+        "rules": [
+          {
+            "hue": [
+              5,
+              40
+            ],
+            "sat": [
+              0.5,
+              1.0
+            ],
+            "val": [
+              0.25,
+              1.0
+            ],
+            "to": [
+              0.12,
+              0.07,
+              0.04
+            ],
+            "contrast": 1.2,
+            "notuv": [
+              [
+                0.6,
+                0.5,
+                1.0,
+                0.76
+              ]
+            ]
+          },
+          {
+            "uv": [
+              0.6,
+              0.5,
+              1.0,
+              0.76
+            ],
+            "hue": [
+              20,
+              32
+            ],
+            "sat": [
+              0.75,
+              1.0
+            ],
+            "val": [
+              0.4,
+              1.0
+            ],
+            "to": [
+              0.12,
+              0.07,
+              0.04
+            ],
+            "contrast": 1.2
+          },
+          {
+            "uv": [
+              0.68,
+              0.78,
+              1.0,
+              1.0
+            ],
+            "to": [
+              0.06,
+              0.045,
+              0.035
+            ],
+            "contrast": 1.2
+          },
+          {
+            "notuv": [
+              [
+                0.6,
+                0.5,
+                1.0,
+                0.76
+              ]
+            ],
+            "sat": [
+              0,
+              0.22
+            ],
+            "val": [
+              0.45,
+              1.0
+            ],
+            "to": [
+              0.42,
+              0.32,
+              0.26
+            ],
+            "contrast": 0.8
+          }
+        ]
+      }
+    ],
+    "fabrics": {
+      "blouse": {
+        "kind": "silk",
+        "color": [
+          0.85,
+          0.83,
+          0.78
+        ]
+      },
+      "suit": {
+        "kind": "wool",
+        "color": [
+          0.26,
+          0.27,
+          0.29
+        ]
+      },
+      "stockings": {
+        "kind": "silk",
+        "color": [
+          0.5,
+          0.38,
+          0.3
+        ]
+      }
+    },
+    "layers": [
+      {
+        "name": "Blouse",
+        "from": [
+          "Lola"
+        ],
+        "bones": [
+          "Spine1",
+          "Spine2",
+          "Neck"
+        ],
+        "min": 0.5,
+        "exclude": [
+          "Head"
+        ],
+        "excludeMax": 0.4,
+        "push": 0.004,
+        "fabric_id": "blouse"
+      },
+      {
+        "name": "Jacket",
+        "from": [
+          "Lola"
+        ],
+        "bones": [
+          "Spine",
+          "Spine1",
+          "Spine2",
+          "Hips",
+          "LeftShoulder",
+          "RightShoulder",
+          "LeftArm",
+          "RightArm",
+          "LeftForeArm",
+          "RightForeArm"
+        ],
+        "min": 0.5,
+        "exclude": [
+          "Neck",
+          "Head",
+          "LeftHand",
+          "RightHand",
+          "LeftUpLeg",
+          "RightUpLeg"
+        ],
+        "excludeMax": 0.4,
+        "push": 0.011,
+        "fabric_id": "suit",
+        "vcut": {
+          "to": "Spine1",
+          "width": 0.25,
+          "below": 0.3
+        }
+      },
+      {
+        "name": "Stockings",
+        "from": [
+          "Lola"
+        ],
+        "bones": [
+          "LeftLeg",
+          "RightLeg"
+        ],
+        "min": 0.5,
+        "exclude": [
+          "LeftFoot",
+          "RightFoot"
+        ],
+        "excludeMax": 0.4,
+        "push": 0.002,
+        "fabric_id": "stockings"
+      }
+    ],
+    "skirt": {
+      "fabric_id": "suit",
+      "hem": 0.45,
+      "flare": 0.25,
+      "ease": 1.08
+    }
+  }
+}

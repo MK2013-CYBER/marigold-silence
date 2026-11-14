@@ -2,6 +2,7 @@ import { parseTime } from '../engine/state.js';
 import { DialogueBox } from '../ui/dialogue.js';
 import { InvestigationBoard } from '../ui/board.js';
 import { CaseFileScreen, ReportsScreen, TimelineScreen } from '../ui/screens.js';
+import { Voice } from '../engine/voice.js';
 
 const pick = (list) => list[Math.floor(Math.random() * list.length)];
 
@@ -25,7 +26,7 @@ export class HQ {
     for (const s of [this.board, this.reportsScreen, this.caseFile, this.timeline]) {
       s.onClose = () => { this.screen = null; this.onScreenClosed?.(); };
     }
-    this.dialogue.onClose = () => { this.cole.talking = false; this.onFreezeChange?.(); };
+    this.dialogue.onClose = () => { this.cole.talking = false; Voice.stop(); this.onFreezeChange?.(); };
     this.fade = document.createElement('div');
     this.fade.className = 'fade';
     document.body.appendChild(this.fade);
@@ -58,51 +59,106 @@ export class HQ {
 
   closeScreen() { this.screen?.close(); }
 
-  danny(text, seconds = 7) { this.hud.caption(`Danny: ${text}`, seconds); }
+  danny(text, seconds = 7) { this.hud.caption(`Danny: ${text}`, seconds); Voice.speak(text, this.lines.voice); }
 
+  /** The cot: Danny says he'll wake you, THEN the screen fades and half an hour passes. */
   rest() {
-    this.fade.classList.add('on');
+    if (this._resting) return;
+    this._resting = true;
     this.onFreezeChange?.(true);
+    this.danny(this.lines.rest, 3);
     setTimeout(() => {
-      const spent = this.state.advance(30);
-      this.hud.timePassed(spent, this.state.clockLabel());
-      this.state.save();
-      this.fade.classList.remove('on');
-      this.onFreezeChange?.(false);
-      this.danny(this.lines.rest, 4);
-    }, 1200);
+      this.fade.classList.add('on');
+      setTimeout(() => {
+        const spent = this.state.advance(30);
+        this.hud.timePassed(spent, this.state.clockLabel());
+        this.state.save();
+        this.fade.classList.remove('on');
+        this.onFreezeChange?.(false);
+        this._resting = false;
+        this.danny(this.lines.wake ?? 'Rise and shine, Chief. Half an hour, like I promised.', 4);
+      }, 1800);
+    }, 2400);
   }
 
   // ------------------------------------------------------------------ Danny's conversation
+  /** Danny says a line: typed out in the box and spoken aloud with his voice. */
+  say(line, choices) {
+    const L = this.lines;
+    this.cole.talking = !this.remote;
+    this.dialogue.show(L.speaker + (this.remote ? ' (radio)' : ''), line, choices);
+    Voice.speak(line, L.voice);
+    if (!this.remote && Math.random() < 0.35) this.cole.gesture(Math.random() < 0.5 ? 'Nod' : 'Talk', 2.2);
+    this.onFreezeChange?.();
+  }
+
+  /** Several lines in a row, each with "Go on." until the last, which offers `then`. */
+  sayLines(lines, then) {
+    const [first, ...rest] = lines;
+    if (!rest.length) return this.say(first, then());
+    this.say(first, [{ label: 'Go on.', onPick: () => this.sayLines(rest, then) }]);
+  }
+
   talk(remote) {
     if (this.dialogue.open) return;
+    const L = this.lines;
+    this.remote = false;
     if (remote) {
       const near = Math.hypot(this.cole.pos.x - this.controller.position.x, this.cole.pos.z - this.controller.position.z) < 4;
       if (!near) this._spend(5); // the walkie-talkie costs time (addendum D)
+      this.remote = !near;
       this.audio.click();
-      this.menu(pick(this.lines.walkieOpen), !near);
-    } else {
-      this.menu(pick(this.lines.greetings), false);
+      return this.menu(pick(L.walkieOpen));
     }
+    const first = !this.state.flag('talkedToDanny');
+    if (first) this.state.setFlag('talkedToDanny');
+    this.menu(first ? L.greetingFirst : pick(L.greetings));
   }
 
-  menu(line, remote = this.remote) {
-    this.remote = remote;
-    this.cole.talking = !remote;
-    const L = this.lines;
+  /** The main list of things you can say to Danny. */
+  menuChoices() {
+    const L = this.lines, M = L.menu;
     const unread = this.reportsScreen.unreadCount();
     const mode = this.cole.mode;
-    const choices = [
-      { label: L.menu.hint, onPick: () => this.hint() },
-      { label: L.menu.reports + (unread ? ` (${unread} new)` : ''), onPick: () => this.menu(unread ? L.reportsNew.replace('{n}', unread) : L.reportsNone) },
-      { label: L.menu.caseFile, onPick: () => { this.dialogue.close(); this.openScreen(this.caseFile); } },
+    const back = () => this.menu(pick(['Anything else, Chief?', 'What else?', 'Sure. What else?']));
+    const c = [
+      { label: M.situation, onPick: () => (this.state.flag('heardSituation')
+        ? this.say(L.situationLater, this.menuChoices())
+        : (this.state.setFlag('heardSituation'), this.sayLines(L.situation, () => this.menuChoices()))) },
+      { label: M.people, onPick: () => this.people() },
+      { label: M.next, onPick: () => this.next() },
+      { label: M.reports + (unread ? ` (${unread} new)` : ''), onPick: () => this.say(unread ? L.reportsNew.replace('{n}', unread) : L.reportsNone, [{ label: M.back, onPick: back }]) },
     ];
-    if (mode !== 'follow') choices.push({ label: L.menu.follow, onPick: () => { this._mode('follow'); this.menu(remote ? L.radioFollow : L.follow); } });
-    if (mode === 'follow' && !remote) choices.push({ label: L.menu.stay, onPick: () => { this._mode('wait'); this.menu(L.stay); } });
-    if (mode === 'follow' || mode === 'wait') choices.push({ label: L.menu.home, onPick: () => { this._mode('home'); this.menu(L.home); } });
-    choices.push({ label: L.menu.bye, onPick: () => { this.dialogue.close(); this.danny(L.bye, 2); } });
-    this.dialogue.show(L.speaker + (remote ? ' (radio)' : ''), line, choices);
-    this.onFreezeChange?.();
+    if (mode !== 'follow') c.push({ label: M.follow, onPick: () => { this._mode('follow'); this.say(this.remote ? L.radioFollow : L.follow, this.menuChoices()); } });
+    if (mode === 'follow' && !this.remote) c.push({ label: M.stay, onPick: () => { this._mode('wait'); this.say(L.stay, this.menuChoices()); } });
+    if (mode === 'follow' || mode === 'wait') c.push({ label: M.home, onPick: () => { this._mode('home'); this.say(L.home, this.menuChoices()); } });
+    c.push({ label: M.bye, onPick: () => { this.dialogue.close(); Voice.speak(L.bye, L.voice); } });
+    return c;
+  }
+
+  menu(line) { this.say(line, this.menuChoices()); }
+
+  people() {
+    const L = this.lines;
+    const ids = Object.keys(L.people);
+    const names = new Map(this.characters.map((ch) => [ch.id, ch.name]));
+    const choices = ids.map((id) => ({
+      label: names.get(id) ?? id,
+      onPick: () => this.say(L.people[id], [
+        { label: 'Who else?', onPick: () => this.people() },
+        { label: L.menu.back, onPick: () => this.menu('Sure. What else?') },
+      ]),
+    }));
+    choices.push({ label: L.menu.back, onPick: () => this.menu('Sure. What else?') });
+    this.say(L.peopleIntro, choices);
+  }
+
+  /** "What should I do next?": a hint for the next puzzle that exists, or plain advice. */
+  next() {
+    const L = this.lines;
+    const p = this.currentPuzzle();
+    if (!p) return this.say(pick(L.nextNone), this.menuChoices());
+    this.hint(p);
   }
 
   _mode(mode) {
@@ -116,26 +172,25 @@ export class HQ {
     this.state.save();
   }
 
-  /** The first puzzle (in Danny's suggested order) that is not solved yet. */
+  /** The first puzzle (in Danny's suggested order) that is in the game and not solved yet. */
   currentPuzzle() {
-    return this.puzzles.order.map((id) => this.puzzleById.get(id)).find((p) => p && !this.state.isSolved(p.id)) ?? null;
+    return this.puzzles.order.map((id) => this.puzzleById.get(id)).find((p) => p && p.built && !this.state.isSolved(p.id)) ?? null;
   }
 
-  hint() {
+  hint(p = this.currentPuzzle()) {
     const L = this.lines;
-    const p = this.currentPuzzle();
-    if (!p) return this.menu(L.hintNone);
+    if (!p) return this.say(L.hintNone, this.menuChoices());
     const level = this.state.data.hints[p.id] ?? 0;
-    if (level >= 3) return this.menu(L.hintMaxed);
+    if (level >= 3) return this.say(L.hintMaxed, this.menuChoices());
     this._spend(this.puzzles.hintCost);
     this.state.data.hints[p.id] = level + 1;
     this.state.save();
     if (!this.remote) this.cole.gesture(level >= 1 ? 'Point' : 'Talk', 3);
-    const text = `${pick(L.hintIntro)}\n\n${p.name} (hint ${level + 1} of 3): ${p.hints[level]}`;
+    const text = `${level === 0 ? `${pick(L.hintIntro)} ` : ''}${p.hints[level]}`;
     const choices = [];
-    if (level + 1 < 3) choices.push({ label: L.hintMore, onPick: () => this.hint() });
-    choices.push({ label: 'Thanks, Danny.', onPick: () => this.menu(pick(L.greetings)) });
-    this.dialogue.show(L.speaker, text, choices);
+    if (level + 1 < 3) choices.push({ label: `${L.menu.more} (costs ${this.puzzles.hintCost} minutes)`, onPick: () => this.hint(p) });
+    choices.push({ label: L.menu.thanks, onPick: () => this.menu('Any time, Chief.') });
+    this.say(text, choices);
   }
 
   _spend(minutes) {
@@ -162,7 +217,7 @@ export class HQ {
 
   /** Debug cheat: solve the next puzzle in order (until the real puzzles exist). */
   debugSolveNext() {
-    const p = this.currentPuzzle();
+    const p = this.puzzles.order.map((id) => this.puzzleById.get(id)).find((q) => q && !this.state.isSolved(q.id));
     if (!p) return null;
     this.solvePuzzle(p.id);
     return p;
@@ -187,6 +242,7 @@ export class HQ {
         this.state.save();
         this.audio.click();
         this.hud.caption(`Danny (radio): ${text}`, 9);
+        Voice.speak(text, this.lines.voice);
       }
     }
   }

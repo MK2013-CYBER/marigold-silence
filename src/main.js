@@ -22,6 +22,8 @@ import { HQ } from './game/hq.js';
 import { Quality } from './engine/quality.js';
 import { Intro } from './game/intro.js';
 import introData from './data/scenes/intro.json';
+import castData from './data/cast.json';
+import { Voice } from './engine/voice.js';
 import config from './data/game.json';
 import interactables from './data/interactables.json';
 import placeholderInteractables from './data/interactables_placeholder.json';
@@ -123,7 +125,7 @@ const flashlight = new Flashlight(camera);
 
 // ---------- Agent Danny Cole and the HQ (addendum v2: sections C, D, G) ----------
 status.textContent = 'Waking Danny\u2026';
-const cole = await Cole.create(scene, world, ground, worldCfg.cole, camera);
+const cole = await Cole.create(scene, world, ground, worldCfg.cole, camera, castData.people.cole);
 interaction.addLocation('npc', cole.root);
 cole.interaction = interaction; // Danny opens doors himself
 const hq = new HQ({
@@ -146,10 +148,29 @@ hq.onFreezeChange = (rest) => { if (rest !== undefined) resting = rest; syncFree
 // ---------- quality presets (Low / Medium / High / Auto) ----------
 const quality = new Quality({ renderer, post, atmosphere, scene });
 quality.mount(document.getElementById('settings'));
+// spoken lines on or off (the computer's built-in voices; proper voice acting comes in Stage H)
+{
+  const el = document.getElementById('voice-setting');
+  const draw = () => {
+    el.replaceChildren();
+    const label = document.createElement('span');
+    label.textContent = 'Voices: ';
+    el.appendChild(label);
+    for (const on of [true, false]) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = on ? 'On' : 'Off';
+      b.classList.toggle('on', Voice.enabled === on);
+      b.addEventListener('click', (e) => { e.stopPropagation(); Voice.setEnabled(on); draw(); });
+      el.appendChild(b);
+    }
+  };
+  draw();
+}
 const minimap = new Minimap(worldCfg, placesData.places);
 
 // ---------- the cinematic intro (addendum v2, section E) ----------
-const intro = new Intro({ scene, camera, post, atmosphere, streamer, ground, cole, audio, hangar, data: introData, characters });
+const intro = new Intro({ scene, camera, post, atmosphere, streamer, ground, cole, audio, hangar, quality, data: introData, characters, cast: castData.people });
 controller.onFootstep = (amt) => audio.footstep(amt);
 atmosphere.onLightning = (delay) => audio.thunder(delay, 0.6 + Math.random() * 0.5);
 
@@ -422,4 +443,4 @@ function introFrame(dt, t) {
 }
 
 // Test hook for automated checks in dev builds only.
-if (import.meta.env.DEV) window.__game = { intro, THREE, scene, camera, controller, world, flashlight, renderer, state, interaction, hud, atmosphere, ground, streamer, hangar, cole, hq, quality };
+if (import.meta.env.DEV) window.__game = { intro, post, THREE, scene, camera, controller, world, flashlight, renderer, state, interaction, hud, atmosphere, ground, streamer, hangar, cole, hq, quality };

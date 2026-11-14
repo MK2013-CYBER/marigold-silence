@@ -27,7 +27,7 @@ export class Streamer {
     for (const it of this.items) {
       const d = Math.hypot(p.x - it.position[0], p.z - it.position[2]);
       if (it.state === 'idle' && d < (it.load ?? 400)) this._load(it);
-      if (it.root) it.root.visible = d < (it.cull ?? 600);
+      if (it.root) it.root.visible = d < (it.cull ?? 600) && !it.hidden; // hidden: the intro flies its own copy
       // a building's own lamps only light while you are close (lights cost frames everywhere)
       if (it.lamps?.length) {
         const on = d < (it.lightRadius ?? 16) && !this.lampsOff; // lampsOff: the intro's night scene
