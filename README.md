@@ -114,6 +114,10 @@ the door, the doctor's bag and Hart's camera case. Press E on anything to examin
 | S6 Box and Latch | bookshelf | knock the floor, play the music box, pull the books in tune order |
 | S23 The Prints | HQ lab table | collect prints (openly or covertly), measure with callipers, match pattern/width/scars |
 | S25 The Timeline | HQ timeline wall | put the events you've learned in order around the fixed points |
+| S17 The Smoke Test | maintenance shed, then fuel farm | take a smoke pot, drop it in the rusty vent pipe, then walk to where smoke comes up (40 min) |
+| S18 Follow the Wire | Radio & weather, then the runway | match the telegram's rhythm by ear, then follow the iron posts to the splice box and the hangar wall |
+| S14 The Ration Stores | storage shed (and Quarters kitchen rack) | do the ledger sums, turn back to the first page where they stop matching |
+| S15 The Marks in the Dust | storage shed crates | push the crates back onto the scuff marks; a back room and a hatch appear |
 
 Evidence (v4 section 4): findings need independent sources (sequences, documents, testimony).
 With enough (usually 3) a finding is Established and goes on the HQ board. Tab shows your leads and

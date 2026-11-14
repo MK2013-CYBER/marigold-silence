@@ -30,6 +30,7 @@ import { Evidence } from './game/evidence.js';
 import { CrimeScene } from './game/crimeScene.js';
 import { People, Trust } from './game/npcs.js';
 import { SequenceScreen } from './ui/sequences.js';
+import { Walks } from './game/walks.js';
 import { Voice } from './engine/voice.js';
 import config from './data/game.json';
 import interactables from './data/interactables.json';
@@ -148,6 +149,7 @@ const hq = new HQ({
 });
 interaction.onUI = (def) => {
   if (def.ui === 'npc') { people.talk(def.npc); syncFreeze(); return; }
+  if (def.ui === 'walk') { walks.handle(def); syncFreeze(); return; }
   if (crime.handle(def)) { syncFreeze(); return; }
   if (def.ui === 'lab') { hq.openScreen(seqScreen.setId('S23')); syncFreeze(); return; } // the prints (v4 S23)
   if (def.ui === 'timeline') { hq.openScreen(seqScreen.setId('S25')); syncFreeze(); return; } // the time strip (v4 S25)
@@ -170,6 +172,14 @@ const crime = new CrimeScene({
 });
 status.textContent = 'Setting the scene\u2026';
 await crime.build();
+
+// ---------- v4 Tier 3: the walks (smoke test, the wire, rations, crates) ----------
+const walks = new Walks({
+  scene, ground, interaction, state, evidence, hud, audio, spend, data: sequencesData, seq: seqScreen,
+  openSequence: (id) => hq.openScreen(seqScreen.setId(id)),
+});
+walks.build();
+seqScreen.walks = walks;
 
 // ---------- Stage E: the people of Sable Flat ----------
 const people = new People({
@@ -438,6 +448,7 @@ renderer.setAnimationLoop(() => {
   interaction.update(dt, controller.active && !controller.frozen);
   cole.update(dt, pos);
   people.update(dt, pos);
+  walks.update(dt, pos);
   hq.update();
   const qmsg = quality.update(dt, controller.active);
   if (qmsg) hud.toast(qmsg);
@@ -493,4 +504,4 @@ function introFrame(dt, t) {
 }
 
 // Test hook for automated checks in dev builds only.
-if (import.meta.env.DEV) window.__game = { intro, post, crime, people, evidence, seqScreen, trust, THREE, scene, camera, controller, world, flashlight, renderer, state, interaction, hud, atmosphere, ground, streamer, hangar, cole, hq, quality };
+if (import.meta.env.DEV) window.__game = { intro, post, crime, people, walks, evidence, seqScreen, trust, THREE, scene, camera, controller, world, flashlight, renderer, state, interaction, hud, atmosphere, ground, streamer, hangar, cole, hq, quality };

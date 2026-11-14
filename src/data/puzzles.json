@@ -204,11 +204,11 @@
       "name": "The Ration Stores",
       "place": "storage_shed",
       "mechanic": "Ledger reconciliation",
-      "built": false,
+      "built": true,
       "hints": [
-        "",
-        "",
-        ""
+        "Compare the ration ledger in the storage shed with the mess roster, Chief. Day by day.",
+        "Take the people fed away from the rations signed out. Then turn back through the ledger pages to see when it started.",
+        "It's one extra ration every day, signed by Ox, starting 12 November 1931."
       ],
       "clues": []
     },
@@ -217,11 +217,11 @@
       "name": "The Marks in the Dust",
       "place": "storage_shed",
       "mechanic": "Scuff-arc crate pushing",
-      "built": false,
+      "built": true,
       "hints": [
-        "",
-        "",
-        ""
+        "Those scuffs in the dust are where the crates usually sit, Chief. Somebody moves them every day.",
+        "Push the crates back onto the curved marks. You can only push, never pull, so don't trap one against a wall.",
+        "Push the two top crates into the top corners, and walk the bottom-left one around to the bottom-right corner."
       ],
       "clues": []
     },
@@ -243,11 +243,11 @@
       "name": "The Smoke Test",
       "place": "fuel_farm",
       "mechanic": "Trace a draught with smoke",
-      "built": false,
+      "built": true,
       "hints": [
-        "",
-        "",
-        ""
+        "If there's a tunnel under the field, smoke will find it. There's a rusty vent pipe in the fuel farm yard, and smoke pots in the maintenance shed.",
+        "Take a smoke pot from the maintenance shed, light it in the vent pipe at the fuel farm, then go look in the hangar office, the storage shed and the darkroom. You have about forty minutes.",
+        "The smoke comes up through the office floor vent, the storage shed floor and the darkroom storeroom. Visit all three while it lasts."
       ],
       "clues": []
     },
@@ -256,11 +256,11 @@
       "name": "Follow the Wire",
       "place": "comms_shelter",
       "mechanic": "Wire tracing and rhythm",
-      "built": false,
+      "built": true,
       "hints": [
-        "",
-        "",
-        ""
+        "Hobbs says someone has been tapping on the telegraph line. Listen to the telegram tape at his radio, Chief.",
+        "Compare the tape with each operator's sending: the speed, how even it is, and the stumble on the Q. Then follow the iron posts across the runway.",
+        "It's the unknown sender. The posts lead to a splice box by the maintenance shed, and the wire goes under the hangar wall."
       ],
       "clues": []
     },

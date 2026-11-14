@@ -458,6 +458,214 @@ export class SequenceScreen {
     }, 'primary'));
   }
 
+  // ------------------------------------------------------------------ S18 Follow the Wire (the rhythm part)
+  /** Morse for "--.-" drawn as a paper tape: dash 3 units, dot 1, gaps 1, plus the sender's hitch and wobble. */
+  _timing(smp, pattern) {
+    let seed = [...(smp.id ?? 'tape')].reduce((a, c) => a * 31 + c.charCodeAt(0), 7);
+    const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280 - 0.5; };
+    const out = [];
+    let t = 0;
+    [...pattern].forEach((ch, i) => {
+      const len = (ch === '-' ? 3 : 1) * smp.unit * (1 + rnd() * smp.jitter * 2);
+      out.push([t, len]);
+      t += len + smp.unit * (1 + rnd() * smp.jitter * 2) + (i === 0 ? smp.hitch : 0);
+    });
+    return { marks: out, total: t };
+  }
+
+  _tapeSvg(tm) {
+    const k = 26;
+    return `<svg class="seq-tape" width="${Math.max(260, tm.total * k + 20)}" height="26"><rect width="100%" height="26" fill="#f4ecda"/>${tm.marks.map(([t, l]) => `<rect x="${10 + t * k}" y="9" width="${l * k}" height="8" fill="#2a2116"/>`).join('')}</svg>`;
+  }
+
+  _playMorse(tm) {
+    const ctx = this.audio?.ctx;
+    if (!ctx) return;
+    const scale = 0.09;
+    for (const [t, l] of tm.marks) {
+      const at = ctx.currentTime + 0.05 + t * scale;
+      const o = ctx.createOscillator();
+      o.frequency.value = 760;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, at);
+      g.gain.linearRampToValueAtTime(0.12, at + 0.005);
+      g.gain.setValueAtTime(0.12, at + l * scale);
+      g.gain.linearRampToValueAtTime(0.0001, at + l * scale + 0.01);
+      o.connect(g).connect(this.audio.master);
+      o.start(at);
+      o.stop(at + l * scale + 0.05);
+    }
+  }
+
+  renderS18(d) {
+    const st = this.s();
+    st.played ??= [];
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    const tape = this._timing({ ...d.tape, id: 'tape' }, d.tape.pattern);
+    sec.innerHTML = `<h3>${esc(d.tape.name)}</h3>${this._tapeSvg(tape)}`;
+    sec.appendChild(this._btn('Play the tape', () => this._playMorse(tape)));
+    for (const smp of d.samples) {
+      const tm = this._timing(smp, d.tape.pattern);
+      const r = this._row(sec, `<span class="seq-label">${esc(smp.name)}</span>`);
+      r.appendChild(this._btn('Listen', () => { this._playMorse(tm); if (!st.played.includes(smp.id)) { st.played.push(smp.id); this.render(); } }));
+      if (st.played.includes(smp.id)) {
+        r.insertAdjacentHTML('beforeend', this._tapeSvg(tm));
+        if (!st.matched) r.appendChild(this._btn('This one matches', () => {
+          this.spend(3);
+          if (smp.id !== d.answer) return this.msg(d.wrong);
+          st.matched = true;
+          this.walks?.noticeWire();
+          this.render();
+          this.msg(d.matched, true);
+        }));
+      }
+    }
+    this.body.appendChild(sec);
+    if (st.matched) {
+      const w = document.createElement('div');
+      w.className = 'seq-section';
+      w.innerHTML = '<h3>Follow the wire</h3>' + d.need.map((k) => `<div class="seq-row"><span class="seq-label">${k === 'splice' ? 'The splice box' : 'Where the cable goes under the hangar'}</span><span class="${this.state.flag(`wire:${k}`) ? 'seq-ok' : 'seq-dim'}">${this.state.flag(`wire:${k}`) ? 'found' : 'follow the iron posts across the runway'}</span></div>`).join('');
+      this.body.appendChild(w);
+    }
+  }
+
+  /** Called when you reach the splice box or the hangar wall. */
+  checkS18() {
+    const d = this.data.S18;
+    if (this.s('S18').matched && d.need.every((k) => this.state.flag(`wire:${k}`)) && !this.solved('S18')) {
+      this.solve('S18');
+      this.hud.toast(d.done);
+    }
+  }
+
+  // ------------------------------------------------------------------ S14 The Ration Stores
+  renderS14(d) {
+    const st = this.s();
+    st.diff ??= {};
+    st.page ??= 0;
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    const t = document.createElement('table');
+    t.className = 'seq-grid';
+    t.innerHTML = `<tr><th></th><th>${esc(d.colOut)}</th><th>${esc(d.colFed)}</th><th>${esc(d.colDiff)}</th></tr>`;
+    d.rows.forEach(([day, out, fed], i) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${esc(day)}</td><td>${out}</td><td>${fed}</td><td></td>`;
+      const inp = document.createElement('input');
+      inp.type = 'number';
+      inp.className = 'seq-num';
+      inp.value = st.diff[i] ?? '';
+      inp.disabled = !!st.sumsOk;
+      inp.addEventListener('input', () => { st.diff[i] = inp.value; });
+      inp.addEventListener('keydown', (e) => e.stopPropagation());
+      tr.lastChild.appendChild(inp);
+      t.appendChild(tr);
+    });
+    sec.appendChild(t);
+    this.body.appendChild(sec);
+    if (!st.sumsOk) {
+      this.body.appendChild(this._btn('Check my sums', () => {
+        this.spend(5);
+        const ok = d.rows.every(([, out, fed], i) => Number(st.diff[i]) === out - fed);
+        if (!ok) return this.msg(d.wrong);
+        st.sumsOk = true;
+        this.evidence.note(d.signed);
+        this.render();
+        this.msg(d.signed, true);
+      }, 'primary'));
+      return;
+    }
+    const pg = document.createElement('div');
+    pg.className = 'seq-section';
+    const page = d.pages[st.page];
+    pg.innerHTML = `<h3>Ledger page: ${esc(page.label)}</h3><p>${esc(page.text)}</p>`;
+    if (st.page < d.pages.length - 1) pg.appendChild(this._btn('◀ Turn back a page (5 min)', () => { st.page++; this.spend(5); this.render(); }));
+    if (st.page > 0) pg.appendChild(this._btn('Forward a page ▶', () => { st.page--; this.render(); }));
+    this.body.appendChild(pg);
+    if (this.solved('S14')) return;
+    const q = document.createElement('div');
+    q.className = 'seq-section';
+    q.innerHTML = `<h3>${esc(d.question)}</h3>`;
+    d.options.forEach((o, i) => q.appendChild(this._btn(o, () => {
+      if (i !== d.answer || st.page < d.pages.length - 1) return this.msg(i === d.answer ? d.wrongStart : d.wrongStart);
+      this.solve('S14');
+      this.render();
+      this.msg(d.done, true);
+    })));
+    this.body.appendChild(q);
+  }
+
+  // ------------------------------------------------------------------ S15 The Marks in the Dust (crate pushing)
+  renderS15(d) {
+    const st = this.s();
+    if (!st.grid) this._resetS15(d);
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    const g = document.createElement('div');
+    g.className = 'seq-soko';
+    g.style.gridTemplateColumns = `repeat(${d.level[0].length}, 34px)`;
+    const isT = (r, c) => d.targets.some(([a, b]) => a === r && b === c);
+    d.level.forEach((row, r) => [...row].forEach((ch, c) => {
+      const cell = document.createElement('i');
+      const crate = st.crates.some(([a, b]) => a === r && b === c);
+      cell.className = ch === '#' ? 'wall' : crate ? (isT(r, c) ? 'crate home' : 'crate') : st.p[0] === r && st.p[1] === c ? 'me' : isT(r, c) ? 'mark' : 'floor';
+      g.appendChild(cell);
+    }));
+    sec.appendChild(g);
+    if (!this.solved('S15')) {
+      const pad = document.createElement('div');
+      pad.className = 'seq-pad';
+      for (const [lbl, dr, dc] of [['▲', -1, 0], ['◀', 0, -1], ['▶', 0, 1], ['▼', 1, 0]]) pad.appendChild(this._btn(lbl, () => this._moveS15(d, dr, dc)));
+      pad.appendChild(this._btn(d.reset, () => { this._resetS15(d); this.render(); }));
+      sec.appendChild(pad);
+      sec.insertAdjacentHTML('beforeend', `<p class="seq-dim">Pushes: ${st.pushes}</p>`);
+    }
+    this.body.appendChild(sec);
+    if (!this._sokoKeys) {
+      this._sokoKeys = (e) => {
+        if (!this.open || this.id !== 'S15' || this.solved('S15')) return;
+        const k = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1], KeyW: [-1, 0], KeyS: [1, 0], KeyA: [0, -1], KeyD: [0, 1] }[e.code];
+        if (k) { e.preventDefault(); e.stopPropagation(); this._moveS15(this.data.S15, k[0], k[1]); }
+      };
+      window.addEventListener('keydown', this._sokoKeys, true);
+    }
+  }
+
+  _resetS15(d) {
+    const st = this.s('S15');
+    st.crates = [];
+    d.level.forEach((row, r) => [...row].forEach((ch, c) => { if (ch === 'C') st.crates.push([r, c]); if (ch === 'P') st.p = [r, c]; }));
+    st.grid = true;
+    st.pushes = 0;
+  }
+
+  _moveS15(d, dr, dc) {
+    const st = this.s('S15');
+    const wall = (r, c) => d.level[r]?.[c] === '#' || d.level[r]?.[c] === undefined;
+    const crateAt = (r, c) => st.crates.findIndex(([a, b]) => a === r && b === c);
+    const n = [st.p[0] + dr, st.p[1] + dc];
+    if (wall(...n)) return;
+    const ci = crateAt(...n);
+    if (ci >= 0) {
+      const b = [n[0] + dr, n[1] + dc];
+      if (wall(...b) || crateAt(...b) >= 0) return;
+      st.crates[ci] = b;
+      st.pushes++;
+      this.audio?.footstep?.(0.6);
+    }
+    st.p = n;
+    if (d.targets.every(([a, b]) => crateAt(a, b) >= 0)) {
+      this.spend(10 + st.pushes);
+      this.solve('S15');
+      this.walks?.onS15();
+      this.render();
+      this.msg(d.done, true);
+      return;
+    }
+    this.render();
+  }
+
   /** The music box: each comb tooth is a note; the tune lights the teeth as it plays. */
   playTune(tune, teeth) {
     if (this._playing) return;

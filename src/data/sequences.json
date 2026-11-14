@@ -676,5 +676,283 @@
         "S25"
       ]
     ]
+  },
+  "walks": {
+    "smokepot": {
+      "name": "Flare and smoke pots",
+      "prompt": "Take a smoke pot",
+      "text": "A row of old runway flare pots, and a crate of smoke pots used to show pilots the wind. You take one.",
+      "item": "smokepot"
+    },
+    "ventstack": {
+      "name": "Culvert vent stack",
+      "prompt": "Look at the rusty pipe",
+      "text": "A short rusted pipe sticking out of the gravel, capped with a cowl. Warm air breathes out of it, steady as a sleeper. Underneath: the old fuel-line culvert.",
+      "note": "A rusty vent pipe in the fuel farm yard breathes warm air."
+    },
+    "ventstack_light": {
+      "prompt": "Light a smoke pot in the vent stack (5 min)",
+      "text": "You drop the lit smoke pot into the cowl. Thick grey smoke pours down into the culvert. You have about forty minutes before it's gone: see where it comes out.",
+      "lit": "The smoke is going down. Go and see where it comes out!"
+    },
+    "smoke_hangar": {
+      "name": "Office floor vent",
+      "text": "Grey smoke is curling up through the little floor vent in Pryce's office. The culvert runs right under this room."
+    },
+    "smoke_storage": {
+      "name": "Storage shed floor",
+      "text": "Smoke is seeping up between two floorboards along a straight seam, as if around the edge of a hatch."
+    },
+    "smoke_darkroom": {
+      "name": "Darkroom storeroom",
+      "text": "Behind the chemical shelves, smoke leaks out of a crack where the floor meets the wall. The floorboards there are scuffed."
+    },
+    "smoke_none": "No smoke here. Either it hasn't arrived, or this place isn't connected.",
+    "radio": {
+      "name": "Hobbs's radio desk",
+      "prompt": "Hobbs's radio and the telegram tape"
+    },
+    "posts": {
+      "name": "Conduit marker post",
+      "prompt": "Look at the iron post",
+      "text": "A short rusty post stamped 'G.P.O. CABLE'. Another stands a few paces further on, and another: they march away across the runway."
+    },
+    "splice": {
+      "name": "Splice box",
+      "prompt": "Open the splice box",
+      "text": "An iron junction box half buried by the maintenance shed. Inside, the old telegraph cable has a newer wire spliced onto it with careful, small hands. The new wire runs on toward the hangar."
+    },
+    "cableend": {
+      "name": "Where the cable goes under",
+      "prompt": "Follow the wire to the hangar wall",
+      "text": "The spliced wire dives into a conduit pipe at the foot of the hangar wall, heading under the floor. Toward the office."
+    },
+    "rack": {
+      "name": "Drying rack",
+      "prompt": "Look at the drying rack",
+      "text": "Ox's drying rack in the kitchen: two cups and two plates, washed and set to dry, though he lives alone in the shed. Hobbs says it's the same every night.",
+      "sources": [
+        [
+          "F14",
+          "rack"
+        ]
+      ],
+      "note": "Two cups and two plates on Ox's drying rack every night."
+    },
+    "ledger": {
+      "name": "Ration ledger",
+      "prompt": "The ration ledger (S14)"
+    },
+    "crates": {
+      "name": "Stacked crates",
+      "prompt": "The crates and the marks in the dust (S15)"
+    },
+    "hatch": {
+      "name": "Hatch in the back room",
+      "prompt": "Look at the hatch",
+      "text": "A square hatch in the floor of the little back room, with a fresh rope handle. Cold air comes up around it. This is where Ox brings his trays."
+    }
+  },
+  "S17": {
+    "title": "The Smoke Test",
+    "sources": [
+      [
+        "F02",
+        "S17"
+      ],
+      [
+        "F31",
+        "S17"
+      ],
+      [
+        "F13",
+        "S17"
+      ],
+      [
+        "F06",
+        "S17"
+      ]
+    ],
+    "minutes": 40,
+    "done": "Smoke from one pipe at the fuel farm came up in the hangar office, the storage shed and the darkroom. Danny whistles. \"Chief, the whole field is hollow.\""
+  },
+  "S18": {
+    "title": "Follow the Wire",
+    "intro": "The telegram that brought you here was sent from this line. Here is its tape. Play each operator's sending and find the one that matches the tape's rhythm: speed, evenness, and the little hitch in the Q.",
+    "tape": {
+      "name": "The telegram tape (the Q in 'INQUIRY')",
+      "pattern": "--.-",
+      "unit": 1.6,
+      "hitch": 1.2,
+      "jitter": 0
+    },
+    "samples": [
+      {
+        "id": "hobbs",
+        "name": "Hobbs (from his log)",
+        "unit": 0.8,
+        "hitch": 0.6,
+        "jitter": 0.25
+      },
+      {
+        "id": "billie",
+        "name": "Billie (ship-to-shore practice)",
+        "unit": 0.9,
+        "hitch": 0,
+        "jitter": 0.2
+      },
+      {
+        "id": "unknown",
+        "name": "Unknown (the night traffic Hobbs recorded)",
+        "unit": 1.6,
+        "hitch": 1.2,
+        "jitter": 0
+      },
+      {
+        "id": "pryce",
+        "name": "Pryce (an old message)",
+        "unit": 1.1,
+        "hitch": 0,
+        "jitter": 0.15
+      }
+    ],
+    "answer": "unknown",
+    "wrong": "Look at the tapes side by side. Is it as fast? As even? Does it stumble on the Q in the same place?",
+    "matched": "It's the unknown sender: slow, perfectly even, and copying Hobbs's stumble on the Q, like someone who learned by listening. Now follow the wire: the cable runs under the runway, and the iron posts mark where.",
+    "need": [
+      "splice",
+      "cableend"
+    ],
+    "done": "The telegraph line was tapped near the maintenance shed, and the tap runs under the hangar. Whoever sent the telegram did it from somewhere under the airfield.",
+    "sources": [
+      [
+        "F12",
+        "S18"
+      ],
+      [
+        "F13",
+        "S18"
+      ],
+      [
+        "F30",
+        "S18"
+      ]
+    ]
+  },
+  "S14": {
+    "title": "The Ration Stores",
+    "intro": "The storage shed's ration ledger against the mess roster. Work out the difference for each day: rations signed out minus people actually fed.",
+    "rows": [
+      [
+        "Mon 13 Nov",
+        8,
+        7
+      ],
+      [
+        "Tue 14 Nov",
+        8,
+        7
+      ],
+      [
+        "Wed 15 Nov",
+        8,
+        7
+      ],
+      [
+        "Thu 16 Nov",
+        8,
+        7
+      ],
+      [
+        "Fri 17 Nov",
+        15,
+        14
+      ]
+    ],
+    "colOut": "Rations signed out",
+    "colFed": "People fed (mess roster)",
+    "colDiff": "Difference",
+    "signed": "Every extra ration is initialled 'A.B.': Abel Brennan. Ox.",
+    "pages": [
+      {
+        "label": "November 1933",
+        "text": "One extra, every day."
+      },
+      {
+        "label": "June 1932",
+        "text": "One extra, every day."
+      },
+      {
+        "label": "December 1931",
+        "text": "One extra, every day."
+      },
+      {
+        "label": "November 1931",
+        "text": "The extra ration starts on 12 November 1931. Before that, the numbers match."
+      }
+    ],
+    "question": "Since when has someone been signing out an extra ration?",
+    "options": [
+      "Since last week",
+      "Since May 1931, the Marigold crash",
+      "Since 12 November 1931, six months after the crash"
+    ],
+    "answer": 2,
+    "wrong": "Check your sums against the roster, Chief.",
+    "wrongStart": "Turn back through the ledger to the first page where the numbers stop matching.",
+    "done": "One extra ration, every single day, for two years, signed out by Ox. Somebody on this airfield is being fed who isn't on any roster.",
+    "sources": [
+      [
+        "F14",
+        "S14"
+      ],
+      [
+        "F11",
+        "S14"
+      ]
+    ]
+  },
+  "S15": {
+    "title": "The Marks in the Dust",
+    "intro": "Curved scuffs in the dust show where these crates usually sit. Push them back onto the marks (you can push a crate, but not pull it). Arrow keys or the buttons move you.",
+    "level": [
+      "########",
+      "#......#",
+      "#.C..C.#",
+      "#..##..#",
+      "#.C.P..#",
+      "#......#",
+      "########"
+    ],
+    "targets": [
+      [
+        1,
+        1
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        1,
+        6
+      ]
+    ],
+    "reset": "Start again",
+    "done": "With the crates back in their marks, a narrow door appears behind them: a little back room. Inside: a woman's coat, hair ribbons, sewing thread, stockings, and a hatch in the floor with a fresh rope handle.",
+    "sources": [
+      [
+        "F15",
+        "S15"
+      ],
+      [
+        "F11",
+        "S15"
+      ],
+      [
+        "F31",
+        "S15"
+      ]
+    ]
   }
 }
