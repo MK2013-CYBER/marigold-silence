@@ -954,5 +954,366 @@
         "S15"
       ]
     ]
+  },
+  "spots4": [
+    {
+      "seq": "S8",
+      "pos": [
+        56.8,
+        1.0,
+        -22.3
+      ],
+      "size": [
+        1.6,
+        1.6,
+        0.5
+      ],
+      "prompt": "The chemical shelf and the balance (S8)"
+    },
+    {
+      "seq": "S9",
+      "pos": [
+        54.2,
+        1.0,
+        -20.0
+      ],
+      "size": [
+        1.0,
+        1.0,
+        0.8
+      ],
+      "prompt": "The enlarger and developing trays (S9)"
+    },
+    {
+      "seq": "S10",
+      "pos": [
+        55.8,
+        0.9,
+        -25.0
+      ],
+      "size": [
+        1.2,
+        1.0,
+        1.0
+      ],
+      "prompt": "The passenger records (S10)"
+    },
+    {
+      "seq": "S20",
+      "pos": [
+        38.9,
+        1.0,
+        111.2
+      ],
+      "size": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "prompt": "Hobbs's wax cylinders (S20)"
+    },
+    {
+      "seq": "S22",
+      "pos": [
+        -65.4,
+        0.5,
+        -32.6
+      ],
+      "size": [
+        0.7,
+        0.5,
+        0.5
+      ],
+      "prompt": "Dr. Lindqvist's locked case (S22)"
+    }
+  ],
+  "S8": {
+    "title": "The Chemical Shelf",
+    "intro": "The darkroom storeroom's stock ledger lists what each jar should weigh. Put a jar on the balance and add brass weights until the beam is level, then compare with the ledger.",
+    "jars": [
+      {
+        "id": "kcn",
+        "name": "Potassium cyanide (photographic grade)",
+        "ledger": 500,
+        "actual": 470,
+        "why": null
+      },
+      {
+        "id": "agno3",
+        "name": "Silver nitrate",
+        "ledger": 250,
+        "actual": 210,
+        "why": "The darkroom log: '40 g used for plate emulsion, 2 Nov.'"
+      },
+      {
+        "id": "hypo",
+        "name": "Hypo (fixer)",
+        "ledger": 1000,
+        "actual": 1000,
+        "why": null
+      },
+      {
+        "id": "kbr",
+        "name": "Potassium bromide",
+        "ledger": 250,
+        "actual": 250,
+        "why": null
+      },
+      {
+        "id": "metol",
+        "name": "Metol (developer)",
+        "ledger": 100,
+        "actual": 100,
+        "why": null
+      }
+    ],
+    "weights": [
+      500,
+      200,
+      100,
+      50,
+      20,
+      10,
+      5
+    ],
+    "question": "Which jar is short, with nothing in the log to explain it?",
+    "answer": "kcn",
+    "wrong": "Check the darkroom log, Chief: one of the short jars has a perfectly good reason.",
+    "scuffs": "Behind the shelf, the floor is scuffed in an arc, as if the whole unit swings out. Cold air comes through the gap.",
+    "done": "The cyanide jar is a scoop short, and nobody logged it. The poison came from this building, not the doctor's bag.",
+    "sources": [
+      [
+        "F05",
+        "S8"
+      ],
+      [
+        "F06",
+        "S8"
+      ],
+      [
+        "F31",
+        "S8"
+      ]
+    ]
+  },
+  "S9": {
+    "title": "The Darkroom",
+    "intro": "Billie's four aerial plates from the 1931 search, never printed. Develop each one: expose when the enlarger's needle is in the green band, then pull it from the developer between 55 and 65 seconds. Each plate can be retried once.",
+    "plates": 4,
+    "compare": "Now compare your print of plate 4 with the official crash-report photograph of the same spot. Click everything on your print that isn't in the official one.",
+    "spots": [
+      {
+        "id": "truck",
+        "name": "Truck tracks that run in from the road, under the rescuers' footprints",
+        "x": 120,
+        "y": 200,
+        "r": 40
+      },
+      {
+        "id": "drag",
+        "name": "A drag trail from the wreck to where the truck stopped",
+        "x": 250,
+        "y": 160,
+        "r": 40
+      },
+      {
+        "id": "stretcher",
+        "name": "A stretcher-shaped bundle under a canvas, by the truck",
+        "x": 330,
+        "y": 205,
+        "r": 32
+      }
+    ],
+    "miss": "That's in the official photo too.",
+    "ruined": "Ruined: the plate is black. You have one retry.",
+    "lost": "That plate is lost for good. Plate 4 still matters most.",
+    "done": "Someone drove a truck to the wreck before the rescue party got there, and dragged something to it on a stretcher. Billie, watching from the door, goes white. \"He was there first. I knew it.\"",
+    "sources": [
+      [
+        "F18",
+        "S9"
+      ]
+    ]
+  },
+  "S10": {
+    "title": "The Manifests and the Payout",
+    "intro": "The Marigold's last flight: six passenger cards, five death certificates and the insurer's payout list. First put the cards in seat order, then match each passenger to a certificate.",
+    "cards": [
+      [
+        "1",
+        "Capt. R. Hale, pilot"
+      ],
+      [
+        "2",
+        "M. Ortega, mail clerk"
+      ],
+      [
+        "3",
+        "Mrs. D. Fenn"
+      ],
+      [
+        "4",
+        "C. Pryce, 19"
+      ],
+      [
+        "5",
+        "Rev. A. Lowell"
+      ],
+      [
+        "6",
+        "T. Sato, engineer"
+      ]
+    ],
+    "certs": [
+      "Capt. R. Hale",
+      "M. Ortega",
+      "Mrs. D. Fenn",
+      "Rev. A. Lowell",
+      "T. Sato"
+    ],
+    "none": "No certificate",
+    "payout": "Insurer's payout: six claims, all paid in full, June 1931. Claim 4 paid to Pryce Transcontinental 'on behalf of the estate'.",
+    "receipt": "Clipped behind the payout list: a receipt for a post-office box in Reno, rented in the name of 'Mrs. E. Marsh'. Paid by P.T.A.",
+    "question": "Which passenger was paid for but never declared dead?",
+    "answer": "4",
+    "wrongOrder": "The seat numbers are on the cards, Chief.",
+    "wrongMatch": "Those don't match. Read the names carefully.",
+    "done": "Six aboard, five certificates. Seat four, C. Pryce, nineteen years old: paid out on, never certified dead. Julian, in the doorway, stops smiling.",
+    "sources": [
+      [
+        "F19",
+        "S10"
+      ],
+      [
+        "F16",
+        "S10"
+      ],
+      [
+        "F18",
+        "S10"
+      ],
+      [
+        "F25",
+        "S10"
+      ]
+    ]
+  },
+  "S20": {
+    "title": "The Last Call",
+    "intro": "Hobbs kept the wax cylinder of the Marigold's last radio call. It runs about three minutes. Scrub the needle through it and find the last words before it ends.",
+    "length": 180,
+    "segments": [
+      [
+        0,
+        60,
+        "Static, and the pilot reading his position."
+      ],
+      [
+        60,
+        140,
+        "Engine noise rising; the pilot says 'heavy weather, ceiling zero'."
+      ],
+      [
+        140,
+        158,
+        "A screaming engine whine. Static."
+      ],
+      [
+        158,
+        168,
+        "VOICE"
+      ],
+      [
+        168,
+        180,
+        "Hiss. Then nothing."
+      ]
+    ],
+    "voice": {
+      "text": "Daddy, I can see the ridge!",
+      "speaker": "(a young woman, faint)"
+    },
+    "question": "Whose voice is it?",
+    "options": [
+      "The pilot",
+      "Captain Strand",
+      "A young woman: a passenger"
+    ],
+    "answer": 2,
+    "needMark": "Find the voice first: scrub to it and mark it.",
+    "markLabel": "Mark this moment",
+    "wrongMark": "Nothing but static and engine there.",
+    "wrong": "Listen to it again, Chief.",
+    "done": "The last voice on the Marigold was a young woman's, calling for her father. Vivienne, in the doorway, puts a hand over her mouth.",
+    "sources": [
+      [
+        "F20",
+        "S20"
+      ],
+      [
+        "F18",
+        "S20"
+      ]
+    ]
+  },
+  "S22": {
+    "title": "The Locked Case",
+    "intro": "Doctor Lindqvist's leather case, locked. You can ask him, get a warrant through Danny, or pick it.",
+    "routes": [
+      {
+        "id": "ask",
+        "label": "Ask Lindqvist to open it (needs his trust)",
+        "trustNeeded": 65,
+        "ok": "He looks at you for a long time, then unlocks it himself. \"Ask me again when you know the whole truth.\"",
+        "no": "\"Certainly not, Inspector. A doctor's case is private.\""
+      },
+      {
+        "id": "warrant",
+        "label": "Have Danny radio for a warrant (45 min)",
+        "minutes": 45,
+        "ok": "Danny comes back with the warrant read over the wire. Lindqvist unlocks the case without a word."
+      },
+      {
+        "id": "pick",
+        "label": "Pick the lock yourself (Danny won't like it)",
+        "ok": "Danny turns his back. \"I didn't see this, Chief.\""
+      }
+    ],
+    "pins": 4,
+    "order": [
+      3,
+      1,
+      4,
+      2
+    ],
+    "picks": 3,
+    "tension": [
+      "light",
+      "heavy"
+    ],
+    "binding": "Click. The pin sets.",
+    "springy": "Springy. That pin isn't binding yet.",
+    "broke": "Snap. Too much tension: the pick broke.",
+    "outOfPicks": "No picks left. You'll have to ask him, or get the warrant.",
+    "contents": "A prescription book: two years of burn dressings, salve and a sedative, all shipped to 'Mrs. E. Marsh, Box 41, Reno'. A brown bottle of sedative is missing from its slot.",
+    "done": "Someone has been treated for burns, secretly, for two years. And a sedative is missing.",
+    "sources": [
+      [
+        "F16",
+        "S22"
+      ],
+      [
+        "F29",
+        "S22"
+      ],
+      [
+        "F32",
+        "S22"
+      ],
+      [
+        "F15",
+        "S22"
+      ]
+    ]
   }
 }

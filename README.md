@@ -118,6 +118,11 @@ the door, the doctor's bag and Hart's camera case. Press E on anything to examin
 | S18 Follow the Wire | Radio & weather, then the runway | match the telegram's rhythm by ear, then follow the iron posts to the splice box and the hangar wall |
 | S14 The Ration Stores | storage shed (and Quarters kitchen rack) | do the ledger sums, turn back to the first page where they stop matching |
 | S15 The Marks in the Dust | storage shed crates | push the crates back onto the scuff marks; a back room and a hatch appear |
+| S8 The Chemical Shelf | Operations darkroom | weigh each jar on a balance with brass weights; find the short one the log can't explain |
+| S9 The Darkroom | Operations darkroom | expose on the needle, stop the developer at ~60 s; then spot what the official photo hides |
+| S10 The Manifests | Operations records room | sort six passenger cards, match five certificates, read the payout |
+| S20 The Last Call | Radio & weather | scrub through the wax cylinder to the voice at the end |
+| S22 The Locked Case | Lindqvist's room, Quarters | persuade him, get a warrant (45 min), or pick it (light tension, find the binding pin) |
 
 Evidence (v4 section 4): findings need independent sources (sequences, documents, testimony).
 With enough (usually 3) a finding is Established and goes on the HQ board. Tab shows your leads and

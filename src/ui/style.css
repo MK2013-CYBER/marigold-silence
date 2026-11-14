@@ -360,3 +360,12 @@ kbd {
 .seq-soko .crate.home { background: #6e8a3a; box-shadow: inset 0 0 0 3px #3e5a1a; }
 .seq-soko .me { background: #d9cba8 radial-gradient(circle, #2a2116 35%, transparent 38%); }
 .seq-pad { display: flex; gap: 4px; flex-wrap: wrap; }
+.seq-photos { display: flex; gap: 10px; flex-wrap: wrap; }
+.seq-photos > div { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
+.seq-photo { width: 330px; height: auto; filter: sepia(0.5) contrast(1.1); border: 1px solid #8a7656; }
+.seq-dev { margin: 8px 0; padding: 8px; background: #1a0c08; color: #f0b090; }
+.seq-meter { position: relative; height: 18px; background: #3a1a12; margin: 6px 0; }
+.seq-meter .band { position: absolute; left: 42%; width: 16%; top: 0; bottom: 0; background: #3e7a3a; }
+.seq-meter .needle { position: absolute; top: -3px; bottom: -3px; width: 3px; background: #ffd0a0; }
+.seq-timer b { font-size: 18px; }
+.seq-pins { display: flex; gap: 6px; }

@@ -1,4 +1,5 @@
 import { parseTime } from '../engine/state.js';
+import { Voice } from '../engine/voice.js';
 
 /**
  * Screens for the office investigation sequences (v4 S1-S6). Each has its own mechanic:
@@ -664,6 +665,311 @@ export class SequenceScreen {
       return;
     }
     this.render();
+  }
+
+  // ------------------------------------------------------------------ S8 The Chemical Shelf (balance scale)
+  renderS8(d) {
+    const st = this.s();
+    st.weighed ??= {};
+    st.pan ??= [];
+    st.jar ??= null;
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    const t = document.createElement('table');
+    t.className = 'seq-grid';
+    t.innerHTML = '<tr><th>Jar</th><th>Ledger says</th><th>You weighed</th><th></th></tr>';
+    for (const j of d.jars) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${esc(j.name)}</td><td>${j.ledger} g</td><td>${st.weighed[j.id] != null ? `${st.weighed[j.id]} g` : '-'}</td><td></td>`;
+      if (st.weighed[j.id] == null) tr.lastChild.appendChild(this._btn(st.jar === j.id ? 'on the scale' : 'Put on the scale', () => { st.jar = j.id; st.pan = []; this.render(); }, st.jar === j.id ? 'on' : ''));
+      else if (j.why) tr.lastChild.textContent = j.why;
+      t.appendChild(tr);
+    }
+    sec.appendChild(t);
+    this.body.appendChild(sec);
+    if (st.jar) {
+      const j = d.jars.find((x) => x.id === st.jar);
+      const sum = st.pan.reduce((a, b) => a + b, 0);
+      const diff = j.actual - sum; // >0: the jar side is heavier
+      const tilt = Math.max(-14, Math.min(14, diff / 6));
+      const sc = document.createElement('div');
+      sc.className = 'seq-section';
+      sc.innerHTML = `<h3>The balance: ${esc(j.name)}</h3>
+        <svg width="320" height="120" viewBox="0 0 320 120"><rect x="155" y="40" width="10" height="70" fill="#5a4630"/><rect x="110" y="108" width="100" height="8" fill="#5a4630"/>
+        <g transform="rotate(${tilt} 160 40)"><rect x="40" y="36" width="240" height="6" fill="#8a6a3a"/>
+        <path d="M40 42 L20 80 L80 80 Z" fill="none" stroke="#5a4630"/><path d="M280 42 L260 80 L300 80 Z" fill="none" stroke="#5a4630"/>
+        <rect x="35" y="66" width="30" height="14" fill="#c8b890"/><text x="290" y="76" font-size="11" text-anchor="middle">${sum} g</text></g>
+        <text x="160" y="22" font-size="13" text-anchor="middle">${diff === 0 ? 'Level!' : diff > 0 ? 'The jar is heavier' : 'The weights are heavier'}</text></svg>`;
+      const row = document.createElement('div');
+      for (const w of d.weights) row.appendChild(this._btn(`+${w} g`, () => { st.pan.push(w); this.render(); }));
+      row.appendChild(this._btn('Take the last weight off', () => { st.pan.pop(); this.render(); }));
+      if (diff === 0) row.appendChild(this._btn('Record the weight', () => { st.weighed[j.id] = sum; st.jar = null; this.spend(3); this.render(); }, 'primary'));
+      sc.appendChild(row);
+      this.body.appendChild(sc);
+    }
+    if (this.solved('S8') || !d.jars.every((j) => st.weighed[j.id] != null)) return;
+    const q = document.createElement('div');
+    q.className = 'seq-section';
+    q.innerHTML = `<h3>${esc(d.question)}</h3>`;
+    for (const j of d.jars) q.appendChild(this._btn(j.name, () => {
+      if (j.id !== d.answer) return this.msg(d.wrong);
+      this.evidence.note(d.scuffs);
+      this.solve('S8');
+      this.render();
+      this.msg(`${d.done} ${d.scuffs}`, true);
+    }));
+    this.body.appendChild(q);
+  }
+
+  // ------------------------------------------------------------------ S9 The Darkroom (develop, then compare)
+  _scene(extra) {
+    return `<svg width="400" height="260" viewBox="0 0 400 260" class="seq-photo"><rect width="400" height="260" fill="#cfc4ae"/>
+      <path d="M0 70 Q100 40 200 60 T400 50 L400 0 L0 0Z" fill="#8a8070"/>
+      <path d="M170 120 l40 -12 l50 20 l-20 14 l-60 -4z" fill="#3a332a"/><path d="M200 112 l-30 -30 l8 -4 l32 30z" fill="#4a4238"/>
+      <g stroke="#9a8e78" stroke-width="2" fill="none"><path d="M60 250 L120 200 L170 150"/><path d="M80 252 L140 202 L188 152"/></g>
+      ${[0, 1, 2, 3, 4, 5].map((i) => `<circle cx="${70 + i * 22}" cy="${240 - i * 14}" r="3" fill="#7a6e5a"/>`).join('')}${extra}</svg>`;
+  }
+
+  renderS9(d) {
+    const st = this.s();
+    st.plates ??= Array(d.plates).fill('new'); // new | done | ruined | lost
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    st.plates.forEach((p, i) => {
+      const r = this._row(sec, `<span class="seq-label">Plate ${i + 1}</span><span class="${p === 'done' ? 'seq-ok' : 'seq-dim'}">${{ new: 'undeveloped', done: 'developed', ruined: 'ruined (one retry left)', lost: 'lost' }[p]}</span>`);
+      if ((p === 'new' || p === 'ruined') && !this._dev) r.appendChild(this._btn('Develop', () => this._develop(d, i, sec)));
+    });
+    this.body.appendChild(sec);
+    if (st.plates[3] !== 'done') return;
+    st.found ??= [];
+    const cmp = document.createElement('div');
+    cmp.className = 'seq-section';
+    cmp.innerHTML = `<p>${esc(d.compare)}</p><div class="seq-photos"><div><b>Official report photo</b>${this._scene('')}</div><div><b>Your print, plate 4</b>${this._scene(
+      `<g stroke="#6a5a42" stroke-width="2.5" fill="none"><path d="M10 230 Q80 215 125 198"/><path d="M14 240 Q84 225 129 208"/></g>
+       <path d="M200 132 Q240 150 300 196" stroke="#6a5a42" stroke-width="5" fill="none" stroke-dasharray="3 4"/>
+       <rect x="300" y="180" width="60" height="28" fill="#2a241c"/><rect x="312" y="196" width="40" height="14" fill="#b8ac94" rx="3"/>`)}</div></div>`;
+    const svg = cmp.querySelectorAll('svg')[1];
+    svg.style.cursor = 'crosshair';
+    svg.addEventListener('click', (e) => {
+      if (this.solved('S9')) return;
+      const b = svg.getBoundingClientRect();
+      const x = ((e.clientX - b.left) / b.width) * 400, y = ((e.clientY - b.top) / b.height) * 260;
+      const hit = d.spots.find((s2) => Math.hypot(s2.x - x, s2.y - y) < s2.r);
+      if (!hit) return this.msg(d.miss);
+      if (!st.found.includes(hit.id)) st.found.push(hit.id);
+      if (st.found.length === d.spots.length) { this.solve('S9'); this.render(); this.msg(d.done, true); return; }
+      this.render();
+      this.msg(`Found: ${hit.name}. (${st.found.length} of ${d.spots.length})`, true);
+    });
+    cmp.insertAdjacentHTML('beforeend', `<ul class="seq-facts">${st.found.map((id) => `<li>${esc(d.spots.find((x) => x.id === id).name)}</li>`).join('')}</ul>`);
+    this.body.appendChild(cmp);
+  }
+
+  /** Expose when the wandering needle is in the green band, then stop the developer at ~60 s. */
+  _develop(d, i, sec) {
+    const st = this.s();
+    const box = document.createElement('div');
+    box.className = 'seq-dev';
+    box.innerHTML = '<div class="seq-meter"><span class="band"></span><span class="needle"></span></div><div class="seq-timer">Developer: <b>0</b> s</div>';
+    sec.appendChild(box);
+    const needle = box.querySelector('.needle'), timer = box.querySelector('b');
+    let phase = 'expose', t0 = performance.now(), secs = 0, pos = 0;
+    const btn = this._btn('Expose now', () => {
+      if (phase === 'expose') {
+        if (pos < 0.42 || pos > 0.58) return fail();
+        phase = 'develop';
+        t0 = performance.now();
+        btn.textContent = 'Into the stop bath!';
+      } else if (phase === 'develop') {
+        if (secs < 55 || secs > 65) return fail();
+        phase = 'done';
+        clearInterval(this._dev);
+        this._dev = null;
+        st.plates[i] = 'done';
+        this.spend(8);
+        this.render();
+        this.msg(`Plate ${i + 1} developed and fixed.`, true);
+      }
+    }, 'primary');
+    box.appendChild(btn);
+    const fail = () => {
+      clearInterval(this._dev);
+      this._dev = null;
+      this.spend(8);
+      st.plates[i] = st.plates[i] === 'ruined' ? 'lost' : 'ruined';
+      if (st.plates[i] === 'lost' && i === 3) st.plates[i] = 'ruined'; // plate 4 is the one that matters: Danny finds spare chemicals
+      this.render();
+      this.msg(st.plates[i] === 'lost' ? d.lost : d.ruined);
+    };
+    this._dev = setInterval(() => {
+      if (!this.open) { clearInterval(this._dev); this._dev = null; return; }
+      const t = (performance.now() - t0) / 1000;
+      if (phase === 'expose') { pos = 0.5 + 0.45 * Math.sin(t * 2.1) * Math.cos(t * 0.7); needle.style.left = `${pos * 100}%`; }
+      if (phase === 'develop') { secs = Math.floor(t * 12); timer.textContent = secs; if (secs > 80) fail(); }
+    }, 30);
+  }
+
+  // ------------------------------------------------------------------ S10 The Manifests and the Payout
+  renderS10(d) {
+    const st = this.s();
+    if (!st.order) { st.order = [3, 0, 5, 1, 4, 2]; st.match = {}; }
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    if (!st.sorted) {
+      sec.innerHTML = '<h3>Passenger cards</h3>';
+      st.order.forEach((ci, i) => {
+        const [seat, name] = d.cards[ci];
+        const r = this._row(sec, `<span class="seq-label">Seat ${seat}: ${esc(name)}</span>`);
+        r.appendChild(this._btn('▲', () => { if (i) { [st.order[i - 1], st.order[i]] = [st.order[i], st.order[i - 1]]; this.render(); } }));
+        r.appendChild(this._btn('▼', () => { if (i < st.order.length - 1) { [st.order[i + 1], st.order[i]] = [st.order[i], st.order[i + 1]]; this.render(); } }));
+      });
+      sec.appendChild(this._btn('These are in seat order', () => { if (st.order.every((ci, i) => ci === i)) { st.sorted = true; this.spend(5); this.render(); } else this.msg(d.wrongOrder); }, 'primary'));
+      this.body.appendChild(sec);
+      return;
+    }
+    sec.innerHTML = '<h3>Match each passenger to a death certificate</h3>';
+    d.cards.forEach(([seat, name]) => {
+      const r = this._row(sec, `<span class="seq-label">Seat ${seat}: ${esc(name)}</span>`);
+      const sel = document.createElement('select');
+      sel.innerHTML = `<option value="">choose...</option>${[...d.certs, d.none].map((c) => `<option ${st.match[seat] === c ? 'selected' : ''}>${esc(c)}</option>`).join('')}`;
+      sel.addEventListener('change', () => { st.match[seat] = sel.value; });
+      sel.addEventListener('keydown', (e) => e.stopPropagation());
+      r.appendChild(sel);
+    });
+    this.body.appendChild(sec);
+    const extra = document.createElement('div');
+    extra.className = 'seq-section';
+    extra.innerHTML = `<p>${esc(d.payout)}</p><p>${esc(d.receipt)}</p><h3>${esc(d.question)}</h3>`;
+    if (!this.solved('S10')) for (const [seat, name] of d.cards) extra.appendChild(this._btn(`Seat ${seat}`, () => {
+      const ok = d.cards.every(([s2, n2]) => (s2 === d.answer ? st.match[s2] === d.none : !!st.match[s2] && st.match[s2] !== d.none && n2.startsWith(st.match[s2])));
+      if (!ok) return this.msg(d.wrongMatch);
+      if (seat !== d.answer) return this.msg(d.wrongMatch);
+      this.solve('S10');
+      this.render();
+      this.msg(d.done, true);
+    }));
+    this.body.appendChild(extra);
+  }
+
+  // ------------------------------------------------------------------ S20 The Last Call (wax cylinder)
+  renderS20(d) {
+    const st = this.s();
+    st.at ??= 0;
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    const mmss = (v) => `${Math.floor(v / 60)}:${String(v % 60).padStart(2, '0')}`;
+    sec.innerHTML = `<label class="seq-slider">Needle: <b>${mmss(st.at)}</b><input type="range" min="0" max="${d.length}" step="1" value="${st.at}"></label><p class="seq-text">${esc(st.heard ?? 'Scrub to a moment, then listen.')}</p>`;
+    const inp = sec.querySelector('input');
+    inp.addEventListener('input', () => { st.at = +inp.value; sec.querySelector('b').textContent = mmss(st.at); });
+    inp.addEventListener('keydown', (e) => e.stopPropagation());
+    sec.appendChild(this._btn('Listen here', () => {
+      const seg = d.segments.find(([a, b]) => st.at >= a && st.at < b) ?? d.segments[d.segments.length - 1];
+      this._hiss(2.5, seg[2] === 'VOICE' ? 0.04 : 0.1, st.at >= 60 && st.at < 158);
+      if (seg[2] === 'VOICE') { st.heard = `${d.voice.speaker}: "${d.voice.text}"`; Voice.speak(d.voice.text, { prefer: ['Samantha', 'Flo (English (United States))', 'Shelley (English (United States))', 'Karen'], pitch: 1.35, rate: 1.05 }); }
+      else st.heard = seg[2];
+      this.spend(1);
+      this.render();
+    }));
+    if (!st.marked) sec.appendChild(this._btn(d.markLabel, () => {
+      const seg = d.segments.find(([a, b]) => st.at >= a && st.at < b);
+      if (seg?.[2] !== 'VOICE') return this.msg(d.wrongMark);
+      st.marked = true;
+      this.render();
+    }, 'primary'));
+    this.body.appendChild(sec);
+    if (!st.marked || this.solved('S20')) return;
+    const q = document.createElement('div');
+    q.className = 'seq-section';
+    q.innerHTML = `<h3>${esc(d.question)}</h3>`;
+    d.options.forEach((o, i) => q.appendChild(this._btn(o, () => {
+      if (i !== d.answer) return this.msg(d.wrong);
+      this.solve('S20');
+      this.render();
+      this.msg(d.done, true);
+    })));
+    this.body.appendChild(q);
+  }
+
+  /** Surface noise of an old wax cylinder (and an engine drone in the middle of the call). */
+  _hiss(secs, level, engine) {
+    const ctx = this.audio?.ctx;
+    if (!ctx) return;
+    const t = ctx.currentTime;
+    const n = ctx.createBufferSource();
+    n.buffer = this.audio.white;
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = 2500;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(level, t);
+    g.gain.linearRampToValueAtTime(0, t + secs);
+    n.connect(bp).connect(g).connect(this.audio.master);
+    n.start(t);
+    n.stop(t + secs);
+    if (engine) {
+      const o = ctx.createOscillator();
+      o.type = 'sawtooth';
+      o.frequency.setValueAtTime(90, t);
+      o.frequency.linearRampToValueAtTime(140, t + secs);
+      const og = ctx.createGain();
+      og.gain.setValueAtTime(0.04, t);
+      og.gain.linearRampToValueAtTime(0, t + secs);
+      o.connect(og).connect(this.audio.master);
+      o.start(t);
+      o.stop(t + secs);
+    }
+  }
+
+  // ------------------------------------------------------------------ S22 The Locked Case (pin tumblers)
+  renderS22(d) {
+    const st = this.s();
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    if (st.open) {
+      sec.innerHTML = `<p class="seq-text">${esc(d.contents)}</p>`;
+      this.body.appendChild(sec);
+      if (!this.solved('S22')) { this.solve('S22'); this.msg(d.done, true); }
+      return;
+    }
+    if (!st.route) {
+      for (const r of d.routes) sec.appendChild(this._btn(r.label, () => {
+        if (r.id === 'ask') {
+          this.spend(3);
+          if (this.trust.get('lindqvist') < r.trustNeeded) return this.msg(r.no);
+          st.open = 'ask';
+        } else if (r.id === 'warrant') { this.spend(r.minutes); st.open = 'warrant'; }
+        else { st.route = 'pick'; st.set = []; st.picks = d.picks; st.tension = 'light'; this.trust.change('lindqvist', -10); }
+        this.render();
+        this.msg(r.ok, true);
+      }));
+      this.body.appendChild(sec);
+      return;
+    }
+    // picking
+    sec.innerHTML = `<h3>Tension</h3>`;
+    for (const tn of d.tension) sec.appendChild(this._btn(tn, () => { st.tension = tn; this.render(); }, st.tension === tn ? 'on' : ''));
+    sec.insertAdjacentHTML('beforeend', `<h3>Pins (picks left: ${st.picks})</h3>`);
+    const pins = document.createElement('div');
+    pins.className = 'seq-pins';
+    for (let p = 1; p <= d.pins; p++) {
+      const set = st.set.includes(p);
+      pins.appendChild(this._btn(set ? `pin ${p} ✓` : `pin ${p}`, () => {
+        if (set || st.picks <= 0) return;
+        this.spend(1);
+        if (st.tension === 'heavy') { st.picks--; st.set = []; this.audio?.click(); this.render(); return this.msg(st.picks > 0 ? d.broke : d.outOfPicks); }
+        if (d.order[st.set.length] === p) {
+          st.set.push(p);
+          this.audio?.click();
+          if (st.set.length === d.pins) { st.open = 'pick'; this.render(); return; }
+          this.render();
+          return this.msg(d.binding, true);
+        }
+        this.msg(d.springy);
+      }, set ? 'on' : ''));
+    }
+    sec.appendChild(pins);
+    if (st.picks <= 0) sec.appendChild(this._btn('Try another way', () => { st.route = null; this.render(); }));
+    this.body.appendChild(sec);
   }
 
   /** The music box: each comb tooth is a note; the tune lights the teeth as it plays. */

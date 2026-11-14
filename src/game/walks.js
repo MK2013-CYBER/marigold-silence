@@ -106,6 +106,8 @@ export class Walks {
     spot('WK_ledger', P.ledger, [0.6, 0.5, 0.5]);
     spot('WK_crates', P.crates, [1.4, 1.2, 1.2]);
     spot('WK_post_hit', at(ROUTE[1], 0.4), [0.5, 0.9, 0.5]);
+    // Tier 4 places: the darkroom, records room, Hobbs's cylinders, Lindqvist's case
+    for (const t of this.data.spots4 ?? []) spot(`WK_${t.seq}`, V(...t.pos), t.size);
     // smoke plumes
     this.plumes = {};
     for (const [k, p] of Object.entries({ ...P.smoke, stack: at(P.ventstack, 1.3) })) this.plumes[k] = this._plume(p, k === 'stack' ? 0.9 : 0.5);
@@ -125,6 +127,7 @@ export class Walks {
       { id: 'wk_ledger', ui: 'seq', seq: 'S14', object: 'WK_ledger', prompt: W.ledger.prompt },
       { id: 'wk_crates', ui: 'seq', seq: 'S15', object: 'WK_crates', prompt: W.crates.prompt },
       { id: 'wk_hatch', ui: 'walk', key: 'hatch', object: 'WK_hatch', prompt: W.hatch.prompt },
+      ...(this.data.spots4 ?? []).map((t) => ({ id: `wk_${t.seq}`, ui: 'seq', seq: t.seq, object: `WK_${t.seq}`, prompt: t.prompt })),
     ].map((d) => ({ type: 'ui', location: 'walks', timeCost: d.ui === 'walk' ? 2 : 0, ...d }));
     for (const d of defs) if (!this.interaction.byId.has(d.id)) { this.interaction.defs.push(d); this.interaction.byId.set(d.id, d); }
     this.interaction.addLocation('walks', this.group);

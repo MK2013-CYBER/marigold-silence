@@ -126,11 +126,11 @@
       "name": "The Chemical Shelf",
       "place": "ops_building",
       "mechanic": "Balance-scale inventory",
-      "built": false,
+      "built": true,
       "hints": [
-        "",
-        "",
-        ""
+        "The darkroom storeroom in Operations has a stock ledger, Chief. Weigh the jars and see what's missing.",
+        "Two jars are light. Check the darkroom log: one of them has a good reason.",
+        "The cyanide is thirty grams short with nothing in the log. The silver nitrate was used for plates."
       ],
       "clues": []
     },
@@ -139,11 +139,11 @@
       "name": "The Darkroom",
       "place": "ops_building",
       "mechanic": "Develop and compare",
-      "built": false,
+      "built": true,
       "hints": [
-        "",
-        "",
-        ""
+        "Billie's old plates from the 1931 search are in the darkroom. Develop them carefully: you only get one retry each.",
+        "Expose when the needle is in the green band, and pull the plate out of the developer at about sixty seconds. Then compare plate four with the official photo.",
+        "On plate four: the truck tracks, the drag trail, and the bundle under the canvas aren't in the official photo."
       ],
       "clues": []
     },
@@ -152,11 +152,11 @@
       "name": "The Manifests and the Payout",
       "place": "ops_building",
       "mechanic": "Three-way reconciliation",
-      "built": false,
+      "built": true,
       "hints": [
-        "",
-        "",
-        ""
+        "The records room in Operations has the Marigold's passenger cards, Chief. Count the dead.",
+        "Put the six cards in seat order, then match each to a death certificate. One won't have one.",
+        "Seat four, C. Pryce, nineteen: paid for, never certified dead."
       ],
       "clues": []
     },
@@ -282,11 +282,11 @@
       "name": "The Last Call",
       "place": "comms_shelter",
       "mechanic": "Scrub a wax cylinder",
-      "built": false,
+      "built": true,
       "hints": [
-        "",
-        "",
-        ""
+        "Hobbs kept a recording of the Marigold's last call. Listen to it all the way to the end.",
+        "The interesting part is near the end, after the engine screams. Scrub to about two minutes forty.",
+        "Mark it at around 2:40 to 2:48. It's a young woman calling 'Daddy'."
       ],
       "clues": []
     },
@@ -308,11 +308,11 @@
       "name": "The Locked Case",
       "place": "quarters",
       "mechanic": "Lock picking",
-      "built": false,
+      "built": true,
       "hints": [
-        "",
-        "",
-        ""
+        "Doctor Lindqvist's case is in his room in the Quarters. He'll open it if he trusts you; otherwise I can get a warrant.",
+        "If you pick it: light tension only, and try each pin until one clicks. Heavy tension breaks picks.",
+        "The pins set in the order three, one, four, two, with light tension."
       ],
       "clues": []
     },
