@@ -98,6 +98,33 @@ apron, windsock, sun, Raven Ridge, streamed models, indoor zones, planned buildi
   turns before walking, eases in and out of his stride, looks at you, nods and points. He can
   wait where you leave him or walk back to HQ. **J** opens the case file anywhere.
 
+## Stage D: the crime scene (v4, S1-S6)
+
+Pryce's office in the hangar (north-east corner), as found at 06:10: the body slumped at the desk,
+the brandy decanter and glass, the music box, calendar, blotter, pocket watch, the demand note under
+the door, the doctor's bag and Hart's camera case. Press E on anything to examine it.
+
+| Sequence | Where | How |
+|---|---|---|
+| S1 Walk the Room | camera case by the door | mark each way out possible/impossible; photograph (12 plates) |
+| S2 The Body | doctor's bag | direct Lindqvist's examination; find what doesn't fit heart failure |
+| S3 Time of Death | doctor's bag | cooling arithmetic; set a time window with two sliders |
+| S4 The Bench Test | doctor's bag | get the chart (persuade / book / force), 6 drops, 5 samples, 3 chemicals |
+| S5 The Safe | the safe | three-number dial (clues on the walls and the watch), or drill it |
+| S6 Box and Latch | bookshelf | knock the floor, play the music box, pull the books in tune order |
+
+Evidence (v4 section 4): findings need independent sources (sequences, documents, testimony).
+With enough (usually 3) a finding is Established and goes on the HQ board. Tab shows your leads and
+the things you noticed. Data: `src/data/findings.json`, `src/data/sequences.json`.
+Code: `src/game/evidence.js`, `src/game/crimeScene.js`, `src/ui/sequences.js`.
+
+## Stage E: the people (addendum F)
+
+Vivienne, Billie, Lindqvist, Julian, Ox, Tamsin and Hobbs stand where the schedule puts them for the
+time of day, fidget, and turn to face you. E to talk: ask about topics (some unlock as you find things
+or need trust), show them something you found, or watch them for a tell. Trust starts at 50: kind
+questions raise it, pressing lowers it. Data: `src/data/npcs.json`. Code: `src/game/npcs.js`.
+
 ## Clues
 
 The old practice clues (notes, key) are archived in `src/data/_archive/`. The real clue catalogue from

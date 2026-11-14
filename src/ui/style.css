@@ -304,3 +304,40 @@ kbd {
 .intro-hold i { display: block; height: 100%; width: 0; background: #e8c27a; }
 .dlg-choices.waiting { opacity: 0.35; }
 .dlg-text { white-space: pre-line; min-height: 3.2em; }
+
+/* ---------------------------------------------------------------- investigation sequences (Stage D) */
+.seq { position: fixed; inset: 0; z-index: 30; display: flex; align-items: center; justify-content: center; background: rgba(8, 6, 4, 0.72); }
+.seq.hidden { display: none; }
+.seq-card { width: min(760px, 94vw); max-height: 88vh; overflow-y: auto; background: #e9dfc6; color: #2a2116; padding: 20px 26px 22px;
+  font-family: Georgia, 'Times New Roman', serif; box-shadow: 0 20px 60px rgba(0,0,0,0.6); border: 1px solid #8a7656;
+  background-image: repeating-linear-gradient(0deg, rgba(90,70,40,0.04) 0 1px, transparent 1px 3px); }
+.seq-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #8a7656; padding-bottom: 8px; margin-bottom: 10px; }
+.seq-title { font-size: 20px; letter-spacing: 0.04em; }
+.seq-close, .seq-btn { font-family: inherit; font-size: 13px; background: #f4ecda; color: #2a2116; border: 1px solid #8a7656; padding: 4px 10px; cursor: pointer; margin: 2px 4px 2px 0; }
+.seq-btn:hover, .seq-close:hover { background: #fff7e6; }
+.seq-btn.on { background: #6e1f1c; color: #f4ecda; border-color: #6e1f1c; }
+.seq-btn.primary { background: #2a2116; color: #f4ecda; margin-top: 10px; padding: 6px 16px; }
+.seq-intro { font-style: italic; margin: 4px 0 12px; line-height: 1.5; }
+.seq-section { margin: 10px 0; }
+.seq-section h3 { font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; margin: 12px 0 6px; color: #5a4630; }
+.seq-row { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; padding: 6px 0; border-bottom: 1px dotted rgba(90,70,40,0.35); }
+.seq-label { min-width: 190px; font-weight: bold; }
+.seq-text { flex-basis: 100%; font-size: 14px; line-height: 1.5; margin: 2px 0 4px; }
+.seq-dim { color: #7a6a52; font-size: 13px; font-style: italic; }
+.seq-ok { color: #2f5e2a; font-size: 13px; }
+.seq-msg { min-height: 1.4em; margin-top: 12px; font-size: 14px; color: #6e1f1c; line-height: 1.45; }
+.seq-msg.good { color: #2f5e2a; }
+.seq-facts { margin: 4px 0 10px 18px; line-height: 1.6; font-size: 14px; }
+.seq-slider { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
+.seq-slider input { flex: 1; }
+.seq-bar { position: relative; height: 8px; background: #cfc2a2; margin: 8px 0; }
+.seq-bar i { position: absolute; top: 0; bottom: 0; background: #6e1f1c; }
+.seq-grid { border-collapse: collapse; font-size: 14px; }
+.seq-grid td, .seq-grid th { border: 1px solid #b8a682; padding: 4px 8px; text-align: center; }
+.seq-grid td:first-child { text-align: left; }
+.seq-dial { display: flex; gap: 14px; margin: 8px 0; }
+.seq-dial input { width: 56px; font-size: 18px; font-family: inherit; text-align: center; }
+.seq-teeth { display: flex; gap: 6px; margin: 6px 0 10px; }
+.seq-teeth i { width: 30px; height: 46px; background: linear-gradient(#d8b860, #9a7a30); color: #2a2116; font-style: normal; text-align: center; line-height: 46px; font-weight: bold; transition: transform 0.1s, background 0.1s; }
+.seq-teeth i.lit { background: #fff1b0; transform: translateY(4px); }
+.seq-books .seq-btn { min-width: 120px; }

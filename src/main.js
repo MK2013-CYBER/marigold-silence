@@ -23,6 +23,13 @@ import { Quality } from './engine/quality.js';
 import { Intro } from './game/intro.js';
 import introData from './data/scenes/intro.json';
 import castData from './data/cast.json';
+import findingsData from './data/findings.json';
+import sequencesData from './data/sequences.json';
+import npcData from './data/npcs.json';
+import { Evidence } from './game/evidence.js';
+import { CrimeScene } from './game/crimeScene.js';
+import { People, Trust } from './game/npcs.js';
+import { SequenceScreen } from './ui/sequences.js';
 import { Voice } from './engine/voice.js';
 import config from './data/game.json';
 import interactables from './data/interactables.json';
@@ -128,11 +135,51 @@ status.textContent = 'Waking Danny\u2026';
 const cole = await Cole.create(scene, world, ground, worldCfg.cole, camera, castData.people.cole);
 interaction.addLocation('npc', cole.root);
 cole.interaction = interaction; // Danny opens doors himself
+// ---------- evidence: findings need independent sources (v4 section 4) ----------
+const findingCards = findingsData.findings.map((f) => ({ id: f.id, name: f.name, kind: 'Finding', text: f.text, puzzle: null }));
+const evidence = new Evidence({ state, data: findingsData, hud, onEstablished: (fid) => hq.react(fid) });
+hud.evidence = evidence;
+const trust = new Trust(state);
+const spend = (min) => { const s = state.advance(min); if (s > 0) hud.timePassed(s, state.clockLabel()); };
+
 const hq = new HQ({
   state, hud, audio, cole, controller,
-  puzzles: puzzlesData, clues, characters, places: placesData.places, reports: reportsData.reports, lines: coleLines,
+  puzzles: puzzlesData, clues: findingCards, characters, places: placesData.places, reports: reportsData.reports, lines: coleLines,
 });
-interaction.onUI = (def) => hq.handle(def);
+interaction.onUI = (def) => {
+  if (def.ui === 'npc') { people.talk(def.npc); syncFreeze(); return; }
+  if (crime.handle(def)) { syncFreeze(); return; }
+  hq.handle(def);
+};
+
+// ---------- Stage D: the crime scene and its sequences (v4 S1-S6) ----------
+const seqScreen = new SequenceScreen({
+  data: sequencesData, state, evidence, hud, audio, spend, trust, cole,
+  onSolved: (id) => {
+    hud.toast(`Solved: ${sequencesData[id].title}`);
+    hq.danny(coleLines.solved?.[id] ?? coleLines.reactions.default, 6);
+    if (id === 'S6') crime.openTrapdoor();
+  },
+});
+seqScreen.onClose = () => { hq.screen = null; hq.onScreenClosed?.(); };
+const crime = new CrimeScene({
+  hangar, interaction, state, evidence, hud, audio, data: sequencesData, cast: castData.people, trust, spend,
+  dialogue: hq.dialogue, openSequence: (id) => hq.openScreen(seqScreen.setId(id)),
+});
+status.textContent = 'Setting the scene\u2026';
+await crime.build();
+
+// ---------- Stage E: the people of Sable Flat ----------
+const people = new People({
+  scene, ground, state, evidence, hud, cast: castData.people, data: npcData, characters, dialogue: hq.dialogue,
+  interaction, camera, trust, spend, onFreezeChange: () => syncFreeze(),
+});
+status.textContent = 'Gathering the guests\u2026';
+await people.load();
+{
+  const close = hq.dialogue.onClose;
+  hq.dialogue.onClose = () => { people.talking = null; close?.(); };
+}
 let releasingForScreen = false;
 hq.onScreenOpened = () => {
   syncFreeze();
@@ -388,6 +435,7 @@ renderer.setAnimationLoop(() => {
   hangar.update(dt, t, atmosphere.flash);
   interaction.update(dt, controller.active && !controller.frozen);
   cole.update(dt, pos);
+  people.update(dt, pos);
   hq.update();
   const qmsg = quality.update(dt, controller.active);
   if (qmsg) hud.toast(qmsg);
@@ -443,4 +491,4 @@ function introFrame(dt, t) {
 }
 
 // Test hook for automated checks in dev builds only.
-if (import.meta.env.DEV) window.__game = { intro, post, THREE, scene, camera, controller, world, flashlight, renderer, state, interaction, hud, atmosphere, ground, streamer, hangar, cole, hq, quality };
+if (import.meta.env.DEV) window.__game = { intro, post, crime, people, evidence, seqScreen, trust, THREE, scene, camera, controller, world, flashlight, renderer, state, interaction, hud, atmosphere, ground, streamer, hangar, cole, hq, quality };

@@ -97,21 +97,22 @@ export class Hud {
     el('h2', '', head, 'Notebook');
     el('div', 'nb-time', head, `${this.config.clock.dayLabel} · ${state.clockLabel()}`);
 
-    el('h3', '', p, 'Notes & clues');
+    // Leads: findings you have at least one source for (established ones go on the HQ board)
+    el('h3', '', p, 'Leads');
     const list = el('ol', 'nb-list', p);
-    if (state.data.clues.length === 0) {
-      el('li', 'nb-empty', list, 'Nothing yet. Look around; press E on anything that catches your eye.');
-    }
-    for (const { id, at } of state.data.clues) {
-      const c = this.clueById.get(id);
-      if (!c) continue;
+    const known = this.evidence?.known() ?? [];
+    if (!known.length) el('li', 'nb-empty', list, 'Nothing yet. Look around; press E on anything that catches your eye.');
+    for (const f of known) {
       const li = el('li', '', list);
       const meta = el('div', 'nb-meta', li);
-      el('span', 'nb-kind', meta, c.kind);
-      el('span', 'nb-at', meta, formatTime(at));
-      el('div', 'nb-name', li, c.name);
-      el('div', 'nb-text', li, c.text);
+      const n = this.evidence.sources(f.id).length;
+      el('span', 'nb-kind', meta, this.evidence.isEstablished(f.id) ? 'Established' : `Lead ${n} of ${f.need}`);
+      el('div', 'nb-name', li, f.name);
     }
+    el('h3', '', p, 'Things you noticed');
+    const notes = el('ol', 'nb-list', p);
+    if (!state.data.notes?.length) el('li', 'nb-empty', notes, 'Nothing yet.');
+    for (const t of state.data.notes ?? []) el('li', '', notes, t);
 
     el('h3', '', p, 'In your pocket');
     const pocket = el('ul', 'nb-pocket', p);

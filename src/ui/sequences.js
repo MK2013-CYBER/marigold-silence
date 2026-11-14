@@ -1,0 +1,377 @@
+import { parseTime } from '../engine/state.js';
+
+/**
+ * Screens for the office investigation sequences (v4 S1-S6). Each has its own mechanic:
+ *   S1 Walk the Room      mark every exit possible / impossible, photograph with 12 plates
+ *   S2 The Body           direct the doctor's examination; spot what doesn't fit heart failure
+ *   S3 Time of Death      cooling arithmetic; set a time window with two sliders
+ *   S4 The Bench Test     find the chart, then 6 drops x 5 samples x 3 chemicals
+ *   S5 The Safe           three-number dial (or drill it)
+ *   S6 The Box and Latch  listen to the music box, pull the books in the same order
+ * Words and answers: src/data/sequences.json. Progress is saved in state.data.seq.
+ */
+const fmt = (m) => { m = ((m % 1440) + 1440) % 1440; return `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`; };
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+export class SequenceScreen {
+  constructor({ data, state, evidence, hud, audio, spend, onSolved, trust, cole }) {
+    Object.assign(this, { data, state, evidence, hud, audio, spend, onSolved, trust, cole });
+    this.state.data.seq ??= {};
+    this.state.data.examined ??= [];
+    this.el = document.createElement('div');
+    this.el.className = 'seq hidden';
+    this.el.innerHTML = '<div class="seq-card"><div class="seq-head"><span class="seq-title"></span><button class="seq-close">Close (Esc)</button></div><div class="seq-body"></div><div class="seq-msg"></div></div>';
+    document.body.appendChild(this.el);
+    this.body = this.el.querySelector('.seq-body');
+    this.msgEl = this.el.querySelector('.seq-msg');
+    this.el.querySelector('.seq-close').addEventListener('click', () => this.close());
+    this.open = false;
+    this.onClose = null;
+    this.id = null;
+  }
+
+  s(id = this.id) { return (this.state.data.seq[id] ??= {}); }
+  solved(id) { return this.state.data.solved.includes(id); }
+
+  setId(id) { this.id = id; return this; }
+
+  show() {
+    this.el.classList.remove('hidden');
+    this.open = true;
+    this.msg('');
+    this.render();
+  }
+
+  close() {
+    if (!this.open) return;
+    this.el.classList.add('hidden');
+    this.open = false;
+    this.state.save();
+    this.onClose?.();
+  }
+
+  msg(t, good = false) {
+    this.msgEl.textContent = t;
+    this.msgEl.classList.toggle('good', good);
+  }
+
+  solve(id) {
+    if (this.solved(id)) return;
+    this.state.data.solved.push(id);
+    const d = this.data[id];
+    for (const [fid, src] of d.sources ?? []) this.evidence.add(fid, src);
+    this.state.save();
+    this.onSolved?.(id);
+  }
+
+  render() {
+    const d = this.data[this.id];
+    this.el.querySelector('.seq-title').textContent = `${this.id} · ${d.title}`;
+    this.body.replaceChildren();
+    const intro = document.createElement('p');
+    intro.className = 'seq-intro';
+    intro.textContent = this.solved(this.id) ? `Solved. ${d.done}` : d.intro;
+    this.body.appendChild(intro);
+    this[`render${this.id}`]?.(d);
+  }
+
+  _btn(label, fn, cls = '') {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = `seq-btn ${cls}`;
+    b.textContent = label;
+    b.addEventListener('click', (e) => { e.stopPropagation(); fn(); });
+    return b;
+  }
+
+  _row(parent, html) {
+    const r = document.createElement('div');
+    r.className = 'seq-row';
+    r.innerHTML = html;
+    parent.appendChild(r);
+    return r;
+  }
+
+  // ------------------------------------------------------------------ S1 Walk the Room
+  renderS1(d) {
+    const st = this.s();
+    st.marks ??= {};
+    st.photos ??= [];
+    const ex = this.state.data.examined;
+    const exits = document.createElement('div');
+    exits.className = 'seq-section';
+    exits.innerHTML = '<h3>Ways in or out</h3>';
+    for (const e of d.exits) {
+      const seen = ex.includes(e.id === 'flue' ? 'stove' : e.id);
+      const r = this._row(exits, `<span class="seq-label">${esc(e.name)}</span>`);
+      if (!seen) { r.insertAdjacentHTML('beforeend', `<span class="seq-dim">${esc(d.notExamined)}</span>`); continue; }
+      for (const v of ['possible', 'impossible', 'unsure']) {
+        r.appendChild(this._btn(v, () => { st.marks[e.id] = v; this.render(); }, st.marks[e.id] === v ? 'on' : ''));
+      }
+    }
+    this.body.appendChild(exits);
+
+    const ph = document.createElement('div');
+    ph.className = 'seq-section';
+    ph.innerHTML = `<h3>Camera plates: ${d.plates - st.photos.length} of ${d.plates} left</h3>`;
+    const ex2 = this.state.data.examined.filter((k) => this.data.examine[k]);
+    if (!ex2.length) ph.insertAdjacentHTML('beforeend', '<p class="seq-dim">Examine things in the room (E), then photograph them here.</p>');
+    for (const k of ex2) {
+      const r = this._row(ph, `<span class="seq-label">${esc(this.data.examine[k].name)}</span>`);
+      if (st.photos.includes(k)) r.insertAdjacentHTML('beforeend', '<span class="seq-ok">photographed</span>');
+      else if (st.photos.length < d.plates) r.appendChild(this._btn('Photograph', () => { st.photos.push(k); this.audio?.click(); this.spend(1); this.render(); }));
+    }
+    this.body.appendChild(ph);
+    if (this.solved('S1')) return;
+    this.body.appendChild(this._btn('Check my findings', () => {
+      const allMarked = d.exits.every((e) => st.marks[e.id]);
+      if (!allMarked) return this.msg('Mark every way in or out first.');
+      const ok = d.exits.every((e) => st.marks[e.id] === e.answer);
+      if (!ok) return this.msg(d.wrong);
+      const missing = d.mustPhotograph.filter((k) => !st.photos.includes(k));
+      if (missing.length) return this.msg(`You haven't photographed everything that matters yet (${missing.length} left). If you run out of plates, Danny has a spare box at the HQ.`);
+      this.solve('S1');
+      this.render();
+      this.msg(d.done, true);
+    }, 'primary'));
+    if (st.photos.length >= d.plates) this.body.appendChild(this._btn('Fetch a spare box of plates from HQ (20 min)', () => { st.photos = st.photos.filter((k) => d.mustPhotograph.includes(k)); this.spend(20); this.render(); }));
+  }
+
+  // ------------------------------------------------------------------ S2 The Body
+  renderS2(d) {
+    const st = this.s();
+    st.marks ??= {};
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    for (const a of d.areas) {
+      const r = this._row(sec, `<span class="seq-label">${esc(a.name)}</span>`);
+      if (!st.marks[a.id]) {
+        r.appendChild(this._btn('Examine', () => { st.marks[a.id] = 'seen'; this.spend(1); this.render(); }));
+        continue;
+      }
+      r.insertAdjacentHTML('beforeend', `<div class="seq-text"><i>Lindqvist:</i> "${esc(a.doc)}"<br><b>You see:</b> ${esc(a.see)}</div>`);
+      if (st.marks[a.id] === 'seen') {
+        r.appendChild(this._btn('Fits a heart attack', () => { st.marks[a.id] = 'fits'; if (!a.fits) this.msg('Are you sure? Look again at what you saw.'); this.render(); }));
+        r.appendChild(this._btn("Doesn't fit", () => {
+          if (a.fits) { this.msg(d.wrong); this.spend(2); return; }
+          st.marks[a.id] = 'nofit';
+          this.render();
+        }));
+      } else r.insertAdjacentHTML('beforeend', `<span class="${st.marks[a.id] === 'nofit' ? 'seq-ok' : 'seq-dim'}">${st.marks[a.id] === 'nofit' ? "doesn't fit" : 'fits'}</span>`);
+    }
+    this.body.appendChild(sec);
+    const found = d.areas.filter((a) => st.marks[a.id] === 'nofit').length;
+    if (!this.solved('S2') && found >= d.need) { this.solve('S2'); this.msg(d.done, true); }
+    else if (!this.solved('S2')) this.msg(`Signs that don't fit heart failure: ${found} of ${d.need}.`);
+  }
+
+  // ------------------------------------------------------------------ S3 Time of Death
+  renderS3(d) {
+    const st = this.s();
+    const lo = parseTime(d.range[0]), hi = parseTime(d.range[1]) + 1440;
+    st.from ??= lo + 120;
+    st.to ??= lo + 360;
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    sec.innerHTML = `<ul class="seq-facts">${d.facts.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>
+      <label class="seq-slider">Earliest: <b class="f"></b><input type="range" class="from" min="${lo}" max="${hi}" step="15"></label>
+      <label class="seq-slider">Latest: <b class="t"></b><input type="range" class="to" min="${lo}" max="${hi}" step="15"></label>
+      <div class="seq-bar"><i></i></div>`;
+    const from = sec.querySelector('.from'), to = sec.querySelector('.to');
+    from.value = st.from;
+    to.value = st.to;
+    const draw = () => {
+      st.from = +from.value;
+      st.to = Math.max(+to.value, st.from);
+      sec.querySelector('.f').textContent = fmt(st.from);
+      sec.querySelector('.t').textContent = fmt(st.to);
+      const bar = sec.querySelector('.seq-bar i');
+      bar.style.left = `${((st.from - lo) / (hi - lo)) * 100}%`;
+      bar.style.width = `${((st.to - st.from) / (hi - lo)) * 100}%`;
+    };
+    from.addEventListener('input', draw);
+    to.addEventListener('input', draw);
+    for (const el of [from, to]) el.addEventListener('keydown', (e) => e.stopPropagation());
+    draw();
+    this.body.appendChild(sec);
+    if (this.solved('S3')) return;
+    this.body.appendChild(this._btn('This is my answer', () => {
+      const c = d.check;
+      const death = parseTime(c.mustInclude);
+      if (!(st.from <= death && st.to >= death) || st.from < parseTime(c.earliest) || st.to > parseTime(c.latest)) { this.spend(2); return this.msg(d.wrong); }
+      if (st.to - st.from > c.maxWidth) return this.msg(d.tooWide);
+      this.solve('S3');
+      this.render();
+      this.msg(d.done, true);
+    }, 'primary'));
+  }
+
+  // ------------------------------------------------------------------ S4 The Bench Test
+  renderS4(d) {
+    const st = this.s();
+    st.tests ??= {};
+    st.drops ??= d.drops;
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    if (!st.chart) {
+      sec.innerHTML = '<h3>The reference chart is missing</h3>';
+      for (const r of d.chartRoutes) {
+        sec.appendChild(this._btn(r.label, () => {
+          this.spend(r.minutes);
+          if (r.trustNeeded && this.trust.get(r.who) < r.trustNeeded) { this.trust.change(r.who, -2); return this.msg(r.no); }
+          if (r.trustCost) this.trust.change(r.who, -r.trustCost);
+          if (r.id === 'ask') this.evidence.add('F29', 'S4', true);
+          st.chart = r.id;
+          this.render();
+          this.msg(r.ok, true);
+        }));
+      }
+      this.body.appendChild(sec);
+      return;
+    }
+    sec.innerHTML = `<h3>Chart</h3><ul class="seq-facts">${d.chart.map((c) => `<li>${esc(c)}</li>`).join('')}</ul><h3>Drops left: ${st.drops}</h3>`;
+    const grid = document.createElement('table');
+    grid.className = 'seq-grid';
+    grid.innerHTML = `<tr><th></th>${d.reagents.map((r) => `<th>${r}</th>`).join('')}</tr>`;
+    for (const smp of d.samples) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${esc(smp.name)}</td>`;
+      for (const rg of d.reagents) {
+        const td = document.createElement('td');
+        const key = `${smp.id}:${rg}`;
+        if (st.tests[key]) td.textContent = st.tests[key];
+        else if (st.drops > 0 && !this.solved('S4')) td.appendChild(this._btn('test', () => { st.drops--; st.tests[key] = d.results[key] ?? d.results.default; this.audio?.click(); this.spend(2); this.render(); }));
+        tr.appendChild(td);
+      }
+      grid.appendChild(tr);
+    }
+    sec.appendChild(grid);
+    this.body.appendChild(sec);
+    if (this.solved('S4')) return;
+    if (st.drops === 0) this.body.appendChild(this._btn(d.refill, () => { st.drops = d.drops; this.spend(30); this.render(); }));
+    const q = document.createElement('div');
+    q.className = 'seq-section';
+    q.innerHTML = `<h3>${esc(d.question)}</h3>`;
+    st.pick ??= [];
+    for (const smp of d.samples) {
+      q.appendChild(this._btn(smp.name, () => {
+        st.pick = st.pick.includes(smp.id) ? st.pick.filter((x) => x !== smp.id) : [...st.pick, smp.id];
+        this.render();
+      }, st.pick.includes(smp.id) ? 'on' : ''));
+    }
+    q.appendChild(this._btn('Confirm', () => {
+      const ok = d.answer.length === st.pick.length && d.answer.every((a) => st.pick.includes(a));
+      const tested = d.answer.every((a) => st.tests[`${a}:B`]);
+      if (!ok || !tested) return this.msg(tested ? d.wrong : "You haven't proved that with a test yet.");
+      this.solve('S4');
+      this.render();
+      this.msg(d.done, true);
+    }, 'primary'));
+    this.body.appendChild(q);
+  }
+
+  // ------------------------------------------------------------------ S5 The Safe
+  renderS5(d) {
+    const st = this.s();
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    if (!st.open) {
+      sec.innerHTML = '<div class="seq-dial"><label>Left <input type="number" min="0" max="39" class="n0"></label><label>Right <input type="number" min="0" max="39" class="n1"></label><label>Left <input type="number" min="0" max="39" class="n2"></label></div>';
+      for (const i of [0, 1, 2]) sec.querySelector(`.n${i}`).addEventListener('keydown', (e) => e.stopPropagation());
+      sec.appendChild(this._btn('Try the combination', () => {
+        const v = [0, 1, 2].map((i) => Number(sec.querySelector(`.n${i}`).value));
+        this.spend(d.tryMinutes);
+        this.audio?.click();
+        if (v.every((n, i) => n === d.combo[i])) { st.open = 'dial'; this.render(); this.msg('Click. The handle turns.', true); }
+        else this.msg(d.wrong);
+      }, 'primary'));
+      sec.appendChild(this._btn(d.drill.label, () => { this.spend(d.drill.minutes); st.open = 'drill'; this.render(); this.msg(d.drill.note); }));
+      this.body.appendChild(sec);
+      return;
+    }
+    st.read ??= [];
+    sec.innerHTML = '<h3>Inside the safe</h3>';
+    for (const c of d.contents) {
+      const lost = st.open === 'drill' && c.id === 'letter';
+      const r = this._row(sec, `<span class="seq-label">${esc(c.name)}</span>`);
+      if (st.read.includes(c.id)) r.insertAdjacentHTML('beforeend', `<div class="seq-text">${esc(lost ? 'Too badly scorched by the drill to read more than "...forgive me, my girl..."' : c.text)}</div>`);
+      else r.appendChild(this._btn('Read', () => {
+        st.read.push(c.id);
+        this.spend(3);
+        if (!lost) for (const [fid, src] of c.sources) this.evidence.add(fid, src);
+        this.render();
+      }));
+    }
+    this.body.appendChild(sec);
+    if (!this.solved('S5') && st.read.length === d.contents.length) { this.solve('S5'); this.msg(d.done, true); }
+  }
+
+  // ------------------------------------------------------------------ S6 The Floor, the Box and the Latch
+  renderS6(d) {
+    const st = this.s();
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    if (!this.state.data.examined.includes('floor') && !this.solved('S6')) {
+      sec.innerHTML = `<p class="seq-dim">${esc(d.needsKnock)}</p>`;
+      this.body.appendChild(sec);
+      return;
+    }
+    const teeth = document.createElement('div');
+    teeth.className = 'seq-teeth';
+    for (let i = 1; i <= 8; i++) teeth.insertAdjacentHTML('beforeend', `<i data-n="${i}">${i}</i>`);
+    sec.appendChild(teeth);
+    sec.appendChild(this._btn('Play the music box', () => this.playTune(d.tune, teeth)));
+    const shelf = document.createElement('div');
+    shelf.className = 'seq-books';
+    st.pulled ??= [];
+    d.books.forEach((name, i) => {
+      const b = this._btn(name, () => {
+        if (this.solved('S6')) return;
+        const n = i + 1;
+        this.bell(n, 0.25);
+        if (d.tune[st.pulled.length] === n) {
+          st.pulled.push(n);
+          if (st.pulled.length === d.tune.length) { this.solve('S6'); this.render(); this.msg(d.done, true); return; }
+          this.render();
+        } else { st.pulled = []; this.msg(d.wrongBook); this.render(); this.audio?.rattle?.(); }
+      }, st.pulled.includes(i + 1) ? 'on' : '');
+      shelf.appendChild(b);
+    });
+    sec.insertAdjacentHTML('beforeend', `<h3>The pull-books (${st.pulled.length} of ${d.tune.length})</h3>`);
+    sec.appendChild(shelf);
+    if (!this.solved('S6')) sec.appendChild(this._btn(d.crowbar.label, () => { this.spend(d.crowbar.minutes); this.audio?.thunder?.(0, 0.25); this.solve('S6'); this.render(); this.msg(d.done, true); }));
+    this.body.appendChild(sec);
+  }
+
+  /** The music box: each comb tooth is a note; the tune lights the teeth as it plays. */
+  playTune(tune, teeth) {
+    if (this._playing) return;
+    this._playing = true;
+    tune.forEach((n, i) => setTimeout(() => {
+      this.bell(n, 0.9);
+      const el = teeth?.querySelector(`[data-n="${n}"]`);
+      el?.classList.add('lit');
+      setTimeout(() => el?.classList.remove('lit'), 380);
+      if (i === tune.length - 1) setTimeout(() => { this._playing = false; }, 600);
+    }, i * 520));
+  }
+
+  bell(n, len = 0.8) {
+    const ctx = this.audio?.ctx;
+    if (!ctx) return;
+    const scale = [0, 2, 3, 5, 7, 8, 10, 12]; // a minor scale: tooth 1 is the lowest
+    const f = 440 * 2 ** ((scale[n - 1] + 3) / 12) * 2;
+    const t = ctx.currentTime;
+    for (const [mul, lvl] of [[1, 0.12], [3.01, 0.03]]) {
+      const o = ctx.createOscillator();
+      o.frequency.value = f * mul;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(lvl, t + 0.005);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + len);
+      o.connect(g).connect(this.audio.master);
+      o.start(t);
+      o.stop(t + len + 0.05);
+    }
+  }
+}

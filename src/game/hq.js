@@ -233,6 +233,12 @@ export class HQ {
     this.state.save();
   }
 
+  /** Danny's reaction when a finding becomes established. */
+  react(fid) {
+    const r = this.lines.reactions;
+    this.danny(r[fid] ?? r.default, 6);
+  }
+
   // ------------------------------------------------------------------ per frame
   update() {
     // clock reminders at 15:00 and 16:30, once each

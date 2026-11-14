@@ -1,0 +1,359 @@
+{
+  "_note": "v4 findings catalog. A finding is ESTABLISHED when it has 3 independent sources (or all its sources, if it lists fewer than 3). Only established findings go on the board. 'need' = sources required.",
+  "findings": [
+    {
+      "id": "F01",
+      "name": "The office was bolted from inside",
+      "text": "The bolt was thrown on the inside and the window is barred. Nobody left by the door or the window.",
+      "sources": [
+        "S1",
+        "S25",
+        "billie",
+        "tamsin"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F02",
+      "name": "There is a way into the office through the floor",
+      "text": "Something under the office floor is hollow.",
+      "sources": [
+        "S1",
+        "S6",
+        "S17",
+        "hobbs",
+        "ox"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F03",
+      "name": "Pryce died between 21:30 and 22:15",
+      "text": "The body's temperature, stiffness and the settled blood all point to the same window.",
+      "sources": [
+        "S3",
+        "S2",
+        "S25",
+        "vivienne"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F04",
+      "name": "He was poisoned, not a heart attack",
+      "text": "The signs on the body do not fit heart failure.",
+      "sources": [
+        "S2",
+        "S4",
+        "lindqvist"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F05",
+      "name": "The poison was cyanide, in the decanter",
+      "text": "The brandy in the decanter and in his glass test positive for cyanide.",
+      "sources": [
+        "S4",
+        "S8"
+      ],
+      "need": 2
+    },
+    {
+      "id": "F06",
+      "name": "The darkroom's cyanide jar is a scoop short",
+      "text": "The darkroom's cyanide jar is a scoop short.",
+      "sources": [
+        "S8",
+        "scuffs",
+        "S17"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F07",
+      "name": "Someone wound the music box after Pryce died",
+      "text": "The music box was playing at ten o'clock, after he was dead.",
+      "sources": [
+        "S3",
+        "S6",
+        "S25",
+        "vivienne"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F08",
+      "name": "A small, narrow, burn-scarred hand touched the decanter and music box",
+      "text": "A small, narrow, burn-scarred hand touched the decanter and music box.",
+      "sources": [
+        "S23",
+        "S6"
+      ],
+      "need": 2
+    },
+    {
+      "id": "F09",
+      "name": "The 'gunshot' was a backfire; the revolver was never fired",
+      "text": "The revolver in the drawer is clean and fully loaded.",
+      "sources": [
+        "S1",
+        "S16",
+        "billie"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F10",
+      "name": "The blackout was lightning; Hobbs reset the power",
+      "text": "The blackout was lightning; Hobbs reset the power.",
+      "sources": [
+        "S12",
+        "hobbs"
+      ],
+      "need": 2
+    },
+    {
+      "id": "F11",
+      "name": "Ox lied about his night",
+      "text": "Ox lied about his night.",
+      "sources": [
+        "S12",
+        "S14",
+        "S15"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F12",
+      "name": "The telegram sender learned Morse by listening",
+      "text": "The telegram sender learned Morse by listening.",
+      "sources": [
+        "S18",
+        "hobbs"
+      ],
+      "need": 2
+    },
+    {
+      "id": "F13",
+      "name": "The telegraph line was tapped; the tap runs to the hangar",
+      "text": "The telegraph line was tapped; the tap runs to the hangar.",
+      "sources": [
+        "S18",
+        "S17",
+        "S6"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F14",
+      "name": "An extra ration is signed out every day",
+      "text": "An extra ration is signed out every day.",
+      "sources": [
+        "S14",
+        "rack",
+        "tamsin"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F15",
+      "name": "A woman's things are hidden",
+      "text": "A woman's things are hidden.",
+      "sources": [
+        "S15",
+        "ox",
+        "S22"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F16",
+      "name": "Burn dressings were shipped to a false name for two years",
+      "text": "Burn dressings were shipped to a false name for two years.",
+      "sources": [
+        "S22",
+        "S10",
+        "lindqvist"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F17",
+      "name": "A lamp glows under the hangar roof vent every dusk",
+      "text": "A lamp glows under the hangar roof vent every dusk.",
+      "sources": [
+        "S21",
+        "hobbs",
+        "ox"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F18",
+      "name": "Someone was taken alive from the 1931 wreck",
+      "text": "Someone was taken alive from the 1931 wreck.",
+      "sources": [
+        "S9",
+        "S10",
+        "S20"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F19",
+      "name": "Six aboard the Marigold, five death certificates",
+      "text": "Six aboard the Marigold, five death certificates.",
+      "sources": [
+        "S10",
+        "newspaper",
+        "vivienne"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F20",
+      "name": "The Marigold's last call was a young woman's voice",
+      "text": "The Marigold's last call was a young woman's voice.",
+      "sources": [
+        "S20",
+        "hobbslog"
+      ],
+      "need": 2
+    },
+    {
+      "id": "F21",
+      "name": "A flight to Zürich was planned for five this morning",
+      "text": "The blotter on the desk still shows: ZÜRICH 0500 / 2 PASS.",
+      "sources": [
+        "S1",
+        "S7",
+        "flightplan"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F22",
+      "name": "Pryce was about to confess something",
+      "text": "His calendar for today reads 'END IT', and a half-burnt letter in the safe speaks of ending 'the silence'.",
+      "sources": [
+        "S5",
+        "calendar",
+        "tamsin"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F23",
+      "name": "The 1931 weather report was falsified",
+      "text": "The 1931 weather report was falsified.",
+      "sources": [
+        "S19",
+        "S5",
+        "S24"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F24",
+      "name": "The cracked engine mount was signed off by Ox",
+      "text": "The cracked engine mount was signed off by Ox.",
+      "sources": [
+        "S13",
+        "S5",
+        "ox"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F25",
+      "name": "Julian forged a page and paid to bury the inquiry",
+      "text": "Julian forged a page and paid to bury the inquiry.",
+      "sources": [
+        "S11",
+        "S5",
+        "S10"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F26",
+      "name": "Vivienne was leaving Pryce; her letter is not a murder plan",
+      "text": "Vivienne was leaving Pryce; her letter is not a murder plan.",
+      "sources": [
+        "S11",
+        "vivienne",
+        "julian"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F27",
+      "name": "Tamsin was blackmailing Pryce and left a demand note",
+      "text": "A typed note under the door demands money. Bank stubs in the safe carry her initials.",
+      "sources": [
+        "S24",
+        "S5",
+        "S1",
+        "S19"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F28",
+      "name": "Billie ran the Trimotor's engines last night; her hands are not the print",
+      "text": "Billie ran the Trimotor's engines last night; her hands are not the print.",
+      "sources": [
+        "S16",
+        "S23",
+        "billie"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F29",
+      "name": "Lindqvist knew about a hidden person",
+      "text": "Lindqvist knew about a hidden person.",
+      "sources": [
+        "S22",
+        "S4",
+        "S7"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F30",
+      "name": "Hobbs has heard tapping in the wires for months",
+      "text": "Hobbs has heard tapping in the wires for months.",
+      "sources": [
+        "hobbs",
+        "S18",
+        "S21"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F31",
+      "name": "Underground passages link the hangar, storage shed, Operations and fuel farm",
+      "text": "Underground passages link the hangar, storage shed, Operations and fuel farm.",
+      "sources": [
+        "S17",
+        "S15",
+        "S8",
+        "S6"
+      ],
+      "need": 3
+    },
+    {
+      "id": "F32",
+      "name": "The Trimotor was readied for a sedated passenger lying down",
+      "text": "The Trimotor was readied for a sedated passenger lying down.",
+      "sources": [
+        "S7",
+        "S22",
+        "flightplan"
+      ],
+      "need": 3
+    }
+  ]
+}

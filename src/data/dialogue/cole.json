@@ -87,11 +87,29 @@
     "C21": "So it wasn't Pryce who sent for us. Then who did?",
     "C25": "Small hands. Scarred. Nobody at that dinner has hands like that.",
     "C27": "Six on the manifest, five certificates... Chief, that's not a clerical error.",
-    "default": "Pinning it up on the board, Chief."
+    "default": "Pinning it up on the board, Chief.",
+    "F01": "Bolted from the inside, Chief. So how did anybody get out?",
+    "F02": "A way in through the floor. That changes everything.",
+    "F03": "Half past nine to quarter past ten. Now we know when to ask everyone where they were.",
+    "F04": "Chief, that's not a heart-attack face. Somebody poisoned him.",
+    "F05": "Cyanide in the decanter. Anyone who could get into that room could have done it.",
+    "F07": "Somebody wound that music box after he was dead. Who, and why?",
+    "F09": "So the 'gunshot' was an engine. One less thing to chase.",
+    "F21": "Zürich at five in the morning. Two passengers. Who was the second one?",
+    "F22": "He was going to confess. That's a motive for half the people at that dinner.",
+    "F27": "Miss Quill was squeezing him. That's ugly, Chief, but blackmailers want their mark alive."
   },
   "rest": "Get some rest, Chief. I'll wake you in half an hour.",
   "typewriter": "Not yet, Chief. When we've got the who, the how, the where and the why, I'll type it up and we'll file it.",
   "lab": "That's the fingerprint kit, Chief: powder, brushes and the good magnifying glass. Bring me something to dust.",
   "timelineEmpty": "We'll need some hard facts before we can pin the night down. Right now it's all 'about nine-ish'.",
-  "wake": "Rise and shine, Chief. Half an hour, like I promised."
+  "wake": "Rise and shine, Chief. Half an hour, like I promised.",
+  "solved": {
+    "S1": "Every way out checked and on film. Only the floor's left, Chief.",
+    "S2": "Pink skin and bitter almonds. I read about that in a manual once. Cyanide.",
+    "S3": "So the music box was playing after he died. That gives me goosebumps, Chief.",
+    "S4": "Prussian blue. That's cyanide, all right. In the decanter.",
+    "S5": "Four people's secrets in one tin box. He kept everyone on a leash, didn't he?",
+    "S6": "A trapdoor. Chief, there's something under this airfield."
+  }
 }
