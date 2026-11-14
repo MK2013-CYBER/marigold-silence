@@ -113,11 +113,11 @@
       "name": "Readied for Flight",
       "place": "hangar",
       "mechanic": "Cabin inference",
-      "built": false,
+      "built": true,
       "hints": [
-        "",
-        "",
-        ""
+        "The Trimotor in the hangar was being got ready for a flight, Chief. Climb into the cabin and look around.",
+        "Look at everything: the cot, the straps, the trunk, the hat box, and the flight plan in the cockpit.",
+        "A stretcher with straps, a woman's trunk for 'E. Marsh', and a plan for Zürich at five. It was readied for a passenger lying down, sedated."
       ],
       "clues": []
     },
@@ -165,11 +165,11 @@
       "name": "Raking Light",
       "place": "ops_building",
       "mechanic": "Read charred paper with a lamp",
-      "built": false,
+      "built": true,
       "hints": [
-        "",
-        "",
-        ""
+        "The lounge fireplace in Operations is still warm, Chief. Somebody burned papers before dawn.",
+        "Move the lamp slowly around each sheet. Each line only shows at its own angle.",
+        "The letter is Vivienne leaving him, not killing him. The contract page has Julian's forged signature."
       ],
       "clues": []
     },
@@ -178,11 +178,11 @@
       "name": "The Blackout",
       "place": "maint_shed",
       "mechanic": "Constraint wiring",
-      "built": false,
+      "built": true,
       "hints": [
-        "",
-        "",
-        ""
+        "The hangar lights went out at noon, Chief. The fuse panel's in the maintenance shed.",
+        "The hangar, the radio and the beacon must be on. Don't overload either generator.",
+        "Hangar and beacon on generator 1, radio and the Quarters on generator 2. Then look under the panel."
       ],
       "clues": []
     },
@@ -191,11 +191,11 @@
       "name": "The Cracked Mount",
       "place": "maint_shed",
       "mechanic": "Dye-penetrant reading",
-      "built": false,
+      "built": true,
       "hints": [
-        "",
-        "",
-        ""
+        "Ox's old engine mounts are in the maintenance shed. Test them for cracks.",
+        "Dye, wait, wipe, developer: in that order. Straight parallel lines are machining marks.",
+        "Mount 2, the Marigold's: the jagged branching line is a real crack."
       ],
       "clues": []
     },
@@ -230,11 +230,11 @@
       "name": "The Night Burn",
       "place": "fuel_farm",
       "mechanic": "Gauge reading",
-      "built": false,
+      "built": true,
       "hints": [
-        "",
-        "",
-        ""
+        "Read every fuel gauge yourself, Chief, before you believe the ledger.",
+        "Compare today's reading with yesterday's, then check what Ox logged as issued.",
+        "Tank C, the Trimotor's, is 38 gallons short with nothing logged. Then look at the Waco's fuel cap."
       ],
       "clues": []
     },
@@ -269,11 +269,11 @@
       "name": "The Barograph Overlay",
       "place": "comms_shelter",
       "mechanic": "Overlay a chart",
-      "built": false,
+      "built": true,
       "hints": [
-        "",
-        "",
-        ""
+        "Hobbs kept his original barograph traces. Lay the 1931 one over the official report.",
+        "Slide the tracing until the time marks line up, then look at the letter 'e' in the report under the magnifier.",
+        "Line it up at about 37. The chipped 'e' is Miss Quill's typewriter."
       ],
       "clues": []
     },
@@ -295,11 +295,11 @@
       "name": "The Stakeout",
       "place": "beacon_tower",
       "mechanic": "Watch with binoculars",
-      "built": false,
+      "built": true,
       "hints": [
-        "",
-        "",
-        ""
+        "The beacon keeper's log mentions a glow from the hangar roof at dusk. Go up the tower at half past four.",
+        "Wait for dusk, then sweep the binoculars along the hangar roof slowly.",
+        "The glow is at the roof vent, a little right of centre. Stop on it and say 'There!'."
       ],
       "clues": []
     },
@@ -334,11 +334,11 @@
       "name": "Tamsin's Shorthand",
       "place": "hq_shed",
       "mechanic": "Cryptogram",
-      "built": false,
+      "built": true,
       "hints": [
-        "",
-        "",
-        ""
+        "Tamsin's ledger is in a cipher, Chief. Every letter stands for another.",
+        "It's a keyword alphabet. The keyword is a name everyone keeps saying.",
+        "The keyword is MARIGOLD."
       ],
       "clues": []
     },

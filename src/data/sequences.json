@@ -1315,5 +1315,471 @@
         "S22"
       ]
     ]
-  }
+  },
+  "spots5": [
+    {
+      "seq": "S7",
+      "pos": [
+        -7.05,
+        1.6,
+        -3.05
+      ],
+      "size": [
+        0.3,
+        1.8,
+        1.0
+      ],
+      "prompt": "Climb into the Trimotor's cabin (S7)",
+      "find": null
+    },
+    {
+      "seq": "S11",
+      "pos": [
+        38.4,
+        0.5,
+        -25.9
+      ],
+      "size": [
+        1.0,
+        1.0,
+        0.6
+      ],
+      "prompt": "The lounge fireplace (S11)",
+      "find": null
+    },
+    {
+      "seq": "S12",
+      "pos": [
+        -60.4,
+        1.3,
+        21.5
+      ],
+      "size": [
+        0.6,
+        1.0,
+        1.0
+      ],
+      "prompt": "The fuse panel (S12)",
+      "find": "MaintShed_FusePanel"
+    },
+    {
+      "seq": "S13",
+      "pos": [
+        -59.2,
+        0.85,
+        19.0
+      ],
+      "size": [
+        1.2,
+        0.8,
+        0.8
+      ],
+      "prompt": "The old engine mounts (S13)",
+      "find": null
+    },
+    {
+      "seq": "S16",
+      "pos": [
+        80.4,
+        1.0,
+        36.6
+      ],
+      "size": [
+        1.0,
+        1.2,
+        1.0
+      ],
+      "prompt": "The tank gauges and fuel ledger (S16)",
+      "find": null
+    },
+    {
+      "seq": "S19",
+      "pos": [
+        41.6,
+        1.0,
+        110.8
+      ],
+      "size": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "prompt": "Hobbs's barograph charts (S19)",
+      "find": null
+    },
+    {
+      "seq": "S21",
+      "pos": [
+        -258.2,
+        1.0,
+        47.2
+      ],
+      "size": [
+        0.8,
+        1.2,
+        0.8
+      ],
+      "prompt": "The keeper's log and binoculars (S21)",
+      "find": "Beacon_KeeperBox"
+    },
+    {
+      "seq": "S24",
+      "pos": [
+        28.2,
+        0.9,
+        -147.5
+      ],
+      "size": [
+        0.6,
+        0.5,
+        0.5
+      ],
+      "prompt": "Tamsin's ledger fragments (S24)",
+      "find": null
+    }
+  ],
+  "wacocap": {
+    "name": "The Waco's fuel cap",
+    "prompt": "Look at the Waco's fuel cap",
+    "text": "The fuel cap on the Waco's top wing is loose, and there's a greasy thumbprint smeared across it: a big thumb, black with engine grease. Not Billie's.",
+    "note": "A big greasy thumbprint on the Waco's loose fuel cap."
+  },
+  "S7": {
+    "title": "Readied for Flight",
+    "intro": "Inside the Trimotor 'Marigold II'. Look at everything in the cabin and the cockpit, then decide what this plane was being made ready for.",
+    "items": [
+      {
+        "id": "cot",
+        "name": "A stretcher cot strapped to the floor",
+        "text": "A canvas stretcher, bolted where three seats have been removed, with leather restraint straps at the chest and ankles."
+      },
+      {
+        "id": "blankets",
+        "name": "Wool blankets and a pillow",
+        "text": "Folded, new, still smelling of the shop."
+      },
+      {
+        "id": "trunk",
+        "name": "A travelling trunk",
+        "text": "A woman's trunk, labelled in Pryce's hand: 'E. MARSH, c/o Hotel Baur au Lac, Zürich'."
+      },
+      {
+        "id": "hat",
+        "name": "A hat box",
+        "text": "Inside, a soft felt cloche with a veil. Something to hide a face."
+      },
+      {
+        "id": "plan",
+        "name": "The flight plan in the cockpit",
+        "text": "Sable Flat to Zürich, by Lisbon. Depart 05:00, 18 November. Pilot: W. Strand. Passengers: 2. Signed C. Pryce."
+      }
+    ],
+    "question": "What was this plane being readied for?",
+    "options": [
+      "Carrying cargo out of the country",
+      "A business trip for Pryce alone",
+      "A passenger who couldn't walk or sit, kept calm and lying down",
+      "A getaway for the murderer"
+    ],
+    "answer": 2,
+    "needAll": "Look at everything first.",
+    "wrong": "Look again at the cot and the straps, Chief.",
+    "done": "A stretcher, straps and a trunk for a woman called E. Marsh. Pryce meant to fly someone out at five this morning, lying down and sedated. Billie goes very quiet. \"He told me it was a medical charter.\"",
+    "sources": [
+      [
+        "F21",
+        "S7"
+      ],
+      [
+        "F32",
+        "S7"
+      ],
+      [
+        "F29",
+        "S7"
+      ]
+    ]
+  },
+  "S11": {
+    "title": "Raking Light",
+    "intro": "Two charred sheets in the lounge fireplace, the ashes still faintly warm. Move the lamp around them: each line only shows when the light rakes across it at the right angle.",
+    "sheets": [
+      {
+        "name": "Sheet 1: cream writing paper",
+        "lines": [
+          [
+            "My dearest J,",
+            25
+          ],
+          [
+            "By Saturday we shall be free of him.",
+            70
+          ],
+          [
+            "I have the tickets. The 9.40 from Reno.",
+            115
+          ],
+          [
+            "Not one more year in that house. V.",
+            150
+          ]
+        ]
+      },
+      {
+        "name": "Sheet 2: a typed contract page",
+        "lines": [
+          [
+            "...findings of the inquiry into the loss of the Marigold...",
+            40
+          ],
+          [
+            "...no fault attaches to Meridian Air or its agents...",
+            95
+          ],
+          [
+            "Signed: [a signature in a different ink, traced over pencil]",
+            135
+          ]
+        ]
+      }
+    ],
+    "tolerance": 9,
+    "question": "What do these sheets show?",
+    "options": [
+      "Vivienne planned to poison her husband with Julian",
+      "Vivienne was leaving her husband, and Julian forged a signature on the inquiry",
+      "Julian wrote both"
+    ],
+    "answer": 1,
+    "wrong": "Read the letter again, Chief. Free of him how?",
+    "done": "Vivienne was running away, not plotting murder: she had train tickets. And Julian forged a signature to bury the 1931 inquiry. Vivienne walks in and sees what you're holding.",
+    "sources": [
+      [
+        "F25",
+        "S11"
+      ],
+      [
+        "F26",
+        "S11"
+      ]
+    ]
+  },
+  "S12": {
+    "title": "The Blackout",
+    "intro": "At noon the hangar lights died. Two generators, five circuits. The hangar, the radio and the beacon must be on; nothing may be overloaded. Generator 1 can carry 5 units, generator 2 can carry 3.",
+    "circuits": [
+      {
+        "id": "hangar",
+        "name": "Hangar lights",
+        "load": 3,
+        "must": true
+      },
+      {
+        "id": "radio",
+        "name": "Radio & weather",
+        "load": 1,
+        "must": true
+      },
+      {
+        "id": "beacon",
+        "name": "Airway beacon",
+        "load": 2,
+        "must": true
+      },
+      {
+        "id": "quarters",
+        "name": "Quarters",
+        "load": 2,
+        "must": false
+      },
+      {
+        "id": "ops",
+        "name": "Operations",
+        "load": 2,
+        "must": false
+      }
+    ],
+    "caps": [
+      5,
+      3
+    ],
+    "over": "Overloaded: the breaker trips.",
+    "missing": "The hangar, radio and beacon all need power.",
+    "observe": "Under the panel: the lightning arrestor is burnt black, and the reset lever is sticky with radio solder flux, not Ox's engine grease. Ox, behind you, says he fixed it. He didn't.",
+    "done": "Power's back. Lightning took the arrestor last night, and whoever reset it was a radio man: Hobbs. Ox claimed the credit, and that's a lie.",
+    "sources": [
+      [
+        "F10",
+        "S12"
+      ],
+      [
+        "F11",
+        "S12"
+      ]
+    ]
+  },
+  "S13": {
+    "title": "The Cracked Mount",
+    "intro": "Four old engine mounts on the bench. Dye-penetrant test: spray the red dye, wait, wipe it off, then spray the white developer. Cracks show as red lines. Ox watches you.",
+    "mounts": [
+      "Mount 1",
+      "Mount 2 (tagged 'Marigold, No. 2')",
+      "Mount 3",
+      "Mount 4"
+    ],
+    "steps": [
+      "Spray red dye",
+      "Wait five minutes",
+      "Wipe it clean",
+      "Spray white developer"
+    ],
+    "patterns": {
+      "Mount 1": "straight",
+      "Mount 2 (tagged 'Marigold, No. 2')": "crack",
+      "Mount 3": "straight",
+      "Mount 4": "clean"
+    },
+    "wrongStep": "Wrong order: now it's a smeared red mess. Clean it and start again.",
+    "question": "Which mount has a real crack?",
+    "wrong": "Straight, parallel lines are just marks from the machine that made the part, Chief.",
+    "ox": "Ox stares at it. \"I did what I was told. Mr. Pryce said pass it, so I passed it.\"",
+    "done": "The Marigold's number two engine mount was cracked, and Ox signed it off as safe.",
+    "sources": [
+      [
+        "F24",
+        "S13"
+      ]
+    ]
+  },
+  "S16": {
+    "title": "The Night Burn",
+    "intro": "Read each tank's dial gauge, write it in the ledger, and compare with yesterday's figures. The gauges read in gallons.",
+    "tanks": [
+      {
+        "id": "A",
+        "name": "Tank A (motor fuel)",
+        "now": 412,
+        "yesterday": 412
+      },
+      {
+        "id": "B",
+        "name": "Tank B (Waco, Mail)",
+        "now": 296,
+        "yesterday": 301
+      },
+      {
+        "id": "C",
+        "name": "Tank C (Trimotor)",
+        "now": 188,
+        "yesterday": 226
+      },
+      {
+        "id": "D",
+        "name": "Tank D (generator)",
+        "now": 140,
+        "yesterday": 150
+      }
+    ],
+    "log": "Today's issues logged by Ox: Tank B 5 gal (mail plane), Tank D 10 gal (generator). Nothing logged from Tank C.",
+    "question": "Which tank lost fuel that nobody logged, and how much?",
+    "answer": [
+      "C",
+      38
+    ],
+    "wrongRead": "Your reading doesn't match the needle. Look again.",
+    "wrong": "Compare each tank with yesterday AND with the issue log, Chief.",
+    "done": "Thirty-eight gallons gone from the Trimotor's tank overnight, unlogged: someone ran her engines for a long time. That bang at quarter to eleven was her backfiring.",
+    "sources": [
+      [
+        "F09",
+        "S16"
+      ],
+      [
+        "F28",
+        "S16"
+      ]
+    ]
+  },
+  "S19": {
+    "title": "The Barograph Overlay",
+    "intro": "Hobbs's original barograph trace from May 1931 is on tracing paper. Slide it over the 'official' weather report's pressure chart until the time marks line up.",
+    "offset": 37,
+    "tolerance": 3,
+    "report": "OFFICIAL WEATHER REPORT, 14 MAY 1931. Pressure steady. Winds light. Clear by noon. Fit for flight.",
+    "samples": [
+      [
+        "Operations typewriter",
+        "The quick brown fox: e e e (clean)"
+      ],
+      [
+        "Hobbs's machine",
+        "The quick brown fox: e e e (clean)"
+      ],
+      [
+        "Miss Quill's typewriter",
+        "The quick brown fox: e e e (the e is chipped at the top)"
+      ]
+    ],
+    "reportE": "Under the magnifier, every 'e' in the report is chipped at the top.",
+    "question": "Which machine typed the false report?",
+    "answer": 2,
+    "aligned": "Lined up: Hobbs's trace drops like a stone at nine, a deep storm, while the report says 'clear by noon'. Someone typed a lie.",
+    "wrong": "Look at the 'e', Chief.",
+    "done": "The 1931 weather report was falsified, typed on Miss Quill's machine. Tamsin lights a cigarette before she says anything at all.",
+    "sources": [
+      [
+        "F23",
+        "S19"
+      ],
+      [
+        "F27",
+        "S19"
+      ]
+    ]
+  },
+  "S21": {
+    "title": "The Stakeout",
+    "intro": "The keeper's log notes a glow from the hangar roof vent 'every evening at dusk'. From up here, with binoculars, you can see the whole field.",
+    "from": "16:30",
+    "early": "It's too light yet. The log says dusk. Wait here until half past four?",
+    "waitLabel": "Wait at the window until dusk",
+    "scan": "Sweep the binoculars along the hangar roof. When you see the glow, say so.",
+    "vent": 62,
+    "window": 4,
+    "spot": "There!",
+    "miss": "Just dust and the dark roof.",
+    "seeds": "By the pigeon coop: seed bags labelled in a small, careful woman's hand: 'Tuesday. Not too much.'",
+    "done": "A faint lamp glows under the hangar roof vent at dusk, as if someone below the floor has lit a lamp for the evening. Your first sight of the 'ghost'.",
+    "sources": [
+      [
+        "F17",
+        "S21"
+      ],
+      [
+        "F30",
+        "S21"
+      ]
+    ]
+  },
+  "S24": {
+    "title": "Tamsin's Shorthand",
+    "intro": "Fragments of Tamsin's private ledger, in her own cipher: every letter stands for another. The first words are probably 'PAID'. The cipher uses a keyword alphabet.",
+    "cipher": "NMBI 200 HKJTDFY W/Q 31 STKQH OMFSG",
+    "plain": "PAID 200 MONTHLY W/R 31 STORM FALSE",
+    "keyword": "MARIGOLD",
+    "hint": "Keyword alphabets: write the keyword without repeated letters, then the rest of the alphabet in order.",
+    "wrong": "That gives gibberish. Try a name you keep hearing.",
+    "done": "PAID 200 MONTHLY. W/R 31 STORM FALSE. She was being paid to keep quiet about the false 1931 weather report.",
+    "sources": [
+      [
+        "F23",
+        "S24"
+      ],
+      [
+        "F27",
+        "S24"
+      ]
+    ]
+  },
+  "ghost12": "Noon. Every light in the hangar dies at once, and somewhere under the floor a music box starts to play, slow and tinny. Then it stops. Danny, on the radio: \"Chief? Did you hear that?\""
 }

@@ -107,7 +107,19 @@ export class Walks {
     spot('WK_crates', P.crates, [1.4, 1.2, 1.2]);
     spot('WK_post_hit', at(ROUTE[1], 0.4), [0.5, 0.9, 0.5]);
     // Tier 4 places: the darkroom, records room, Hobbs's cylinders, Lindqvist's case
-    for (const t of this.data.spots4 ?? []) spot(`WK_${t.seq}`, V(...t.pos), t.size);
+    for (const t of [...(this.data.spots4 ?? []), ...(this.data.spots5 ?? [])]) spot(`WK_${t.seq}`, V(...t.pos), t.size);
+    // the lounge fireplace in Operations (S11): a little cast-iron grate with warm ash
+    const grate = new THREE.Group();
+    const iron = m(0x1c1a18, 0.7, 0.6);
+    const grateBox = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.5, 0.45), iron);
+    grateBox.position.y = 0.25;
+    const ash = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.04, 0.3), new THREE.MeshStandardMaterial({ color: 0x5a544c, roughness: 1, emissive: 0x401808, emissiveIntensity: 0.4 }));
+    ash.position.set(0, 0.5, 0.02);
+    grate.add(grateBox, ash);
+    grate.position.set(38.4, 0, -26.1);
+    this.group.add(grate);
+    // the Waco's fuel cap (S16): a spot on the parked biplane's top wing
+    spot('WK_wacocap', V(-3, 2.6, 46), [0.5, 0.4, 0.5]);
     // smoke plumes
     this.plumes = {};
     for (const [k, p] of Object.entries({ ...P.smoke, stack: at(P.ventstack, 1.3) })) this.plumes[k] = this._plume(p, k === 'stack' ? 0.9 : 0.5);
@@ -127,7 +139,8 @@ export class Walks {
       { id: 'wk_ledger', ui: 'seq', seq: 'S14', object: 'WK_ledger', prompt: W.ledger.prompt },
       { id: 'wk_crates', ui: 'seq', seq: 'S15', object: 'WK_crates', prompt: W.crates.prompt },
       { id: 'wk_hatch', ui: 'walk', key: 'hatch', object: 'WK_hatch', prompt: W.hatch.prompt },
-      ...(this.data.spots4 ?? []).map((t) => ({ id: `wk_${t.seq}`, ui: 'seq', seq: t.seq, object: `WK_${t.seq}`, prompt: t.prompt })),
+      { id: 'wk_wacocap', ui: 'walk', key: 'wacocap', object: 'WK_wacocap', prompt: this.data.wacocap.prompt },
+      ...[...(this.data.spots4 ?? []), ...(this.data.spots5 ?? [])].map((t) => ({ id: `wk_${t.seq}`, ui: 'seq', seq: t.seq, object: `WK_${t.seq}`, prompt: t.prompt })),
     ].map((d) => ({ type: 'ui', location: 'walks', timeCost: d.ui === 'walk' ? 2 : 0, ...d }));
     for (const d of defs) if (!this.interaction.byId.has(d.id)) { this.interaction.defs.push(d); this.interaction.byId.set(d.id, d); }
     this.interaction.addLocation('walks', this.group);
@@ -157,6 +170,10 @@ export class Walks {
       case 'splice': case 'cableend':
         show(W[def.key]);
         if (st.flag('wireNoticed')) { st.setFlag(`wire:${def.key}`); this.seq.checkS18?.(); }
+        break;
+      case 'wacocap':
+        show(this.data.wacocap);
+        this.evidence.add('F28', 'wacocap');
         break;
       default:
         show(W[def.key]);
@@ -188,6 +205,18 @@ export class Walks {
   }
 
   update(dt, player) {
+    this._findAcc = (this._findAcc ?? 0) + dt;
+    if (this._findAcc > 2) {
+      this._findAcc = 0;
+      for (const t of this.data.spots5 ?? []) {
+        if (!t.find || t._found) continue;
+        const o = this.scene.getObjectByName(t.find);
+        if (!o) continue;
+        const b = new THREE.Box3().setFromObject(o);
+        this.group.getObjectByName(`WK_${t.seq}`)?.position.copy(b.getCenter(new THREE.Vector3()));
+        t._found = true;
+      }
+    }
     const on = this.smokeOn;
     const sm = this.state.data.smoke;
     for (const [k, pl] of Object.entries(this.plumes)) {

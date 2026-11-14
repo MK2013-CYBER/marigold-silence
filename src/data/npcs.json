@@ -1,25 +1,201 @@
 {
   "_note": "Stage E: the people of Sable Flat (addendum F + v4). Schedule from the addendum's table. Topics unlock with 'requires' (a finding id the player has any source for, 'solved:S5', or 'flag:name') and 'minTrust'. 'gives' adds sources to findings. Trust starts at 50: kind approaches raise it, pressing lowers it.",
   "spots": {
-    "hangar_door": [[14.6, -5.0, 3.1416], [16.6, -5.2, 3.1416]],
-    "hangar": [[6, -3, -0.6], [-3, 4, 0.8], [-8, -6, 1.2], [9, 3, -1.0]],
-    "office": [[14.3, -8.2, 1.5708]],
-    "quarters": [[-84.4, -26.3, 3.1416], [-81.6, -26.3, 3.1416], [-79.0, -26.3, 3.1416], [-84.4, -29.7, 0], [-81.6, -29.7, 0], [-79.0, -29.7, 0]],
-    "maint_shed": [[-57.6, 21.6, 1.5708]],
-    "storage": [[-57.8, 35.8, 1.5708]],
-    "radio": [[40.4, 111.4, 0]],
-    "apron_plane": [[10.5, 40.5, 0.7]],
-    "apron_waco": [[-12, 42, -0.7]],
-    "operations": [[43, -21, 0], [47, -23, 1.2]],
-    "fuel_farm": [[79.5, 29.5, 1.5708]],
+    "hangar_door": [
+      [
+        14.6,
+        -5.0,
+        3.1416
+      ],
+      [
+        16.6,
+        -5.2,
+        3.1416
+      ]
+    ],
+    "hangar": [
+      [
+        6,
+        -3,
+        -0.6
+      ],
+      [
+        -3,
+        4,
+        0.8
+      ],
+      [
+        -8,
+        -6,
+        1.2
+      ],
+      [
+        9,
+        3,
+        -1.0
+      ]
+    ],
+    "office": [
+      [
+        14.3,
+        -8.2,
+        1.5708
+      ]
+    ],
+    "quarters": [
+      [
+        -84.4,
+        -26.3,
+        3.1416
+      ],
+      [
+        -81.6,
+        -26.3,
+        3.1416
+      ],
+      [
+        -79.0,
+        -26.3,
+        3.1416
+      ],
+      [
+        -84.4,
+        -29.7,
+        0
+      ],
+      [
+        -81.6,
+        -29.7,
+        0
+      ],
+      [
+        -79.0,
+        -29.7,
+        0
+      ]
+    ],
+    "maint_shed": [
+      [
+        -57.6,
+        21.6,
+        1.5708
+      ]
+    ],
+    "storage": [
+      [
+        -57.8,
+        35.8,
+        1.5708
+      ]
+    ],
+    "radio": [
+      [
+        40.4,
+        111.4,
+        0
+      ]
+    ],
+    "apron_plane": [
+      [
+        10.5,
+        40.5,
+        0.7
+      ]
+    ],
+    "apron_waco": [
+      [
+        -5.5,
+        43.0,
+        -1.2
+      ]
+    ],
+    "operations": [
+      [
+        43,
+        -21,
+        0
+      ],
+      [
+        47,
+        -23,
+        1.2
+      ]
+    ],
+    "fuel_farm": [
+      [
+        79.5,
+        29.5,
+        1.5708
+      ]
+    ],
     "gone": []
   },
   "schedule": [
-    { "from": "06:10", "to": "09:00", "at": { "vivienne": "hangar_door", "billie": "hangar", "lindqvist": "office", "julian": "quarters", "ox": "maint_shed", "tamsin": "hangar", "hobbs": "radio" } },
-    { "from": "09:00", "to": "12:00", "at": { "vivienne": "quarters", "billie": "apron_plane", "lindqvist": "quarters", "julian": "quarters", "ox": "maint_shed", "tamsin": "operations", "hobbs": "radio" } },
-    { "from": "12:00", "to": "13:30", "at": { "vivienne": "quarters", "billie": "hangar", "lindqvist": "quarters", "julian": "fuel_farm", "ox": "gone", "tamsin": "quarters", "hobbs": "radio" } },
-    { "from": "13:30", "to": "15:30", "at": { "vivienne": "quarters", "billie": "quarters", "lindqvist": "hangar", "julian": "apron_waco", "ox": "storage", "tamsin": "quarters", "hobbs": "radio" } },
-    { "from": "15:30", "to": "17:30", "at": { "vivienne": "quarters", "billie": "apron_plane", "lindqvist": "quarters", "julian": "apron_waco", "ox": "gone", "tamsin": "operations", "hobbs": "radio" } }
+    {
+      "from": "06:10",
+      "to": "09:00",
+      "at": {
+        "vivienne": "hangar_door",
+        "billie": "hangar",
+        "lindqvist": "office",
+        "julian": "quarters",
+        "ox": "maint_shed",
+        "tamsin": "hangar",
+        "hobbs": "radio"
+      }
+    },
+    {
+      "from": "09:00",
+      "to": "12:00",
+      "at": {
+        "vivienne": "quarters",
+        "billie": "apron_plane",
+        "lindqvist": "quarters",
+        "julian": "quarters",
+        "ox": "maint_shed",
+        "tamsin": "operations",
+        "hobbs": "radio"
+      }
+    },
+    {
+      "from": "12:00",
+      "to": "13:30",
+      "at": {
+        "vivienne": "quarters",
+        "billie": "hangar",
+        "lindqvist": "quarters",
+        "julian": "fuel_farm",
+        "ox": "gone",
+        "tamsin": "quarters",
+        "hobbs": "radio"
+      }
+    },
+    {
+      "from": "13:30",
+      "to": "15:30",
+      "at": {
+        "vivienne": "quarters",
+        "billie": "quarters",
+        "lindqvist": "hangar",
+        "julian": "apron_waco",
+        "ox": "storage",
+        "tamsin": "quarters",
+        "hobbs": "radio"
+      }
+    },
+    {
+      "from": "15:30",
+      "to": "17:30",
+      "at": {
+        "vivienne": "quarters",
+        "billie": "apron_plane",
+        "lindqvist": "quarters",
+        "julian": "apron_waco",
+        "ox": "gone",
+        "tamsin": "operations",
+        "hobbs": "radio"
+      }
+    }
   ],
   "ui": {
     "topics": "Ask about...",
@@ -35,111 +211,452 @@
   },
   "people": {
     "vivienne": {
-      "idle": ["Idle", "Glance"],
-      "greeting": ["Inspector, darling. Come to watch the widow weep? I'm afraid I'm not very good at it.", "Back again, Inspector? I'm flattered."],
+      "idle": [
+        "Idle",
+        "Glance"
+      ],
+      "greeting": [
+        "Inspector, darling. Come to watch the widow weep? I'm afraid I'm not very good at it.",
+        "Back again, Inspector? I'm flattered."
+      ],
       "observe": "Her hands are perfectly steady, but she keeps turning her wedding ring round and round. She hasn't taken it off.",
       "topics": [
-        { "id": "night", "label": "Where were you last night?", "text": "In my room with a book I wasn't reading. At ten o'clock I heard his music box through the wall of the hangar office. Cornelius never played it. Never. He couldn't bear to.", "gives": [["F07", "vivienne"], ["F03", "vivienne"]], "trust": 2 },
-        { "id": "marriage", "label": "How were things between you and your husband?", "text": "We were a magnificent marriage, Inspector. On paper. In person we were two people sharing a very large house and a very long silence.", "trust": 1 },
-        { "id": "girl", "label": "Who is the girl in the photograph?", "requires": ["flag:photo"], "minTrust": 55, "text": "His daughter. From before me. She died on the Marigold in 1931. He never forgave himself, and he never let anyone say her name.", "trust": 3 },
-        { "id": "crash", "label": "Tell me about the Marigold.", "requires": ["flag:photo"], "text": "The airline's pride, until it flew into Raven Ridge in a storm the weather report swore wasn't there. Six aboard. Cornelius bought the newspapers' silence along with everything else." , "gives": [["F19", "vivienne"]] }
+        {
+          "id": "night",
+          "label": "Where were you last night?",
+          "text": "In my room with a book I wasn't reading. At ten o'clock I heard his music box through the wall of the hangar office. Cornelius never played it. Never. He couldn't bear to.",
+          "gives": [
+            [
+              "F07",
+              "vivienne"
+            ],
+            [
+              "F03",
+              "vivienne"
+            ]
+          ],
+          "trust": 2
+        },
+        {
+          "id": "marriage",
+          "label": "How were things between you and your husband?",
+          "text": "We were a magnificent marriage, Inspector. On paper. In person we were two people sharing a very large house and a very long silence.",
+          "trust": 1
+        },
+        {
+          "id": "girl",
+          "label": "Who is the girl in the photograph?",
+          "requires": [
+            "flag:photo"
+          ],
+          "minTrust": 55,
+          "text": "His daughter. From before me. She died on the Marigold in 1931. He never forgave himself, and he never let anyone say her name.",
+          "trust": 3
+        },
+        {
+          "id": "crash",
+          "label": "Tell me about the Marigold.",
+          "requires": [
+            "flag:photo"
+          ],
+          "text": "The airline's pride, until it flew into Raven Ridge in a storm the weather report swore wasn't there. Six aboard. Cornelius bought the newspapers' silence along with everything else.",
+          "gives": [
+            [
+              "F19",
+              "vivienne"
+            ]
+          ]
+        }
       ],
       "present": {
-        "F07": { "text": "So someone else wound it. Someone who knew it was there. Do you understand what that means? Because I'm beginning to.", "trust": 3 },
-        "F26": { "text": "Yes, I was leaving him. 'By Saturday we shall be free of him.' Free, Inspector. Not rid. I had a train ticket, not a bottle of poison.", "gives": [["F26", "vivienne"]], "trust": 5 },
-        "F04": { "text": "Poison. How very theatrical. He'd have hated that it wasn't his heart. He was so proud of his heart." }
+        "F07": {
+          "text": "So someone else wound it. Someone who knew it was there. Do you understand what that means? Because I'm beginning to.",
+          "trust": 3
+        },
+        "F26": {
+          "text": "Yes, I was leaving him. 'By Saturday we shall be free of him.' Free, Inspector. Not rid. I had a train ticket, not a bottle of poison.",
+          "gives": [
+            [
+              "F26",
+              "vivienne"
+            ]
+          ],
+          "trust": 5
+        },
+        "F04": {
+          "text": "Poison. How very theatrical. He'd have hated that it wasn't his heart. He was so proud of his heart."
+        }
       },
       "presentDefault": "She raises an eyebrow. \"Fascinating, darling. Is it supposed to mean something to me?\""
     },
     "billie": {
-      "idle": ["Idle", "LookAround"],
-      "greeting": ["Inspector. If you're here to tell me not to touch anything, I already broke the door down. With an axe.", "You again. Fine. What?"],
+      "idle": [
+        "Idle",
+        "LookAround"
+      ],
+      "greeting": [
+        "Inspector. If you're here to tell me not to touch anything, I already broke the door down. With an axe.",
+        "You again. Fine. What?"
+      ],
       "observe": "She keeps her scarred hands jammed in her jacket pockets. When she takes them out to light a cigarette, the left one shakes.",
       "topics": [
-        { "id": "door", "label": "Tell me about breaking down the door.", "text": "He didn't answer at six. The door wouldn't budge, so I got the fire axe. When I got it open the bolt was still thrown on the inside. Shot clean through the keeper. Nobody walked out of that room.", "gives": [["F01", "billie"]], "trust": 2 },
-        { "id": "bang", "label": "Did you hear a gunshot last night?", "text": "There was a bang about quarter to eleven. Everyone thinks gun. I think engine. I know what a backfire sounds like, Inspector.", "gives": [["F09", "billie"]] },
-        { "id": "hands", "label": "What happened to your hands?", "minTrust": 60, "text": "A cockpit fire in '29. I don't talk about it. And before you ask: no, I don't talk about the Marigold either.", "trust": 1, "press": { "label": "You were the Marigold's other pilot, weren't you?", "text": "Get out of my face, Inspector.", "trust": -10 } },
-        { "id": "engines", "label": "Were you near the Trimotor last night?", "requires": ["F21"], "text": "...Fine. Yes. He asked me to run up the Trimotor's engines at night and keep my mouth shut. Said it was a medical charter to Zürich at five. That bang was her engine backfiring. I didn't kill him. I was flying him out.", "gives": [["F28", "billie"], ["F09", "billie"]], "trust": 4 }
+        {
+          "id": "door",
+          "label": "Tell me about breaking down the door.",
+          "text": "He didn't answer at six. The door wouldn't budge, so I got the fire axe. When I got it open the bolt was still thrown on the inside. Shot clean through the keeper. Nobody walked out of that room.",
+          "gives": [
+            [
+              "F01",
+              "billie"
+            ]
+          ],
+          "trust": 2
+        },
+        {
+          "id": "bang",
+          "label": "Did you hear a gunshot last night?",
+          "text": "There was a bang about quarter to eleven. Everyone thinks gun. I think engine. I know what a backfire sounds like, Inspector.",
+          "gives": [
+            [
+              "F09",
+              "billie"
+            ]
+          ]
+        },
+        {
+          "id": "hands",
+          "label": "What happened to your hands?",
+          "minTrust": 60,
+          "text": "A cockpit fire in '29. I don't talk about it. And before you ask: no, I don't talk about the Marigold either.",
+          "trust": 1,
+          "press": {
+            "label": "You were the Marigold's other pilot, weren't you?",
+            "text": "Get out of my face, Inspector.",
+            "trust": -10
+          }
+        },
+        {
+          "id": "engines",
+          "label": "Were you near the Trimotor last night?",
+          "requires": [
+            "F21"
+          ],
+          "text": "...Fine. Yes. He asked me to run up the Trimotor's engines at night and keep my mouth shut. Said it was a medical charter to Zürich at five. That bang was her engine backfiring. I didn't kill him. I was flying him out.",
+          "gives": [
+            [
+              "F28",
+              "billie"
+            ],
+            [
+              "F09",
+              "billie"
+            ]
+          ],
+          "trust": 4
+        }
       ],
       "present": {
-        "F09": { "text": "Told you. Backfire. Now can we stop looking at me like I shot him?", "trust": 2 },
-        "F21": { "text": "Where did you... All right. I was meant to fly that plane. I'll tell you about it if you ask me straight." }
+        "F09": {
+          "text": "Told you. Backfire. Now can we stop looking at me like I shot him?",
+          "trust": 2
+        },
+        "F21": {
+          "text": "Where did you... All right. I was meant to fly that plane. I'll tell you about it if you ask me straight."
+        }
       },
       "presentDefault": "\"That's evidence, is it? Looks like junk to me.\""
     },
     "lindqvist": {
-      "idle": ["Idle", "LookAround"],
-      "greeting": ["Inspector. A terrible business. His heart, you know. I warned him for years.", "Ah. Inspector. Is there, er, something more?"],
+      "idle": [
+        "Idle",
+        "LookAround"
+      ],
+      "greeting": [
+        "Inspector. A terrible business. His heart, you know. I warned him for years.",
+        "Ah. Inspector. Is there, er, something more?"
+      ],
       "observe": "His hands tremble, and he keeps glancing at his black bag, as if it might say something on its own.",
       "topics": [
-        { "id": "cause", "label": "What killed him, Doctor?", "text": "Heart failure. Almost certainly. He had a weak heart, he drank, he would not rest. I examined him at half past six. It was... it was his heart.", "trust": 1 },
-        { "id": "drops", "label": "What were his heart drops?", "text": "Digitalis. Foxglove. A small dose, carefully measured. They did not kill him, if that is what you are thinking." },
-        { "id": "dressings", "label": "Who do you send burn dressings to?", "requires": ["F16"], "minTrust": 50, "text": "...Ask me again when you know the whole truth, Inspector. Please.", "gives": [["F16", "lindqvist"]] }
+        {
+          "id": "cause",
+          "label": "What killed him, Doctor?",
+          "text": "Heart failure. Almost certainly. He had a weak heart, he drank, he would not rest. I examined him at half past six. It was... it was his heart.",
+          "trust": 1
+        },
+        {
+          "id": "drops",
+          "label": "What were his heart drops?",
+          "text": "Digitalis. Foxglove. A small dose, carefully measured. They did not kill him, if that is what you are thinking."
+        },
+        {
+          "id": "dressings",
+          "label": "Who do you send burn dressings to?",
+          "requires": [
+            "F16"
+          ],
+          "minTrust": 50,
+          "text": "...Ask me again when you know the whole truth, Inspector. Please.",
+          "gives": [
+            [
+              "F16",
+              "lindqvist"
+            ]
+          ]
+        }
       ],
       "present": {
-        "F04": { "text": "He closes his eyes. \"Cyanide. Yes. I smelled it. God forgive me, I smelled it and I said heart failure because I was afraid of what an inquest would find. Not who killed him. What else.\"", "gives": [["F04", "lindqvist"]], "trust": 4 },
-        "F05": { "text": "\"From the decanter. Then anyone could have... anyone who could get into that room.\"" }
+        "F04": {
+          "text": "He closes his eyes. \"Cyanide. Yes. I smelled it. God forgive me, I smelled it and I said heart failure because I was afraid of what an inquest would find. Not who killed him. What else.\"",
+          "gives": [
+            [
+              "F04",
+              "lindqvist"
+            ]
+          ],
+          "trust": 4
+        },
+        "F05": {
+          "text": "\"From the decanter. Then anyone could have... anyone who could get into that room.\""
+        }
       },
       "presentDefault": "He polishes his spectacles. \"I'm a doctor, Inspector, not a detective.\""
     },
     "julian": {
-      "idle": ["Idle", "Glance"],
-      "greeting": ["Inspector Hart. How good of you to come. I trust the storm will let us all leave by evening?", "Inspector. Always a pleasure."],
+      "idle": [
+        "Idle",
+        "Glance"
+      ],
+      "greeting": [
+        "Inspector Hart. How good of you to come. I trust the storm will let us all leave by evening?",
+        "Inspector. Always a pleasure."
+      ],
       "observe": "He hums a few bars of opera under his breath whenever there's a silence. His shoes are spotless; everyone else's are covered in dust.",
       "topics": [
-        { "id": "why", "label": "Why is a Meridian Air man at Pryce's airfield?", "text": "Cornelius invited me to talk about a merger. Our companies have been rivals for a decade. Rivals, Inspector, not enemies.", "trust": 1 },
-        { "id": "night", "label": "Where were you last night?", "text": "I went to speak with Cornelius at a quarter past eleven. His door was locked and he didn't answer. I assumed he'd gone to bed in a sulk. Then I went to bed myself.", "trust": 1 },
-        { "id": "vivienne", "label": "What do you know about Mrs. Pryce?", "minTrust": 55, "text": "That she was leaving him, and that she deserved to. Draw no more conclusions from that than it will bear.", "gives": [["F26", "julian"]] }
+        {
+          "id": "why",
+          "label": "Why is a Meridian Air man at Pryce's airfield?",
+          "text": "Cornelius invited me to talk about a merger. Our companies have been rivals for a decade. Rivals, Inspector, not enemies.",
+          "trust": 1
+        },
+        {
+          "id": "night",
+          "label": "Where were you last night?",
+          "text": "I went to speak with Cornelius at a quarter past eleven. His door was locked and he didn't answer. I assumed he'd gone to bed in a sulk. Then I went to bed myself.",
+          "trust": 1
+        },
+        {
+          "id": "vivienne",
+          "label": "What do you know about Mrs. Pryce?",
+          "minTrust": 55,
+          "text": "That she was leaving him, and that she deserved to. Draw no more conclusions from that than it will bear.",
+          "gives": [
+            [
+              "F26",
+              "julian"
+            ]
+          ]
+        }
       ],
       "present": {
-        "F25": { "text": "For the first time, his smile slips. \"Business is business, Inspector. A signature is ink. Murder is something else.\"", "trust": -3 },
-        "F09": { "text": "\"A backfire? How dull. I was hoping for something more operatic.\"" }
+        "F25": {
+          "text": "For the first time, his smile slips. \"Business is business, Inspector. A signature is ink. Murder is something else.\"",
+          "trust": -3
+        },
+        "F09": {
+          "text": "\"A backfire? How dull. I was hoping for something more operatic.\""
+        }
       },
       "presentDefault": "\"How very interesting. And what would you like me to say about it?\""
     },
     "ox": {
-      "idle": ["Idle", "LookAround"],
-      "greeting": ["...Inspector.", "Inspector. I've got work. Engines don't fix themselves."],
+      "idle": [
+        "Idle",
+        "LookAround"
+      ],
+      "greeting": [
+        "...Inspector.",
+        "Inspector. I've got work. Engines don't fix themselves."
+      ],
       "observe": "He's huge, but he flinches at sudden noises. There's flour on his sleeve and he keeps glancing toward the storage shed.",
       "topics": [
-        { "id": "night", "label": "What did you do last night?", "text": "Worked late. In the shed. Went to bed. That's all.", "trust": 0, "press": { "label": "That's not all, is it?", "text": "He goes red to the ears. \"I said that's all.\"", "trust": -8 } },
-        { "id": "cups", "label": "Why did you set out two cups at dinner?", "text": "Habit. My mother always set an extra place. For whoever comes.", "trust": 2 },
-        { "id": "floor", "label": "Is there anything under the hangar, Ox?", "minTrust": 65, "text": "He prays under his breath before he answers. \"Old fuel line. Under everything. I'm not supposed to talk about it.\"", "gives": [["F02", "ox"]], "trust": 2 }
+        {
+          "id": "night",
+          "label": "What did you do last night?",
+          "text": "Worked late. In the shed. Went to bed. That's all.",
+          "trust": 0,
+          "press": {
+            "label": "That's not all, is it?",
+            "text": "He goes red to the ears. \"I said that's all.\"",
+            "trust": -8
+          }
+        },
+        {
+          "id": "cups",
+          "label": "Why did you set out two cups at dinner?",
+          "text": "Habit. My mother always set an extra place. For whoever comes.",
+          "trust": 2
+        },
+        {
+          "id": "floor",
+          "label": "Is there anything under the hangar, Ox?",
+          "minTrust": 65,
+          "text": "He prays under his breath before he answers. \"Old fuel line. Under everything. I'm not supposed to talk about it.\"",
+          "gives": [
+            [
+              "F02",
+              "ox"
+            ]
+          ],
+          "trust": 2
+        }
       ],
       "present": {
-        "F24": { "text": "\"I did what I was told. Mr. Pryce said pass it, so I passed it. Six people, Inspector. I signed and six people...\" He can't finish.", "gives": [["F24", "ox"]], "trust": 3 }
+        "F24": {
+          "text": "\"I did what I was told. Mr. Pryce said pass it, so I passed it. Six people, Inspector. I signed and six people...\" He can't finish.",
+          "gives": [
+            [
+              "F24",
+              "ox"
+            ]
+          ],
+          "trust": 3
+        }
       },
       "presentDefault": "He looks at it, then at his boots. \"Don't know nothing about that.\""
     },
     "tamsin": {
-      "idle": ["Idle", "Glance"],
-      "greeting": ["Inspector. For the record, I hated him. Saves time.", "What now?"],
+      "idle": [
+        "Idle",
+        "Glance"
+      ],
+      "greeting": [
+        "Inspector. For the record, I hated him. Saves time.",
+        "What now?"
+      ],
       "observe": "She chain-smokes, lighting each cigarette from the last. Her fingertips are stained blue with typewriter ribbon.",
       "topics": [
-        { "id": "hated", "label": "Why did you hate him?", "text": "Eleven years of taking dictation from a man who thought 'please' was something other people said. I hated him. I didn't kill him. Those are different hobbies.", "trust": 1 },
-        { "id": "endit", "label": "Did he say anything unusual yesterday?", "text": "He told me to clear his diary for today. Said, 'Tomorrow I end it, Quill, and you can type the whole sorry story for the papers.' I thought he meant the merger.", "gives": [["F22", "tamsin"]], "trust": 1 },
-        { "id": "door", "label": "Were you there when the door was broken?", "text": "I was right behind Billie. The bolt was shot from inside. I'd swear to it.", "gives": [["F01", "tamsin"]] },
-        { "id": "safe", "label": "Do you know the safe combination?", "minTrust": 60, "text": "Nineteen, three, seventeen. Left, right, left. He made me memorise it in case he dropped dead. Funny.", "flag": "tamsinCombo", "trust": -2 }
+        {
+          "id": "hated",
+          "label": "Why did you hate him?",
+          "text": "Eleven years of taking dictation from a man who thought 'please' was something other people said. I hated him. I didn't kill him. Those are different hobbies.",
+          "trust": 1
+        },
+        {
+          "id": "endit",
+          "label": "Did he say anything unusual yesterday?",
+          "text": "He told me to clear his diary for today. Said, 'Tomorrow I end it, Quill, and you can type the whole sorry story for the papers.' I thought he meant the merger.",
+          "gives": [
+            [
+              "F22",
+              "tamsin"
+            ]
+          ],
+          "trust": 1
+        },
+        {
+          "id": "door",
+          "label": "Were you there when the door was broken?",
+          "text": "I was right behind Billie. The bolt was shot from inside. I'd swear to it.",
+          "gives": [
+            [
+              "F01",
+              "tamsin"
+            ]
+          ]
+        },
+        {
+          "id": "safe",
+          "label": "Do you know the safe combination?",
+          "minTrust": 60,
+          "text": "Nineteen, three, seventeen. Left, right, left. He made me memorise it in case he dropped dead. Funny.",
+          "flag": "tamsinCombo",
+          "trust": -2
+        }
       ],
       "present": {
-        "F27": { "text": "She laughs without smiling. \"Yes. Five hundred a month for the real weather report. Blackmail isn't murder, Inspector. Dead men don't pay.\"", "gives": [["F27", "tamsin"]], "trust": 2 },
-        "F22": { "text": "\"End the silence. So he really meant to do it. Well. Somebody decided he wouldn't.\"" }
+        "F27": {
+          "text": "She laughs without smiling. \"Yes. Five hundred a month for the real weather report. Blackmail isn't murder, Inspector. Dead men don't pay.\"",
+          "gives": [
+            [
+              "F27",
+              "tamsin"
+            ]
+          ],
+          "trust": 2
+        },
+        "F22": {
+          "text": "\"End the silence. So he really meant to do it. Well. Somebody decided he wouldn't.\""
+        }
       },
       "presentDefault": "She blows smoke at it. \"Riveting.\""
     },
     "hobbs": {
-      "idle": ["Idle", "Glance"],
-      "greeting": ["Eh? Oh, Inspector! Come in out of the dust. Mind the wires.", "Inspector! Have you come about the ghost?"],
+      "idle": [
+        "Idle",
+        "Glance"
+      ],
+      "greeting": [
+        "Eh? Oh, Inspector! Come in out of the dust. Mind the wires.",
+        "Inspector! Have you come about the ghost?"
+      ],
       "observe": "He's half deaf and talks to his radio like an old dog. There's solder flux on his fingers.",
       "topics": [
-        { "id": "telegram", "label": "Did you send the telegram that brought me here?", "text": "Not me, Inspector. The key was cold when I came in. But someone sent it from this line, and sent it slow and even, like a pupil. I always fumble my Q. They copied that.", "trust": 2 },
-        { "id": "ghost", "label": "What ghost?", "text": "Tapping in the wires. Months of it. Late at night, little messages, like someone learning. I thought it was the Marigold's ghost come home.", "gives": [["F30", "hobbs"]], "trust": 2 },
-        { "id": "tune", "label": "Do you know the tune the music box plays?", "requires": ["flag:musicbox"], "text": "That old waltz? Mr. Pryce taught it to his girl when she was small. Five, three, one, three, five, eight, five, three, that's how he counted it on the keys. Always the same.", "flag": "tuneKnown", "trust": 1 },
-        { "id": "floor", "label": "Is there anything under the hangar?", "minTrust": 55, "text": "The old fuel culvert runs right under it. Draughty as a church. You can hear the wind in it some nights. Or something.", "gives": [["F02", "hobbs"]] },
-        { "id": "power", "label": "The lights failed in the night. Who fixed them?", "text": "Lightning took the arrestor around half past ten. I reset it myself. Nobody asked me, so I didn't say.", "gives": [["F10", "hobbs"]] }
+        {
+          "id": "telegram",
+          "label": "Did you send the telegram that brought me here?",
+          "text": "Not me, Inspector. The key was cold when I came in. But someone sent it from this line, and sent it slow and even, like a pupil. I always fumble my Q. They copied that.",
+          "trust": 2
+        },
+        {
+          "id": "ghost",
+          "label": "What ghost?",
+          "text": "Tapping in the wires. Months of it. Late at night, little messages, like someone learning. I thought it was the Marigold's ghost come home.",
+          "gives": [
+            [
+              "F30",
+              "hobbs"
+            ]
+          ],
+          "trust": 2
+        },
+        {
+          "id": "tune",
+          "label": "Do you know the tune the music box plays?",
+          "requires": [
+            "flag:musicbox"
+          ],
+          "text": "That old waltz? Mr. Pryce taught it to his girl when she was small. Five, three, one, three, five, eight, five, three, that's how he counted it on the keys. Always the same.",
+          "flag": "tuneKnown",
+          "trust": 1
+        },
+        {
+          "id": "floor",
+          "label": "Is there anything under the hangar?",
+          "minTrust": 55,
+          "text": "The old fuel culvert runs right under it. Draughty as a church. You can hear the wind in it some nights. Or something.",
+          "gives": [
+            [
+              "F02",
+              "hobbs"
+            ]
+          ]
+        },
+        {
+          "id": "power",
+          "label": "The lights failed in the night. Who fixed them?",
+          "text": "Lightning took the arrestor around half past ten. I reset it myself. Nobody asked me, so I didn't say.",
+          "gives": [
+            [
+              "F10",
+              "hobbs"
+            ]
+          ]
+        }
       ],
       "present": {
-        "F02": { "text": "\"Under the office? Well I never. Then the tapping... no. No, that's ghost talk.\"" }
+        "F02": {
+          "text": "\"Under the office? Well I never. Then the tapping... no. No, that's ghost talk.\""
+        }
       },
       "presentDefault": "\"Eh? Speak up, Inspector. Oh, that. Can't say I know.\""
     }

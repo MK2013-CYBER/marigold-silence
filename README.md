@@ -123,6 +123,17 @@ the door, the doctor's bag and Hart's camera case. Press E on anything to examin
 | S10 The Manifests | Operations records room | sort six passenger cards, match five certificates, read the payout |
 | S20 The Last Call | Radio & weather | scrub through the wax cylinder to the voice at the end |
 | S22 The Locked Case | Lindqvist's room, Quarters | persuade him, get a warrant (45 min), or pick it (light tension, find the binding pin) |
+| S7 Readied for Flight | the Trimotor 'Marigold II' in the hangar (cabin door, left side) | look at everything in the cabin, then say what it was readied for |
+| S11 Raking Light | Operations lounge grate | move the lamp angle until each charred line shows |
+| S12 The Blackout | maintenance shed fuse panel | balance five circuits on two generators (the hangar goes dark at 12:00 until this is done) |
+| S13 The Cracked Mount | maintenance shed | dye, wait, wipe, developer, in order; find the real crack |
+| S16 The Night Burn | fuel farm booth (and the Waco's fuel cap) | read four dial gauges, compare with yesterday and the issue log |
+| S19 The Barograph Overlay | Radio & weather | slide the 1931 trace over the report, then match the typewriter's chipped 'e' |
+| S21 The Stakeout | beacon tower keeper's room | wait for dusk, pan the binoculars, call it when the vent glows |
+| S24 Tamsin's Shorthand | HQ | find the keyword that turns the cipher into words |
+
+New on the map: the Trimotor 'Marigold II' in the hangar (`blender/build_aircraft.py`, replaces the stripped
+frame) and Julian's Waco biplane on the apron.
 
 Evidence (v4 section 4): findings need independent sources (sequences, documents, testimony).
 With enough (usually 3) a finding is Established and goes on the HQ board. Tab shows your leads and

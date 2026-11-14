@@ -972,6 +972,283 @@ export class SequenceScreen {
     this.body.appendChild(sec);
   }
 
+  // ------------------------------------------------------------------ S7 Readied for Flight
+  renderS7(d) {
+    const st = this.s();
+    st.seen ??= [];
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    for (const it of d.items) {
+      const r = this._row(sec, `<span class="seq-label">${esc(it.name)}</span>`);
+      if (st.seen.includes(it.id)) r.insertAdjacentHTML('beforeend', `<div class="seq-text">${esc(it.text)}</div>`);
+      else r.appendChild(this._btn('Look', () => { st.seen.push(it.id); this.spend(2); this.render(); }));
+    }
+    this.body.appendChild(sec);
+    if (this.solved('S7')) return;
+    const q = document.createElement('div');
+    q.className = 'seq-section';
+    q.innerHTML = `<h3>${esc(d.question)}</h3>`;
+    d.options.forEach((o, i) => q.appendChild(this._btn(o, () => {
+      if (st.seen.length < d.items.length) return this.msg(d.needAll);
+      if (i !== d.answer) return this.msg(d.wrong);
+      this.solve('S7'); this.render(); this.msg(d.done, true);
+    })));
+    this.body.appendChild(q);
+  }
+
+  // ------------------------------------------------------------------ S11 Raking Light
+  renderS11(d) {
+    const st = this.s();
+    st.read ??= {};
+    st.angle ??= 90;
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    sec.innerHTML = `<label class="seq-slider">Lamp angle: <b>${st.angle}°</b><input type="range" min="0" max="180" value="${st.angle}"></label><div class="seq-char"></div>`;
+    const inp = sec.querySelector('input'), board = sec.querySelector('.seq-char');
+    const draw = () => {
+      board.replaceChildren();
+      d.sheets.forEach((sh, si) => {
+        const div = document.createElement('div');
+        div.className = 'seq-sheet';
+        div.innerHTML = `<b>${esc(sh.name)}</b>`;
+        sh.lines.forEach(([txt, ang], li) => {
+          const k = `${si}.${li}`;
+          const near = Math.abs(st.angle - ang) <= d.tolerance;
+          if (near) st.read[k] = true;
+          const p2 = document.createElement('p');
+          p2.textContent = near || st.read[k] ? txt : txt.replace(/[^ ]/g, '▒');
+          p2.style.opacity = near ? 1 : st.read[k] ? 0.75 : 0.35;
+          div.appendChild(p2);
+        });
+        board.appendChild(div);
+      });
+      sec.querySelector('b').textContent = `${st.angle}°`;
+    };
+    inp.addEventListener('input', () => { st.angle = +inp.value; draw(); });
+    inp.addEventListener('keydown', (e) => e.stopPropagation());
+    draw();
+    this.body.appendChild(sec);
+    const total = d.sheets.reduce((a, sh) => a + sh.lines.length, 0);
+    if (this.solved('S11')) return;
+    const q = document.createElement('div');
+    q.className = 'seq-section';
+    q.innerHTML = `<h3>${esc(d.question)}</h3>`;
+    d.options.forEach((o, i) => q.appendChild(this._btn(o, () => {
+      if (Object.keys(st.read).length < total) return this.msg(`Read every line first (${Object.keys(st.read).length} of ${total}).`);
+      this.spend(5);
+      if (i !== d.answer) return this.msg(d.wrong);
+      this.solve('S11'); this.render(); this.msg(d.done, true);
+    })));
+    this.body.appendChild(q);
+  }
+
+  // ------------------------------------------------------------------ S12 The Blackout (load balancing)
+  renderS12(d) {
+    const st = this.s();
+    st.on ??= {};
+    const load = [0, 0];
+    for (const c of d.circuits) if (st.on[c.id] != null) load[st.on[c.id]] += c.load;
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    sec.innerHTML = `<h3>Generator 1: ${load[0]} of ${d.caps[0]} &nbsp; · &nbsp; Generator 2: ${load[1]} of ${d.caps[1]}</h3>`;
+    for (const c of d.circuits) {
+      const r = this._row(sec, `<span class="seq-label">${esc(c.name)} (${c.load})${c.must ? ' *' : ''}</span>`);
+      for (const [lbl, v] of [['Off', null], ['Generator 1', 0], ['Generator 2', 1]]) {
+        if (this.solved('S12')) continue;
+        r.appendChild(this._btn(lbl, () => { if (v == null) delete st.on[c.id]; else st.on[c.id] = v; this.render(); }, (st.on[c.id] ?? null) === v ? 'on' : ''));
+      }
+    }
+    this.body.appendChild(sec);
+    if (this.solved('S12')) { this.body.insertAdjacentHTML('beforeend', `<p class="seq-text">${esc(d.observe)}</p>`); return; }
+    this.body.appendChild(this._btn('Throw the main switch', () => {
+      this.spend(5);
+      if (load[0] > d.caps[0] || load[1] > d.caps[1]) return this.msg(d.over);
+      if (d.circuits.some((c) => c.must && st.on[c.id] == null)) return this.msg(d.missing);
+      this.solve('S12'); this.render(); this.msg(d.done, true);
+    }, 'primary'));
+  }
+
+  // ------------------------------------------------------------------ S13 The Cracked Mount (dye penetrant)
+  renderS13(d) {
+    const st = this.s();
+    st.done ??= {};
+    st.step ??= {};
+    const crackSvg = (kind) => kind === 'crack'
+      ? '<svg width="140" height="60"><rect width="140" height="60" fill="#eeeae0"/><path d="M20 40 L45 30 L52 38 L70 22 L78 30 L96 14 M52 38 L60 50 M78 30 L90 40" stroke="#b01818" stroke-width="2" fill="none"/></svg>'
+      : kind === 'straight' ? '<svg width="140" height="60"><rect width="140" height="60" fill="#eeeae0"/><path d="M10 20 H130 M10 28 H130 M10 36 H130" stroke="#c84040" stroke-width="1" fill="none"/></svg>'
+        : '<svg width="140" height="60"><rect width="140" height="60" fill="#eeeae0"/></svg>';
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    for (const m of d.mounts) {
+      const r = this._row(sec, `<span class="seq-label">${esc(m)}</span>`);
+      const at = st.step[m] ?? 0;
+      if (at >= d.steps.length) { r.insertAdjacentHTML('beforeend', crackSvg(d.patterns[m])); continue; }
+      // the four steps in a scrambled row: pressing them in the wrong order smears the test
+      [2, 0, 3, 1].forEach((si) => r.appendChild(this._btn(d.steps[si], () => {
+        this.spend(si === 1 ? 5 : 1);
+        if (si !== at) { st.step[m] = 0; this.render(); return this.msg(d.wrongStep); }
+        st.step[m] = at + 1;
+        this.render();
+      }, si < at ? 'on' : '')));
+    }
+    this.body.appendChild(sec);
+    if (this.solved('S13') || !d.mounts.every((m) => (st.step[m] ?? 0) >= d.steps.length)) return;
+    const q = document.createElement('div');
+    q.className = 'seq-section';
+    q.innerHTML = `<h3>${esc(d.question)}</h3>`;
+    for (const m of d.mounts) q.appendChild(this._btn(m, () => {
+      if (d.patterns[m] !== 'crack') return this.msg(d.wrong);
+      this.solve('S13'); this.render(); this.msg(`${d.ox} ${d.done}`, true);
+    }));
+    this.body.appendChild(q);
+  }
+
+  // ------------------------------------------------------------------ S16 The Night Burn (dial gauges)
+  renderS16(d) {
+    const st = this.s();
+    st.read ??= {};
+    const dial = (v) => {
+      const a = -135 + (v / 500) * 270, rad = (a - 90) * Math.PI / 180;
+      const ticks = Array.from({ length: 11 }, (_, i) => { const t = (-135 + i * 27 - 90) * Math.PI / 180; return `<line x1="${50 + Math.cos(t) * 36}" y1="${50 + Math.sin(t) * 36}" x2="${50 + Math.cos(t) * 44}" y2="${50 + Math.sin(t) * 44}" stroke="#2a2116"/><text x="${50 + Math.cos(t) * 28}" y="${53 + Math.sin(t) * 28}" font-size="7" text-anchor="middle">${i * 50}</text>`; }).join('');
+      return `<svg width="110" height="110" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#f4ecda" stroke="#2a2116" stroke-width="2"/>${ticks}<line x1="50" y1="50" x2="${50 + Math.cos(rad) * 38}" y2="${50 + Math.sin(rad) * 38}" stroke="#8a1010" stroke-width="2"/><circle cx="50" cy="50" r="3"/></svg>`;
+    };
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    const t = document.createElement('table');
+    t.className = 'seq-grid';
+    t.innerHTML = '<tr><th>Tank</th><th>Gauge</th><th>Your reading</th><th>Yesterday</th></tr>';
+    for (const k of d.tanks) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${esc(k.name)}</td><td>${dial(k.now)}</td><td></td><td>${k.yesterday}</td>`;
+      if (st.read[k.id] != null) tr.children[2].textContent = `${st.read[k.id]} gal`;
+      else {
+        const inp = document.createElement('input');
+        inp.type = 'number';
+        inp.className = 'seq-num';
+        inp.addEventListener('keydown', (e) => e.stopPropagation());
+        tr.children[2].appendChild(inp);
+        tr.children[2].appendChild(this._btn('Write it down', () => {
+          this.spend(2);
+          if (Math.abs(Number(inp.value) - k.now) > 4) return this.msg(d.wrongRead);
+          st.read[k.id] = k.now;
+          this.render();
+        }));
+      }
+      t.appendChild(tr);
+    }
+    sec.appendChild(t);
+    sec.insertAdjacentHTML('beforeend', `<p class="seq-text">${esc(d.log)}</p>`);
+    this.body.appendChild(sec);
+    if (this.solved('S16') || Object.keys(st.read).length < d.tanks.length) return;
+    const q = document.createElement('div');
+    q.className = 'seq-section';
+    q.innerHTML = `<h3>${esc(d.question)}</h3><label>Tank <select class="tk">${d.tanks.map((k) => `<option>${k.id}</option>`).join('')}</select></label> <label>Gallons <input type="number" class="seq-num gal"></label>`;
+    q.querySelector('.gal').addEventListener('keydown', (e) => e.stopPropagation());
+    q.appendChild(this._btn('That\'s it', () => {
+      const tk = q.querySelector('.tk').value, g = Number(q.querySelector('.gal').value);
+      if (tk !== d.answer[0] || g !== d.answer[1]) return this.msg(d.wrong);
+      this.solve('S16'); this.render(); this.msg(d.done, true);
+    }, 'primary'));
+    this.body.appendChild(q);
+  }
+
+  // ------------------------------------------------------------------ S19 The Barograph Overlay
+  renderS19(d) {
+    const st = this.s();
+    st.x ??= 0;
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    const trace = 'M0 30 L60 32 L110 31 L150 34 L175 70 L190 95 L215 92 L250 60 L300 40 L360 36';
+    sec.innerHTML = `<p class="seq-text">${esc(d.report)}</p>
+      <svg width="380" height="120" viewBox="0 0 380 120" class="seq-baro"><rect width="380" height="120" fill="#f4ecda"/>
+      ${Array.from({ length: 13 }, (_, i) => `<line x1="${i * 30}" y1="0" x2="${i * 30}" y2="120" stroke="#d8c8a0"/>`).join('')}
+      <path d="M0 32 L380 32" stroke="#2a2116" stroke-width="2"/>
+      <g transform="translate(${st.x - d.offset} 0)" opacity="0.75"><path d="${trace}" stroke="#8a1010" stroke-width="2" fill="none"/>${Array.from({ length: 13 }, (_, i) => `<line x1="${i * 30}" y1="108" x2="${i * 30}" y2="120" stroke="#8a1010" stroke-width="2"/>`).join('')}</g>
+      ${Array.from({ length: 13 }, (_, i) => `<line x1="${i * 30}" y1="108" x2="${i * 30}" y2="120" stroke="#2a2116"/>`).join('')}</svg>
+      <label class="seq-slider">Slide the tracing: <input type="range" min="0" max="80" value="${st.x}"></label>`;
+    const inp = sec.querySelector('input');
+    inp.addEventListener('input', () => { st.x = +inp.value; sec.querySelector('g').setAttribute('transform', `translate(${st.x - d.offset} 0)`); });
+    inp.addEventListener('change', () => { if (Math.abs(st.x - d.offset) <= d.tolerance && !st.aligned) { st.aligned = true; this.spend(5); this.render(); this.msg(d.aligned, true); } });
+    inp.addEventListener('keydown', (e) => e.stopPropagation());
+    this.body.appendChild(sec);
+    if (!st.aligned || this.solved('S19')) return;
+    const q = document.createElement('div');
+    q.className = 'seq-section';
+    q.innerHTML = `<p>${esc(d.reportE)}</p><h3>${esc(d.question)}</h3>`;
+    d.samples.forEach(([name, txt], i) => {
+      const r = this._row(q, `<span class="seq-label">${esc(name)}</span><span class="seq-text">${esc(txt)}</span>`);
+      r.appendChild(this._btn('This one', () => { if (i !== d.answer) return this.msg(d.wrong); this.solve('S19'); this.render(); this.msg(d.done, true); }));
+    });
+    this.body.appendChild(q);
+  }
+
+  // ------------------------------------------------------------------ S21 The Stakeout (binoculars at dusk)
+  renderS21(d) {
+    const st = this.s();
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    if (this.state.data.minutes < parseTime(d.from) && !this.solved('S21')) {
+      sec.innerHTML = `<p>${esc(d.early)}</p>`;
+      sec.appendChild(this._btn(d.waitLabel, () => { this.spend(parseTime(d.from) - this.state.data.minutes); this.render(); }));
+      this.body.appendChild(sec);
+      return;
+    }
+    st.pan ??= 20;
+    sec.innerHTML = `<p>${esc(d.scan)}</p><div class="seq-bino"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><rect width="100" height="40" fill="#1a1612"/>
+      <path d="M0 26 Q50 6 100 26 L100 40 L0 40Z" fill="#2c2620"/><rect x="${d.vent - 2}" y="13" width="4" height="2" fill="#3a3028"/>
+      <circle class="glow" cx="${d.vent}" cy="14" r="2.4" fill="#ffcf70" opacity="0"/></svg><div class="lens"></div></div>
+      <label class="seq-slider">Pan: <input type="range" min="0" max="100" value="${st.pan}"></label>`;
+    const svg = sec.querySelector('svg'), lens = sec.querySelector('.lens'), inp = sec.querySelector('input'), glow = sec.querySelector('.glow');
+    const place = () => { svg.style.transform = `translateX(${(50 - st.pan) * 4}%) scale(4)`; };
+    inp.addEventListener('input', () => { st.pan = +inp.value; place(); });
+    inp.addEventListener('keydown', (e) => e.stopPropagation());
+    place();
+    let t0 = performance.now();
+    clearInterval(this._glowT);
+    this._glowT = setInterval(() => {
+      if (!this.open || this.id !== 'S21') { clearInterval(this._glowT); return; }
+      const t = ((performance.now() - t0) / 1000) % 6;
+      glow.setAttribute('opacity', t > 3.5 ? String(0.9 * Math.sin(((t - 3.5) / 2.5) * Math.PI)) : '0');
+    }, 50);
+    this.body.appendChild(sec);
+    if (this.solved('S21')) return;
+    this.body.appendChild(this._btn(d.spot, () => {
+      this.spend(2);
+      const lit = Number(glow.getAttribute('opacity')) > 0.25;
+      if (!lit || Math.abs(st.pan - d.vent) > d.window) return this.msg(d.miss);
+      this.evidence.note(d.seeds);
+      this.solve('S21'); this.render(); this.msg(`${d.done} ${d.seeds}`, true);
+    }, 'primary'));
+    void lens;
+  }
+
+  // ------------------------------------------------------------------ S24 Tamsin's Shorthand (keyword cipher)
+  renderS24(d) {
+    const st = this.s();
+    st.key ??= '';
+    const A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const keyed = (w) => [...new Set((w.toUpperCase().replace(/[^A-Z]/g, '') + A).split(''))].join('');
+    const decode = (w) => { const k = keyed(w); return d.cipher.split('').map((c) => (A.includes(c) ? A[k.indexOf(c)] : c)).join(''); };
+    const counts = {};
+    for (const c of d.cipher) if (A.includes(c)) counts[c] = (counts[c] ?? 0) + 1;
+    const sec = document.createElement('div');
+    sec.className = 'seq-section';
+    sec.innerHTML = `<p class="seq-cipher">${esc(d.cipher)}</p><p class="seq-dim">Letter counts: ${Object.entries(counts).sort((a, b) => b[1] - a[1]).map(([c, n]) => `${c}×${n}`).join('  ')}</p><p class="seq-dim">${esc(d.hint)}</p>
+      <label class="seq-slider">Keyword: <input type="text" maxlength="14" value="${esc(st.key)}"></label><p class="seq-cipher plain"></p>`;
+    const inp = sec.querySelector('input'), out = sec.querySelector('.plain');
+    const show = () => { out.textContent = st.key ? decode(st.key) : '...'; };
+    inp.addEventListener('input', () => { st.key = inp.value; show(); });
+    inp.addEventListener('keydown', (e) => e.stopPropagation());
+    show();
+    this.body.appendChild(sec);
+    if (this.solved('S24')) return;
+    this.body.appendChild(this._btn('That reads right', () => {
+      this.spend(5);
+      if (decode(st.key) !== d.plain) return this.msg(d.wrong);
+      this.solve('S24'); this.render(); this.msg(d.done, true);
+    }, 'primary'));
+  }
+
   /** The music box: each comb tooth is a note; the tune lights the teeth as it plays. */
   playTune(tune, teeth) {
     if (this._playing) return;

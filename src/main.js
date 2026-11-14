@@ -81,6 +81,15 @@ if (params.get('hangar') === 'placeholder') {
   }
 }
 
+// the stripped aircraft frame makes way for the Trimotor 'Marigold II' (v4 map fix list)
+{
+  const frame = hangar.root.getObjectByName('AircraftFrame');
+  if (frame) frame.visible = false;
+  world.setEnabled('COL_AircraftFrame_Body', false);
+  const oil = hangar.root.getObjectByName('OilPool_Plane');
+  if (oil) oil.visible = false;
+}
+
 const state = new GameState(config);
 const hasSave = state.load();
 
@@ -443,7 +452,15 @@ renderer.setAnimationLoop(() => {
 
   // the hangar's interior (props + their lights) is only drawn when you are near it
   if (hangar.props) hangar.props.visible = inside || pos.distanceTo(hangarCentre) < worldCfg.hangar.propsCull;
-  hangar.setLights?.(inside || hangarDistance(pos) < 10);
+  // v4 world event, 12:00: the hangar lights fail (and stay off until the power is fixed, S12)
+  const blackout = state.data.minutes >= 720 && !state.data.solved.includes('S12');
+  if (state.data.minutes >= 720 && !state.flag('ghost12')) {
+    state.setFlag('ghost12');
+    hud.caption(sequencesData.ghost12, 9);
+    if (hangarDistance(pos) < 25) seqScreen.playTune(sequencesData.S6.tune);
+    state.save();
+  }
+  hangar.setLights?.(!blackout && (inside || hangarDistance(pos) < 10));
   hangar.update(dt, t, atmosphere.flash);
   interaction.update(dt, controller.active && !controller.frozen);
   cole.update(dt, pos);

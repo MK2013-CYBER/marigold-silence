@@ -299,6 +299,40 @@
         12.4,
         8.6
       ]
+    },
+    {
+      "id": "trimotor",
+      "label": "Trimotor 'Marigold II' (inside the hangar)",
+      "file": "trimotor.glb",
+      "position": [
+        -6,
+        0,
+        0.5
+      ],
+      "rotationY": 0,
+      "load": 500,
+      "cull": 120,
+      "footprint": [
+        23,
+        15
+      ]
+    },
+    {
+      "id": "waco",
+      "label": "Julian's Waco biplane",
+      "file": "waco.glb",
+      "position": [
+        -3,
+        0,
+        46
+      ],
+      "rotationY": -2.3,
+      "load": 420,
+      "cull": 320,
+      "footprint": [
+        9.4,
+        7.4
+      ]
     }
   ],
   "hangar": {
