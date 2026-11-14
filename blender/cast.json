@@ -1215,5 +1215,239 @@
       "flare": 0.25,
       "ease": 1.08
     }
+  },
+  "clementine": {
+    "body": "lola",
+    "recolor": [
+      {
+        "material": "phong1",
+        "rules": [
+          {
+            "hue": [
+              5,
+              40
+            ],
+            "sat": [
+              0.5,
+              1.0
+            ],
+            "val": [
+              0.25,
+              1.0
+            ],
+            "to": [
+              0.72,
+              0.36,
+              0.12
+            ],
+            "contrast": 1.2,
+            "notuv": [
+              [
+                0.6,
+                0.5,
+                1.0,
+                0.76
+              ]
+            ]
+          },
+          {
+            "uv": [
+              0.6,
+              0.5,
+              1.0,
+              0.76
+            ],
+            "hue": [
+              20,
+              32
+            ],
+            "sat": [
+              0.75,
+              1.0
+            ],
+            "val": [
+              0.4,
+              1.0
+            ],
+            "to": [
+              0.72,
+              0.36,
+              0.12
+            ],
+            "contrast": 1.2
+          },
+          {
+            "uv": [
+              0.68,
+              0.78,
+              1.0,
+              1.0
+            ],
+            "to": [
+              0.12,
+              0.09,
+              0.07
+            ],
+            "contrast": 1.2
+          },
+          {
+            "notuv": [
+              [
+                0.6,
+                0.5,
+                1.0,
+                0.76
+              ]
+            ],
+            "sat": [
+              0,
+              0.22
+            ],
+            "val": [
+              0.45,
+              1.0
+            ],
+            "to": [
+              0.3,
+              0.34,
+              0.4
+            ],
+            "contrast": 0.8
+          }
+        ]
+      }
+    ],
+    "fabrics": {
+      "dress": {
+        "kind": "wool",
+        "color": [
+          0.3,
+          0.34,
+          0.42
+        ]
+      },
+      "cardigan": {
+        "kind": "wool",
+        "color": [
+          0.42,
+          0.38,
+          0.33
+        ]
+      },
+      "gloves": {
+        "kind": "leather",
+        "color": [
+          0.16,
+          0.11,
+          0.08
+        ]
+      },
+      "stockings": {
+        "kind": "wool",
+        "color": [
+          0.2,
+          0.18,
+          0.17
+        ]
+      }
+    },
+    "layers": [
+      {
+        "name": "Cardigan",
+        "from": [
+          "Lola"
+        ],
+        "bones": [
+          "Spine",
+          "Spine1",
+          "Spine2",
+          "LeftShoulder",
+          "RightShoulder",
+          "LeftArm",
+          "RightArm",
+          "LeftForeArm",
+          "RightForeArm"
+        ],
+        "min": 0.5,
+        "exclude": [
+          "Neck",
+          "Head",
+          "LeftHand",
+          "RightHand",
+          "LeftUpLeg",
+          "RightUpLeg"
+        ],
+        "excludeMax": 0.4,
+        "push": 0.01,
+        "fabric_id": "cardigan"
+      },
+      {
+        "name": "Gloves",
+        "from": [
+          "Lola"
+        ],
+        "bones": [
+          "LeftHand",
+          "RightHand",
+          "LeftHandThumb1",
+          "LeftHandThumb2",
+          "LeftHandThumb3",
+          "LeftHandIndex1",
+          "LeftHandIndex2",
+          "LeftHandIndex3",
+          "LeftHandMiddle1",
+          "LeftHandMiddle2",
+          "LeftHandMiddle3",
+          "LeftHandRing1",
+          "LeftHandRing2",
+          "LeftHandRing3",
+          "LeftHandPinky1",
+          "LeftHandPinky2",
+          "LeftHandPinky3",
+          "RightHandThumb1",
+          "RightHandThumb2",
+          "RightHandThumb3",
+          "RightHandIndex1",
+          "RightHandIndex2",
+          "RightHandIndex3",
+          "RightHandMiddle1",
+          "RightHandMiddle2",
+          "RightHandMiddle3",
+          "RightHandRing1",
+          "RightHandRing2",
+          "RightHandRing3",
+          "RightHandPinky1",
+          "RightHandPinky2",
+          "RightHandPinky3"
+        ],
+        "min": 0.5,
+        "push": 0.004,
+        "fabric_id": "gloves"
+      },
+      {
+        "name": "Stockings",
+        "from": [
+          "Lola"
+        ],
+        "bones": [
+          "LeftLeg",
+          "RightLeg"
+        ],
+        "min": 0.5,
+        "exclude": [
+          "LeftFoot",
+          "RightFoot"
+        ],
+        "excludeMax": 0.4,
+        "push": 0.002,
+        "fabric_id": "stockings"
+      }
+    ],
+    "skirt": {
+      "fabric_id": "dress",
+      "hem": 0.35,
+      "flare": 0.3,
+      "ease": 1.1
+    }
   }
 }

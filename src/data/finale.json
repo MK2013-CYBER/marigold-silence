@@ -1,0 +1,134 @@
+{
+  "_note": "Stage G / v4 Tier 6: the trapdoor, the Undercroft, Clementine, S26 and the endings (first bible section 11; addendum K: Clementine mentions Cole). SPOILERS.",
+  "trapPrompt": "Go down through the trapdoor",
+  "climbPrompt": "Climb back up to the office",
+  "standoff": {
+    "intro": "The trapdoor swings up. Iron rungs go down into the dark, and at the bottom, in the light of a lantern, stands Ox with a wrench in his fist.",
+    "ox": "Don't come down, Inspector. Please. There's nothing down here.",
+    "options": [
+      { "id": "gentle", "label": "I'm not here to hurt anyone, Ox. Step aside.", "trust": 55, "ok": "His shoulders drop. He lowers the wrench, slowly.", "no": "\"I can't. I promised.\" He doesn't move." },
+      { "id": "ledger", "label": "One extra ration, every day, for two years. I know, Ox.", "requires": "solved:S14", "ok": "He closes his eyes. \"Then you know already.\"" },
+      { "id": "press", "label": "Out of my way, or I'll have you for obstruction.", "trustCost": 15, "no": "He sets his feet. \"No.\"" },
+      { "id": "back", "label": "Back away for now", "back": true }
+    ],
+    "voice": "Let him through, Ox.",
+    "voiceWho": "A woman's voice, from somewhere beyond the lantern"
+  },
+  "examine": {
+    "UC_Tray": { "name": "A tray on the shelf", "text": "A tin tray with two cups and a plate, still warm. Somebody brought supper down here not long ago." },
+    "UC_Mural": { "name": "The sky", "text": "Every inch of the ceiling and walls is painted: a blue sky, soft clouds, and little aeroplanes, dozens of them, all flying the same way. Out.", "flag": "mural" },
+    "UC_Drawings": { "name": "Drawings", "text": "Pencil drawings pinned to the concrete: the Trimotor from every angle, the beacon tower, a man's face drawn over and over and crossed out each time.", "flag": "drawings" },
+    "UC_Calendar": { "name": "Scratches on the wall", "text": "Tally marks in chalk, in fives, hundreds of them. Seven hundred and thirty-three days. The last one is very neat.", "flag": "calendar" },
+    "UC_SpoonKey": { "name": "A Morse key made from a spoon", "text": "A teaspoon handle bent into a sending key, wired to a contact, and the contact spliced into the thick black cable that comes out of the wall. The telegraph line. Whoever sent your telegram sent it from here.", "flag": "spoonkey", "sources": [["F12", "spoonkey"], ["F13", "spoonkey"]] },
+    "UC_Bed": { "name": "An iron bed", "text": "A narrow iron bed, made very neatly. Under the pillow, a pair of soft cotton gloves with the fingertips worn through." }
+  },
+  "diary": {
+    "title": "Her diary",
+    "entries": [
+      "Day 1. I am told I am dead. Papa says it is for my own good. It is very dark and smells of petrol.",
+      "Day 9. My hands are wrapped up like a parcel. The doctor comes at night and does not look at my face.",
+      "Day 30. A man brings my food. He is enormous and he is afraid of me. His name is Abel. He says grace over my soup.",
+      "Day 61. There is a wire in the wall that sings. Clicks. Long and short. Somebody up there is talking to the sky.",
+      "Day 140. I have learned the alphabet of the clicks. The man who sends them stumbles on his Q. I like him.",
+      "Day 200. I painted the ceiling blue. Abel brought the paint and pretended he hadn't.",
+      "Day 311. Papa came down. He stood at the bottom of the ladder and could not come any further. I said, you could just let me go. He went back up.",
+      "Day 402. I found the old pipe that goes under the other building. There are jars there. One of them is the kind of thing you keep for yourself.",
+      "Day 405. I took a little of it. For me. For when I decide.",
+      "Day 600. I made a key out of a spoon. I can make the wire sing back.",
+      "Day 729. I sent a telegram. To an inspector in the newspapers, a man who does not give up. I signed it with Papa's name, because it is my name too.",
+      "Day 731. Papa is going to tell everyone. I heard him through the vent. And then I heard the rest: Zürich, at five, asleep. Not free. Further away.",
+      "Day 732. I decided who it was for.",
+      "Day 733. He is coming. The inspector. I hope he is kind. I hope he is not."
+    ],
+    "flag": "diaryRead"
+  },
+  "clementine": {
+    "prompt": "Talk to her",
+    "name": "Clementine Pryce",
+    "open": "You're later than I hoped, Inspector.",
+    "openChoices": ["Clementine Pryce.", "Who are you?"],
+    "reply": "Yes. The girl who died on the Marigold. Sit down, if you like. Then tell me what you know. Not what you think. What you know.",
+    "prompts": [
+      { "q": "Everyone says it was his heart.", "accept": ["F04", "F05"], "right": "She lifts her head. \"No. It wasn't.\"" },
+      { "q": "The door was bolted. He was alone.", "accept": ["F07"], "right": "\"Yes. I wound it for him. He used to wind it for me.\"" },
+      { "q": "Anyone could have touched that decanter.", "accept": ["F08"], "right": "She looks at her gloved hands and says nothing." },
+      { "q": "And you think you know who sent for you.", "accept": ["F12", "F13"], "right": "\"The man upstairs stumbles on his Q. I copied him. It seemed polite.\"" },
+      { "q": "I died, Inspector. It was in the papers.", "accept": ["F18", "F19", "F20"], "right": "\"He got there before anyone. He carried me out himself.\"" },
+      { "q": "And how would a dead girl get into a locked room?", "accept": ["F02", "F31"], "right": "She glances up, at the trapdoor. \"The same way I get everywhere.\"" }
+    ],
+    "wrong": "She turns her face away. \"That isn't it.\"",
+    "noIdea": "I don't know.",
+    "needed": 4,
+    "notEnough": "You don't know. Not really. Come back when you do, Inspector. I'm not going anywhere. That was rather the point.",
+    "confession": [
+      "I kept that poison for myself. Eleven months, in a tin, under the bed. Then I heard him say 'Zürich', and I decided who it was for.",
+      "I put it in the decanter that afternoon, from below. At twenty to ten he drank to Marigold, the way he always did. I listened until it was quiet. Then I went up and wound my music box, because I didn't know what else to do.",
+      "I didn't send for you to catch me, Inspector. I sent for you to find me. I didn't know yet that I would do the other thing.",
+      "He knew the mount was cracked. He knew about the weather. He carried me out of the fire whispering 'don't tell them you were aboard'. Not because he was ashamed. Because I was proof.",
+      "You brought a boy with you. The one who talks to himself in the shed. Look after him."
+    ],
+    "papers": "She slides her diary and a bundle of papers across the floor to you: the 1931 maintenance log, the real weather report, her father's letter.",
+    "choiceIntro": "\"So. What happens now, Inspector?\"",
+    "choices": [
+      { "id": "E1", "label": "Arrest her. The law decides." },
+      { "id": "E2", "label": "Say nothing. Let her go." },
+      { "id": "E3", "label": "Bring her up into the daylight, and tell everyone everything." }
+    ]
+  },
+  "S26": {
+    "title": "The Board and the Theory",
+    "intro": "At the typewriter: file your theory. Who killed Cornelius Pryce, how, where they came from, and why. Only established findings will stand up.",
+    "who": ["vivienne", "billie", "lindqvist", "julian", "ox", "tamsin", "hobbs", "clementine"],
+    "hiddenName": "Someone else",
+    "clementineName": "Clementine Pryce (presumed dead)",
+    "unlock": ["F08", "F14", "F18"],
+    "how": [["F05", "Cyanide in the brandy decanter"], ["F09", "A gunshot in the night"], ["heart", "His heart gave out"]],
+    "where": [["F02", "Up through the trapdoor under the rug"], ["F01", "Through the door, before it was bolted"], ["window", "Through the window"]],
+    "why": [["F21", "He was about to send her away to Zürich, sedated, for good"], ["F27", "Blackmail money"], ["F25", "To stop the airline merger"], ["F26", "To be free of an unhappy marriage"]],
+    "answer": { "who": "clementine", "how": "F05", "where": "F02", "why": "F21" },
+    "notEstablished": "You can't file that yet: these findings aren't established: ",
+    "wrongWho": "File it anyway? An innocent person may hang for this.",
+    "confirm": "File it",
+    "filed": "Theory filed. Danny reads it over your shoulder and goes quiet. \"Then she's down there, Chief. Under the office. All this time.\"",
+    "wrongFiled": "You file it. Danny says nothing at all."
+  },
+  "endings": {
+    "E1": { "title": "The Law", "lines": [
+      "Clementine Pryce climbs the iron rungs at noon with her gloved hands in front of her, and Danny puts the cuffs on gently.",
+      "The trial is in Reno in the spring. The papers call her 'the Ghost of Sable Flat'. They print the real weather report, the cracked mount, the insurer's money.",
+      "Tamsin Quill, Abel Brennan, Doctor Lindqvist and Julian Ferreira-Blake are all charged in the matter of the Marigold.",
+      "Clementine is convicted. On the day of the sentence she asks the judge if she may see the sky first. He says yes.",
+      "You keep the music box. Some nights you wind it."] },
+    "E2": { "title": "The Silence", "lines": [
+      "You rule the death natural causes, heart failure, and sign it in your neatest hand. Danny watches you do it and doesn't say a word.",
+      "At dawn the Trimotor takes off into a clean sky with Billie at the controls, Lindqvist in the cabin, and a girl in a veiled hat looking out of the window.",
+      "Everyone else drives away free. The Marigold stays a crash and nothing more.",
+      "Years later, postcards start arriving from Zürich. No name. Always a little aeroplane drawn in the corner.",
+      "You carry it alone. That was always the price of silence."] },
+    "E3": { "title": "The Daylight", "lines": [
+      "You bring her up the ladder and out through the hangar doors, and for the first time in seven hundred and thirty-three days Clementine Pryce stands in the sun. The storm has gone. She shades her eyes and laughs at the wrong moment.",
+      "At the trial her diary is read aloud, and Billie's 1931 photographs are passed along the jury box: the truck at the wreck before the rescuers, the stretcher under the canvas.",
+      "The Marigold truth comes out all at once: the order to fly, the false weather, the cracked mount, the buried inquiry. It ruins everyone who kept the silence.",
+      "Clementine is acquitted. She learns to fly.",
+      "The last postcard you get from her is of an aeroplane over the Alps. On the back: 'Found.'"] },
+    "E4": { "title": "The Wrong Person", "lines": [
+      "You name the wrong person, and the evidence, such as it is, is enough for a jury that wants an answer.",
+      "At dusk the storm lifts and the Trimotor leaves with Billie at the controls and a passenger nobody counted.",
+      "Under the hangar, a lantern burns out and is not lit again.",
+      "Years later you still dream about a music box playing in a locked room."] },
+    "E5": { "title": "Cold Case", "lines": [
+      "Half past five. The storm clears, the strip is open, and nobody needs your permission to leave.",
+      "By nightfall Sable Flat is empty. The case goes cold, and stays cold.",
+      "The last thing you see as your plane climbs away is the hangar, a single lamp glowing under the roof vent, and a small silhouette at the window, watching you go."] },
+    "E1short": { "title": "The Daylight, Too Soon", "lines": [
+      "You bring her up into the daylight before you can prove what was done to her.",
+      "Without the photographs and the papers, the trial is about one poisoned decanter and nothing else. The Marigold stays buried.",
+      "Clementine Pryce is convicted. The people who made her keep their secrets.",
+      "You keep the music box. Some nights you wind it."] },
+    "score": "Findings established: {f} of 32 · Investigations solved: {s} of 26 · Her diary: {d}",
+    "again": "Start a new game",
+    "keep": "Keep looking around"
+  },
+  "daylightNeeds": ["solved:S5", "solved:S9", "flag:diaryRead"],
+  "coldCase": "17:30"
+}

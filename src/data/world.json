@@ -333,6 +333,25 @@
         9.4,
         7.4
       ]
+    },
+    {
+      "id": "undercroft",
+      "label": "The Undercroft (under the hangar)",
+      "file": "undercroft.glb",
+      "position": [
+        -140,
+        -30,
+        -100
+      ],
+      "rotationY": 0,
+      "load": 5000,
+      "cull": 5000,
+      "lightRadius": 80,
+      "footprint": [
+        30,
+        10
+      ],
+      "hidden_on_map": true
     }
   ],
   "hangar": {

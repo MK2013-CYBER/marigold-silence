@@ -1,15 +1,181 @@
 {
   "_note": "The people of Sable Flat as 3D figures: model file (built by blender/build_characters.py), height in metres, props they carry, and the computer voice used for their spoken lines until real voice acting (Stage H).",
   "people": {
-    "cole": { "file": "cast/cole.glb", "height": 1.78, "props": ["fedora"], "voice": { "prefer": ["Evan", "Aaron", "Nathan", "Tom", "Alex", "Reed (English (United States))", "Eddy (English (United States))"], "pitch": 1.08, "rate": 1.05 } },
-    "hart": { "voice": { "prefer": ["Daniel", "Oliver", "Arthur", "Reed (English (United Kingdom))", "Rocko (English (United Kingdom))"], "pitch": 0.88, "rate": 0.94, "lang": "en-GB" } },
-    "pryce": { "file": "cast/pryce.glb", "height": 1.72, "props": ["glass"], "voice": { "prefer": ["Ralph", "Albert", "Rocko (English (United States))", "Fred"], "pitch": 0.8, "rate": 0.9 } },
-    "vivienne": { "file": "cast/vivienne.glb", "height": 1.68, "props": ["pearls"], "voice": { "prefer": ["Moira", "Kate", "Serena", "Shelley (English (United Kingdom))", "Flo (English (United Kingdom))"], "pitch": 1.0, "rate": 0.95 } },
-    "billie": { "file": "cast/billie.glb", "height": 1.70, "props": [], "voice": { "prefer": ["Karen", "Samantha", "Sandy (English (United States))"], "pitch": 0.95, "rate": 1.05 } },
-    "lindqvist": { "file": "cast/lindqvist.glb", "height": 1.74, "props": ["spectacles", "glassL"], "voice": { "prefer": ["Albert", "Reed (English (United Kingdom))", "Daniel"], "pitch": 0.9, "rate": 0.9 } },
-    "julian": { "file": "cast/julian.glb", "height": 1.82, "props": [], "voice": { "prefer": ["Rishi", "Reed (English (United Kingdom))", "Daniel"], "pitch": 0.95, "rate": 0.95 } },
-    "ox": { "file": "cast/ox.glb", "height": 1.96, "props": [], "voice": { "prefer": ["Ralph", "Rocko (English (United States))", "Fred"], "pitch": 0.7, "rate": 0.85 } },
-    "tamsin": { "file": "cast/tamsin.glb", "height": 1.64, "props": ["cigarette"], "voice": { "prefer": ["Tessa", "Samantha", "Kathy"], "pitch": 0.95, "rate": 1.0 } },
-    "hobbs": { "file": "cast/hobbs.glb", "height": 1.66, "props": ["lantern"], "voice": { "prefer": ["Grandpa (English (United States))", "Grandpa (English (United Kingdom))", "Albert", "Fred"], "pitch": 0.85, "rate": 0.88 } }
+    "cole": {
+      "file": "cast/cole.glb",
+      "height": 1.78,
+      "props": [
+        "fedora"
+      ],
+      "voice": {
+        "prefer": [
+          "Evan",
+          "Aaron",
+          "Nathan",
+          "Tom",
+          "Alex",
+          "Reed (English (United States))",
+          "Eddy (English (United States))"
+        ],
+        "pitch": 1.08,
+        "rate": 1.05
+      }
+    },
+    "hart": {
+      "voice": {
+        "prefer": [
+          "Daniel",
+          "Oliver",
+          "Arthur",
+          "Reed (English (United Kingdom))",
+          "Rocko (English (United Kingdom))"
+        ],
+        "pitch": 0.88,
+        "rate": 0.94,
+        "lang": "en-GB"
+      }
+    },
+    "pryce": {
+      "file": "cast/pryce.glb",
+      "height": 1.72,
+      "props": [
+        "glass"
+      ],
+      "voice": {
+        "prefer": [
+          "Ralph",
+          "Albert",
+          "Rocko (English (United States))",
+          "Fred"
+        ],
+        "pitch": 0.8,
+        "rate": 0.9
+      }
+    },
+    "vivienne": {
+      "file": "cast/vivienne.glb",
+      "height": 1.68,
+      "props": [
+        "pearls"
+      ],
+      "voice": {
+        "prefer": [
+          "Moira",
+          "Kate",
+          "Serena",
+          "Shelley (English (United Kingdom))",
+          "Flo (English (United Kingdom))"
+        ],
+        "pitch": 1.0,
+        "rate": 0.95
+      }
+    },
+    "billie": {
+      "file": "cast/billie.glb",
+      "height": 1.7,
+      "props": [],
+      "voice": {
+        "prefer": [
+          "Karen",
+          "Samantha",
+          "Sandy (English (United States))"
+        ],
+        "pitch": 0.95,
+        "rate": 1.05
+      }
+    },
+    "lindqvist": {
+      "file": "cast/lindqvist.glb",
+      "height": 1.74,
+      "props": [
+        "spectacles",
+        "glassL"
+      ],
+      "voice": {
+        "prefer": [
+          "Albert",
+          "Reed (English (United Kingdom))",
+          "Daniel"
+        ],
+        "pitch": 0.9,
+        "rate": 0.9
+      }
+    },
+    "julian": {
+      "file": "cast/julian.glb",
+      "height": 1.82,
+      "props": [],
+      "voice": {
+        "prefer": [
+          "Rishi",
+          "Reed (English (United Kingdom))",
+          "Daniel"
+        ],
+        "pitch": 0.95,
+        "rate": 0.95
+      }
+    },
+    "ox": {
+      "file": "cast/ox.glb",
+      "height": 1.96,
+      "props": [],
+      "voice": {
+        "prefer": [
+          "Ralph",
+          "Rocko (English (United States))",
+          "Fred"
+        ],
+        "pitch": 0.7,
+        "rate": 0.85
+      }
+    },
+    "tamsin": {
+      "file": "cast/tamsin.glb",
+      "height": 1.64,
+      "props": [
+        "cigarette"
+      ],
+      "voice": {
+        "prefer": [
+          "Tessa",
+          "Samantha",
+          "Kathy"
+        ],
+        "pitch": 0.95,
+        "rate": 1.0
+      }
+    },
+    "hobbs": {
+      "file": "cast/hobbs.glb",
+      "height": 1.66,
+      "props": [
+        "lantern"
+      ],
+      "voice": {
+        "prefer": [
+          "Grandpa (English (United States))",
+          "Grandpa (English (United Kingdom))",
+          "Albert",
+          "Fred"
+        ],
+        "pitch": 0.85,
+        "rate": 0.88
+      }
+    },
+    "clementine": {
+      "file": "cast/clementine.glb",
+      "height": 1.63,
+      "props": [],
+      "voice": {
+        "prefer": [
+          "Shelley (English (United Kingdom))",
+          "Flo (English (United Kingdom))",
+          "Moira",
+          "Samantha"
+        ],
+        "pitch": 1.05,
+        "rate": 0.86
+      }
+    }
   }
 }

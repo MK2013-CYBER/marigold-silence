@@ -140,6 +140,20 @@ With enough (usually 3) a finding is Established and goes on the HQ board. Tab s
 the things you noticed. Data: `src/data/findings.json`, `src/data/sequences.json`.
 Code: `src/game/evidence.js`, `src/game/crimeScene.js`, `src/ui/sequences.js`.
 
+## Tier 6: the finale
+
+- **S26 The Theory** (HQ typewriter): pick WHO, HOW, WHERE and WHY. A new name appears under WHO
+  once you know enough. Filing it against an innocent person ends the game (The Wrong Person).
+- **The trapdoor** (after S6): Ox waits at the bottom. Win him over with trust, or with what the ration
+  ledger told you (S14). Then a voice from the dark: "Let him through, Ox."
+- **The Undercroft** (`blender/build_undercroft.py`): the shaft, the storeroom, the sky room, her
+  bedroom and the radio nook. Her diary (14 pages), the spoon key, the scratched calendar, the mural.
+- **Clementine**: answer six of her challenges with the right findings (four must be right), hear her
+  confession, then choose: the law, the silence, or the daylight.
+- **Endings**: The Law, The Silence, The Daylight (needs the safe papers S5, the 1931 photographs S9
+  and her diary; otherwise The Daylight, Too Soon), The Wrong Person, and Cold Case (17:30 passes).
+- Words: `src/data/finale.json`. Code: `src/game/finale.js`.
+
 ## Stage E: the people (addendum F)
 
 Vivienne, Billie, Lindqvist, Julian, Ox, Tamsin and Hobbs stand where the schedule puts them for the

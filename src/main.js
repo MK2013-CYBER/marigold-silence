@@ -31,6 +31,8 @@ import { CrimeScene } from './game/crimeScene.js';
 import { People, Trust } from './game/npcs.js';
 import { SequenceScreen } from './ui/sequences.js';
 import { Walks } from './game/walks.js';
+import { Finale } from './game/finale.js';
+import finaleData from './data/finale.json';
 import { Voice } from './engine/voice.js';
 import config from './data/game.json';
 import interactables from './data/interactables.json';
@@ -158,9 +160,11 @@ const hq = new HQ({
 });
 interaction.onUI = (def) => {
   if (def.ui === 'npc') { people.talk(def.npc); syncFreeze(); return; }
+  if (finale.handle(def)) { syncFreeze(); return; }
   if (def.ui === 'walk') { walks.handle(def); syncFreeze(); return; }
   if (crime.handle(def)) { syncFreeze(); return; }
   if (def.ui === 'lab') { hq.openScreen(seqScreen.setId('S23')); syncFreeze(); return; } // the prints (v4 S23)
+  if (def.ui === 'typewriter') { hq.openScreen(seqScreen.setId('S26')); syncFreeze(); return; } // the theory (v4 S26)
   if (def.ui === 'timeline') { hq.openScreen(seqScreen.setId('S25')); syncFreeze(); return; } // the time strip (v4 S25)
   hq.handle(def);
 };
@@ -169,9 +173,9 @@ interaction.onUI = (def) => {
 const seqScreen = new SequenceScreen({
   data: sequencesData, state, evidence, hud, audio, spend, trust, cole,
   onSolved: (id) => {
-    hud.toast(`Solved: ${sequencesData[id].title}`);
+    hud.toast(`Solved: ${sequencesData[id]?.title ?? finaleData.S26.title}`);
     hq.danny(coleLines.solved?.[id] ?? coleLines.reactions.default, 6);
-    if (id === 'S6') crime.openTrapdoor();
+    if (id === 'S6') { crime.openTrapdoor(); state.setFlag('trapOpen'); }
   },
 });
 seqScreen.onClose = () => { hq.screen = null; hq.onScreenClosed?.(); };
@@ -189,6 +193,17 @@ const walks = new Walks({
 });
 walks.build();
 seqScreen.walks = walks;
+
+// ---------- v4 Tier 6: the Undercroft, Clementine and the endings ----------
+const finale = new Finale({
+  scene, world, controller, streamer, interaction, state, evidence, hud, audio, dialogue: hq.dialogue, cast: castData.people,
+  data: finaleData, crime, spend, trust, fade: hq.fade, characters, onFreezeChange: (r) => { if (r !== undefined) resting = r; syncFreeze(); },
+});
+finale.onEnding = () => { hq.closeScreen(); hq.dialogue.close(); };
+seqScreen.finale = finaleData;
+seqScreen.characters = characters;
+seqScreen.onWrongTheory = () => finale.ending('E4');
+controller.groundHeight = (x, z) => (finale.underground ? finale.groundY : ground.heightAt(x, z));
 
 // ---------- Stage E: the people of Sable Flat ----------
 const people = new People({
@@ -268,6 +283,7 @@ function savePlayer() {
 }
 
 // ---------- where am I? (interior zones from world.json) ----------
+const UNDERCROFT_ZONE = { name: 'the Undercroft', indoor: true, reverb: 0.55 };
 function zoneAt(p) {
   for (const z of worldCfg.zones) {
     if (p.x >= z.x[0] && p.x <= z.x[1] && p.z >= z.z[0] && p.z <= z.z[1]) return z;
@@ -424,7 +440,7 @@ const hangarCentre = new THREE.Vector3(0, 0, 0);
 let fpsAcc = 0, fpsFrames = 0, fps = 0, saveAcc = 0, shadowTick = 1, visitTick = 0;
 
 // places you have been near appear as cards on the investigation board
-const PLACE_SPOTS = [{ id: 'hangar', x: 0, z: 0, r: 30 }, ...worldCfg.models.map((m) => ({
+const PLACE_SPOTS = [{ id: 'hangar', x: 0, z: 0, r: 30 }, ...worldCfg.models.filter((m) => !m.hidden_on_map).map((m) => ({
   id: m.id, x: m.position[0], z: m.position[2], r: Math.max(...(m.footprint ?? [10, 10])) / 2 + 10,
 }))];
 function markVisited(p) {
@@ -444,7 +460,7 @@ renderer.setAnimationLoop(() => {
   controller.update(dt);
   flashlight.update(dt);
 
-  const zone = zoneAt(pos);
+  const zone = finale.underground ? UNDERCROFT_ZONE : zoneAt(pos);
   const inside = !!zone?.indoor;
   atmosphere.update(dt, t, pos, inside);
   airfield.update(dt, t, atmosphere.wind);
@@ -466,6 +482,7 @@ renderer.setAnimationLoop(() => {
   cole.update(dt, pos);
   people.update(dt, pos);
   walks.update(dt, pos);
+  finale.update();
   hq.update();
   const qmsg = quality.update(dt, controller.active);
   if (qmsg) hud.toast(qmsg);
@@ -521,4 +538,4 @@ function introFrame(dt, t) {
 }
 
 // Test hook for automated checks in dev builds only.
-if (import.meta.env.DEV) window.__game = { intro, post, crime, people, walks, evidence, seqScreen, trust, THREE, scene, camera, controller, world, flashlight, renderer, state, interaction, hud, atmosphere, ground, streamer, hangar, cole, hq, quality };
+if (import.meta.env.DEV) window.__game = { intro, post, crime, people, walks, finale, evidence, seqScreen, trust, THREE, scene, camera, controller, world, flashlight, renderer, state, interaction, hud, atmosphere, ground, streamer, hangar, cole, hq, quality };

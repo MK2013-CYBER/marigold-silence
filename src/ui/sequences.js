@@ -59,13 +59,14 @@ export class SequenceScreen {
   solve(id) {
     if (this.solved(id)) return;
     this.state.data.solved.push(id);
-    const d = this.data[id];
+    const d = this.data[id] ?? {}; // S26's words live in finale.json
     for (const [fid, src] of d.sources ?? []) this.evidence.add(fid, src);
     this.state.save();
     this.onSolved?.(id);
   }
 
   render() {
+    if (this.id === 'S26') { this.body.replaceChildren(); const p0 = document.createElement('p'); p0.className = 'seq-intro'; this.body.appendChild(p0); return this.renderS26(); }
     const d = this.data[this.id];
     this.el.querySelector('.seq-title').textContent = `${this.id} · ${d.title}`;
     this.body.replaceChildren();
@@ -1246,6 +1247,50 @@ export class SequenceScreen {
       this.spend(5);
       if (decode(st.key) !== d.plain) return this.msg(d.wrong);
       this.solve('S24'); this.render(); this.msg(d.done, true);
+    }, 'primary'));
+  }
+
+  // ------------------------------------------------------------------ S26 The Board and the Theory
+  renderS26() {
+    const d = this.finale.S26;
+    const st = this.s('S26');
+    const unlocked = d.unlock.every((f) => this.evidence.sources(f).length > 0);
+    const names = { clementine: unlocked ? d.clementineName : d.hiddenName };
+    for (const c of this.characters ?? []) if (!names[c.id]) names[c.id] = c.name;
+    this.el.querySelector('.seq-title').textContent = `S26 · ${d.title}`;
+    this.body.firstChild.textContent = this.solved('S26') ? d.filed : d.intro;
+    const pick = (key, label, options) => {
+      const sec = document.createElement('div');
+      sec.className = 'seq-section';
+      sec.innerHTML = `<h3>${label}</h3>`;
+      for (const [id, text] of options) {
+        const locked = key === 'who' && id === 'clementine' && !unlocked;
+        sec.appendChild(this._btn(text, () => { if (locked) return this.msg('You don\'t know who that is yet.'); st[key] = id; this.render(); }, st[key] === id ? 'on' : ''));
+      }
+      this.body.appendChild(sec);
+    };
+    pick('who', 'Who', d.who.map((id) => [id, names[id] ?? id]));
+    pick('how', 'How', d.how);
+    pick('where', 'Where they came from', d.where);
+    pick('why', 'Why', d.why);
+    if (this.solved('S26')) return;
+    this.body.appendChild(this._btn('Type it up and file it', () => {
+      if (!st.who || !st.how || !st.where || !st.why) return this.msg('Fill in all four first.');
+      const a = d.answer;
+      if (st.who !== a.who) {
+        if (st.confirmWrong !== st.who) { st.confirmWrong = st.who; return this.msg(`${d.wrongWho} (Press again to file it.)`); }
+        this.close();
+        this.msg(d.wrongFiled);
+        return this.onWrongTheory?.(st.who);
+      }
+      if (st.how !== a.how || st.where !== a.where || st.why !== a.why) return this.msg("That doesn't hold together, Chief. Look at the board again.");
+      const missing = [a.how, a.where, a.why].filter((f) => !this.evidence.isEstablished(f));
+      if (missing.length) return this.msg(d.notEstablished + missing.map((f) => this.evidence.byId.get(f).name).join('; '));
+      this.spend(15);
+      this.solve('S26');
+      this.state.setFlag('theoryFiled');
+      this.render();
+      this.msg(d.filed, true);
     }, 'primary'));
   }
 

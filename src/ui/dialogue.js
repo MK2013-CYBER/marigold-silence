@@ -80,3 +80,15 @@ export class DialogueBox {
     this.onClose?.();
   }
 }
+
+/**
+ * Turn a long list into pages of choices for the conversation box (keys only go 1-9):
+ * `extra` choices (like "I don't know" or "Back") stay on every page.
+ */
+export function pagedChoices(items, toChoice, show, extra = [], page = 0, size = 7) {
+  const pages = Math.max(1, Math.ceil(items.length / size));
+  const out = items.slice(page * size, page * size + size).map(toChoice);
+  if (page < pages - 1) out.push({ label: `More... (${page + 2} of ${pages})`, onPick: () => show(page + 1) });
+  if (page > 0) out.push({ label: 'Previous', onPick: () => show(page - 1) });
+  return [...out, ...extra];
+}

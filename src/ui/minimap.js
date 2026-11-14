@@ -244,6 +244,7 @@ export class Minimap {
     const [hx, hz] = m(0, -18);
     c.fillText(hg.label, hx, hz);
     for (const it of cfg.models) {
+      if (it.hidden_on_map) continue; // e.g. the Undercroft, underground and secret
       if (it.id === 'beacon_tower') continue;
       if (it.rects) {
         // several local rectangles (e.g. Operations + its annex), turned with the building

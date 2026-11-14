@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { Character } from '../world/character.js';
 import { parseTime } from '../engine/state.js';
 import { Voice } from '../engine/voice.js';
+import { pagedChoices } from '../ui/dialogue.js';
 
 /**
  * Stage E (addendum F): the suspects and Hobbs as people in the world.
@@ -199,7 +200,7 @@ export class People {
     const known = this.evidence.known();
     if (!known.length) return this._say(id, U.nothingToPresent, [{ label: U.back, onPick: () => this.menu(id, 'Anything else?') }]);
     const shown = (this.state.data.shown ??= {});
-    const choices = known.slice(0, 8).map((f) => ({
+    const toChoice = (f) => ({
       label: f.name,
       onPick: () => {
         this.spend(3);
@@ -213,8 +214,10 @@ export class People {
         }
         this._say(id, r.text, [{ label: U.back, onPick: () => this.menu(id, 'Anything else?') }]);
       },
-    }));
-    choices.push({ label: U.back, onPick: () => this.menu(id, 'Anything else?') });
+    });
+    const extra = [{ label: U.back, onPick: () => this.menu(id, 'Anything else?') }];
+    const show = (pg) => this.dialogue.show(this._label(id), U.presentIntro, pagedChoices(known, toChoice, show, extra, pg));
+    const choices = pagedChoices(known, toChoice, show, extra, 0);
     this._say(id, U.presentIntro, choices);
   }
 

@@ -376,3 +376,15 @@ kbd {
 .seq-bino svg { width: 100%; height: 100%; transform-origin: 50% 50%; }
 .seq-baro { display: block; margin: 6px 0; border: 1px solid #b8a682; max-width: 100%; }
 .seq-cipher { font-family: 'Courier New', monospace; font-size: 18px; letter-spacing: 0.15em; }
+
+/* ---------------------------------------------------------------- endings (Tier 6) */
+.ending { position: fixed; inset: 0; z-index: 60; background: #000; color: #efe6d2; display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 2s ease; font-family: Georgia, 'Times New Roman', serif; cursor: pointer; }
+.ending.on { opacity: 1; }
+.ending.hidden { display: none; }
+.ending-card { width: min(760px, 88vw); text-align: center; }
+.ending-card h1 { font-weight: normal; letter-spacing: 0.3em; text-transform: uppercase; font-size: clamp(24px, 4vw, 42px); color: #e8c27a; margin-bottom: 28px; }
+.ending-lines p { font-size: clamp(15px, 1.8vw, 19px); line-height: 1.6; opacity: 0; transition: opacity 1.6s ease; margin: 0 0 16px; }
+.ending-lines p.on { opacity: 1; }
+.ending-score { color: #b9ab90; font-style: italic; margin-top: 26px; }
+.ending-btns button { font-family: inherit; margin: 12px 8px 0; padding: 8px 18px; background: transparent; color: #efe6d2; border: 1px solid #e8c27a; cursor: pointer; }
