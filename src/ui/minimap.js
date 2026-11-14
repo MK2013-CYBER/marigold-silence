@@ -7,8 +7,9 @@ const INK = '#3b2d1f';
 const PAPER = '#d9caa4';
 
 export class Minimap {
-  constructor(cfg) {
+  constructor(cfg, places = []) {
     this.cfg = cfg;
+    this.places = places;
     const b = cfg.walkBounds;
     this.x0 = b.x[0];
     this.z0 = b.z[0];
@@ -244,7 +245,27 @@ export class Minimap {
     c.fillText(hg.label, hx, hz);
     for (const it of cfg.models) {
       if (it.id === 'beacon_tower') continue;
-      building(it.position[0], it.position[2], it.footprint[0], it.footprint[1], it.rotationY ?? 0, it.label);
+      if (it.rects) {
+        // several local rectangles (e.g. Operations + its annex), turned with the building
+        const [px, pz] = m(it.position[0], it.position[2]);
+        c.save();
+        c.translate(px, pz);
+        c.rotate(-(it.rotationY ?? 0));
+        c.fillStyle = '#5b4a35';
+        c.strokeStyle = INK;
+        c.lineWidth = 1.2;
+        for (const [x0, x1, z0, z1] of it.rects) {
+          c.fillRect(x0 * s, z0 * s, (x1 - x0) * s, (z1 - z0) * s);
+          c.strokeRect(x0 * s, z0 * s, (x1 - x0) * s, (z1 - z0) * s);
+        }
+        c.restore();
+        c.fillStyle = INK;
+        c.font = 'italic 13px Georgia';
+        c.textAlign = 'left';
+        c.fillText(it.label, px + 16 * s, pz + 4);
+      } else {
+        building(it.position[0], it.position[2], it.footprint[0], it.footprint[1], it.rotationY ?? 0, it.label);
+      }
     }
     // beacon tower + windsock symbols
     const bt = cfg.models.find((i) => i.id === 'beacon_tower');
@@ -284,6 +305,25 @@ export class Minimap {
     c.font = 'bold 14px Georgia';
     c.textAlign = 'center';
     c.fillText('N', rx, ry - 38);
+    // legend: every place and what it is for (places.json)
+    if (this.places.length) {
+      const lx = 20, ly = H - 22 - this.places.length * 17;
+      c.fillStyle = 'rgba(217,202,164,0.85)';
+      c.fillRect(lx - 8, ly - 26, 430, this.places.length * 17 + 36);
+      c.strokeStyle = INK;
+      c.lineWidth = 1;
+      c.strokeRect(lx - 8, ly - 26, 430, this.places.length * 17 + 36);
+      c.fillStyle = INK;
+      c.textAlign = 'left';
+      c.font = 'bold 13px Georgia';
+      c.fillText('PLACES', lx, ly - 8);
+      this.places.forEach((pl, i) => {
+        c.font = 'bold italic 12px Georgia';
+        c.fillText(pl.label, lx, ly + 10 + i * 17);
+        c.font = 'italic 12px Georgia';
+        c.fillText(pl.mapNote, lx + 128, ly + 10 + i * 17);
+      });
+    }
     // vignette
     const g = c.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.35, W / 2, H / 2, Math.max(W, H) * 0.7);
     g.addColorStop(0, 'rgba(0,0,0,0)');

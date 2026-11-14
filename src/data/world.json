@@ -214,8 +214,22 @@
       "load": 320,
       "cull": 260,
       "footprint": [
-        16,
+        21.6,
         12.2
+      ],
+      "rects": [
+        [
+          -8,
+          8,
+          -5,
+          7.2
+        ],
+        [
+          8,
+          13.6,
+          -5,
+          3
+        ]
       ]
     },
     {
@@ -231,8 +245,42 @@
       "load": 320,
       "cull": 260,
       "footprint": [
-        3,
-        2.5
+        5,
+        3.6
+      ]
+    },
+    {
+      "id": "quarters",
+      "label": "Quarters",
+      "file": "quarters.glb",
+      "position": [
+        -75,
+        0,
+        -28
+      ],
+      "rotationY": 0,
+      "load": 320,
+      "cull": 260,
+      "footprint": [
+        24,
+        12
+      ]
+    },
+    {
+      "id": "hq_shed",
+      "label": "HQ (your shed)",
+      "file": "hq_shed.glb",
+      "position": [
+        30,
+        0,
+        -150
+      ],
+      "rotationY": -1.5708,
+      "load": 400,
+      "cull": 260,
+      "footprint": [
+        7,
+        5.5
       ]
     }
   ],
@@ -242,19 +290,6 @@
     "footprint": [
       40.6,
       25.6
-    ],
-    "rooms": [
-      {
-        "label": "Survey",
-        "x": [
-          -20.1,
-          -14.8
-        ],
-        "z": [
-          12.8,
-          19.6
-        ]
-      }
     ]
   },
   "zones": [
@@ -270,32 +305,6 @@
       ],
       "indoor": true,
       "reverb": 0.12
-    },
-    {
-      "name": "survey",
-      "x": [
-        -20,
-        -14.9
-      ],
-      "z": [
-        12.8,
-        16.8
-      ],
-      "indoor": true,
-      "reverb": 0.18
-    },
-    {
-      "name": "darkroom",
-      "x": [
-        -20,
-        -16.6
-      ],
-      "z": [
-        16.9,
-        19.5
-      ],
-      "indoor": true,
-      "reverb": 0.08
     },
     {
       "name": "hangar",
@@ -363,75 +372,177 @@
       "reverb": 0.3
     },
     {
-      "name": "radio shelter",
+      "name": "darkroom",
       "x": [
-        38.6,
-        41.4
+        53.0,
+        58.5
       ],
       "z": [
-        110.85,
-        113.15
+        -22.9,
+        -19.1
+      ],
+      "indoor": true,
+      "reverb": 0.08
+    },
+    {
+      "name": "records room",
+      "x": [
+        53.0,
+        58.5
+      ],
+      "z": [
+        -26.9,
+        -23.1
       ],
       "indoor": true,
       "reverb": 0.12
+    },
+    {
+      "name": "radio & weather",
+      "x": [
+        37.6,
+        42.4
+      ],
+      "z": [
+        110.3,
+        113.7
+      ],
+      "indoor": true,
+      "reverb": 0.12
+    },
+    {
+      "name": "beacon room",
+      "x": [
+        -259.4,
+        -256.9
+      ],
+      "z": [
+        45.9,
+        48.4
+      ],
+      "indoor": true,
+      "reverb": 0.15
+    },
+    {
+      "name": "quarters: mess hall",
+      "x": [
+        -86.85,
+        -77.1
+      ],
+      "z": [
+        -33.85,
+        -22.15
+      ],
+      "indoor": true,
+      "reverb": 0.35
+    },
+    {
+      "name": "quarters: corridor",
+      "x": [
+        -77.1,
+        -63.15
+      ],
+      "z": [
+        -29.0,
+        -27.0
+      ],
+      "indoor": true,
+      "reverb": 0.3
+    },
+    {
+      "name": "quarters: V. Pryce's room",
+      "x": [
+        -77,
+        -72.4
+      ],
+      "z": [
+        -33.85,
+        -29.08
+      ],
+      "indoor": true,
+      "reverb": 0.1
+    },
+    {
+      "name": "quarters: J. Ferreira-Blake's room",
+      "x": [
+        -77,
+        -72.4
+      ],
+      "z": [
+        -26.92,
+        -22.15
+      ],
+      "indoor": true,
+      "reverb": 0.1
+    },
+    {
+      "name": "quarters: W. Strand's room",
+      "x": [
+        -72.25,
+        -67.75
+      ],
+      "z": [
+        -33.85,
+        -29.08
+      ],
+      "indoor": true,
+      "reverb": 0.1
+    },
+    {
+      "name": "quarters: A. Brennan's room",
+      "x": [
+        -72.25,
+        -67.75
+      ],
+      "z": [
+        -26.92,
+        -22.15
+      ],
+      "indoor": true,
+      "reverb": 0.1
+    },
+    {
+      "name": "quarters: Dr. Lindqvist's room",
+      "x": [
+        -67.6,
+        -63.15
+      ],
+      "z": [
+        -33.85,
+        -29.08
+      ],
+      "indoor": true,
+      "reverb": 0.1
+    },
+    {
+      "name": "quarters: T. Quill's room",
+      "x": [
+        -67.6,
+        -63.15
+      ],
+      "z": [
+        -26.92,
+        -22.15
+      ],
+      "indoor": true,
+      "reverb": 0.1
+    },
+    {
+      "name": "HQ",
+      "x": [
+        27.37,
+        32.63
+      ],
+      "z": [
+        -153.38,
+        -146.62
+      ],
+      "indoor": true,
+      "reverb": 0.15
     }
   ],
   "outdoorReverb": 0.1,
   "plannedBuildings": [
-    {
-      "id": "mess_hall",
-      "stage": 2,
-      "position": [
-        -80,
-        0,
-        -10
-      ]
-    },
-    {
-      "id": "bunkhouse",
-      "stage": 2,
-      "position": [
-        -90,
-        0,
-        -60
-      ]
-    },
-    {
-      "id": "radio_shack",
-      "stage": 2,
-      "position": [
-        85,
-        0,
-        -45
-      ]
-    },
-    {
-      "id": "generator_shed",
-      "stage": 2,
-      "position": [
-        110,
-        0,
-        5
-      ]
-    },
-    {
-      "id": "water_tank",
-      "stage": 2,
-      "position": [
-        -40,
-        0,
-        -40
-      ]
-    },
-    {
-      "id": "pigeon_coop",
-      "stage": 2,
-      "position": [
-        -254,
-        0,
-        42
-      ]
-    },
     {
       "id": "trimotor",
       "stage": 3,
@@ -591,6 +702,65 @@
           6
         ]
       ]
+    },
+    {
+      "width": 2.4,
+      "points": [
+        [
+          -83,
+          -21.5
+        ],
+        [
+          -70,
+          -14
+        ],
+        [
+          -45,
+          -4
+        ],
+        [
+          -21,
+          2.5
+        ]
+      ]
+    },
+    {
+      "width": 2.2,
+      "points": [
+        [
+          -62.5,
+          -28
+        ],
+        [
+          -40,
+          -18
+        ],
+        [
+          -22,
+          -9
+        ]
+      ]
+    },
+    {
+      "width": 2.4,
+      "points": [
+        [
+          27,
+          -152
+        ],
+        [
+          21,
+          -152
+        ]
+      ]
     }
-  ]
+  ],
+  "cole": {
+    "home": [
+      31.4,
+      -149.0
+    ],
+    "yaw": -1.5708,
+    "followDistance": 2.2
+  }
 }

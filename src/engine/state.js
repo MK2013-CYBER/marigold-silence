@@ -24,7 +24,16 @@ export class GameState {
   }
 
   _fresh() {
-    return { version: 1, minutes: this.start, flags: {}, clues: [], items: [], open: {}, player: null };
+    return {
+      version: 1, minutes: this.start, flags: {}, clues: [], items: [], open: {}, player: null,
+      solved: [],              // puzzles solved (addendum G: evidence only comes from these)
+      hints: {},               // puzzle id -> hint level Danny has given (0..3)
+      reportsRead: [],
+      visited: [],             // place ids you have been to (for board place cards and the map)
+      board: { cards: {}, links: [], notes: [] },
+      cole: { follow: false },
+      reminders: [],
+    };
   }
 
   load() {
@@ -33,7 +42,8 @@ export class GameState {
       if (!raw) return false;
       const d = JSON.parse(raw);
       if (d?.version !== 1) return false;
-      this.data = { ...this._fresh(), ...d };
+      const fresh = this._fresh();
+      this.data = { ...fresh, ...d, board: { ...fresh.board, ...(d.board || {}) }, cole: { ...fresh.cole, ...(d.cole || {}) } };
       return true;
     } catch {
       return false;
@@ -62,6 +72,19 @@ export class GameState {
   addClue(id) {
     if (this.hasClue(id)) return false;
     this.data.clues.push({ id, at: this.data.minutes });
+    return true;
+  }
+
+  isSolved(pid) { return this.data.solved.includes(pid); }
+  /** Solving a puzzle is the only way to earn evidence. Returns the newly earned clue ids. */
+  solvePuzzle(pid, clueIds = []) {
+    if (!this.isSolved(pid)) this.data.solved.push(pid);
+    return clueIds.filter((id) => this.addClue(id));
+  }
+
+  visit(placeId) {
+    if (this.data.visited.includes(placeId)) return false;
+    this.data.visited.push(placeId);
     return true;
   }
 

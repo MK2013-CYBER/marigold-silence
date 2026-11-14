@@ -1,0 +1,50 @@
+{
+  "speaker": "Danny Cole",
+  "greetings": [
+    "Chief. Coffee's terrible, but it's hot.",
+    "Back already? I've been staring at that board so long it's staring back.",
+    "Chief. Wind's taken another shingle off the roof. Anything I can do?"
+  ],
+  "walkieOpen": [
+    "*crackle* Cole here. Go ahead, Chief.",
+    "*crackle* Reading you, Chief. Mostly."
+  ],
+  "menu": {
+    "hint": "What do you think, Danny?",
+    "reports": "Anything new on the desk?",
+    "follow": "Come with me.",
+    "stay": "Wait here at HQ.",
+    "bye": "That's all for now."
+  },
+  "hintIntro": [
+    "Here's how I see it, Chief.",
+    "Okay. Don't laugh.",
+    "If it were my case, which it isn't, thank God..."
+  ],
+  "hintMore": "Want me to spell it out a bit more? That'll cost us another few minutes.",
+  "hintMaxed": "That's everything I've got on that one, Chief. The rest is up to you.",
+  "hintNone": "Honestly? I think we've done all we can for now. Maybe sleep on it.",
+  "reportsNew": "There's {n} new on the desk. I typed them up neat, Chief. Don't spill anything on them.",
+  "reportsNone": "Nothing new yet. I'll keep the wire warm.",
+  "follow": "Right behind you, Chief.",
+  "stay": "I'll hold the fort. Watch yourself out there.",
+  "bye": "Chief.",
+  "reminders": {
+    "15:00": "Chief, it's three o'clock. Storm's due to lift around half past five. Then everybody flies home, including whoever did this.",
+    "16:30": "One hour left, Chief. If we're going to file a theory, now's the time."
+  },
+  "reactions": {
+    "C01": "Chief, that's not a heart-attack face.",
+    "C03": "Bolted from inside. So how did anybody get out?",
+    "C04": "A kid's music box? In his office?",
+    "C08": "Zürich at five in the morning. Two passengers. Who was the second one?",
+    "C21": "So it wasn't Pryce who sent for us. Then who did?",
+    "C25": "Small hands. Scarred. Nobody at that dinner has hands like that.",
+    "C27": "Six on the manifest, five certificates... Chief, that's not a clerical error.",
+    "default": "Pinning it up on the board, Chief."
+  },
+  "rest": "I'll wake you in half an hour, Chief.",
+  "typewriter": "Not yet, Chief. When we've got the who, the how, the where and the why, I'll type it up and we'll file it.",
+  "lab": "Fingerprint kit, powder, brushes and the good magnifier. Bring me something to dust, Chief.",
+  "timelineEmpty": "We'll need harder facts before we can pin the night down. Right now it's all 'about nine-ish'."
+}

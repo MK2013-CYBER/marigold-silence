@@ -50,6 +50,14 @@ def materials(tex_dir):
         'card': material('Cardboard', color=(0.42, 0.32, 0.2), rough=1.0),
         'bakelite': material('Bakelite', color=(0.02, 0.018, 0.016), rough=0.25),
         'enamel': material('EnamelGreen', color=(0.06, 0.16, 0.1), rough=0.3, metal=0.1),
+        'cork': material('Cork', texture_set('cork', tex.cork(512), tex_dir)),
+        'blanket': material('ArmyBlanket', color=(0.2, 0.22, 0.16), rough=1.0),
+        'linen': material('Linen', color=(0.72, 0.69, 0.6), rough=1.0),
+        'ember': material('StoveEmber', color=(0.2, 0.05, 0.0), emission=(1.0, 0.35, 0.08), emission_strength=1.5),
+        'safelight': material('Safelight', color=(0.2, 0.0, 0.0), emission=(1.0, 0.08, 0.02), emission_strength=0.9),
+        'pwood': material('PolishedWood', texture_set('pwood', tex.polished_wood(512), tex_dir)),
+        'feather': material('PigeonGrey', color=(0.38, 0.38, 0.4), rough=0.9),
+        'mirror': material('Mirror', color=(0.9, 0.9, 0.9), rough=0.03, metal=1.0),
         'col': material('Collision', color=(0.0, 1.0, 0.3)),
     }
     return M

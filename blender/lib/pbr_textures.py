@@ -404,3 +404,23 @@ def gravel_strip(w=512, h=1024, seed=120, ruts=(), base=(0.52, 0.44, 0.33), edge
     height = 0.5 * stones + 0.3 * pale + 0.1 * n1 - 0.9 * rut
     rough = np.clip(0.92 - 0.25 * rut, 0.5, 1.0)
     return {'color': np.clip(col, 0, 1), 'roughness': rough, 'normal': normal_from_height(height, 2.0)}
+
+
+def cork(size=512, seed=150):
+    """Cork pin-board (1 m tile)."""
+    H = W = size
+    rng = np.random.default_rng(seed)
+    n = spectral_noise(H, W, 1.2, seed)
+    col = rgb(H, W, (0.56, 0.40, 0.24)) * (1 + 0.08 * n[..., None])
+    spots = np.zeros((H, W))
+    idx = rng.integers(0, H * W, int(H * W * 0.03))
+    spots.flat[idx] = rng.uniform(0.3, 1.0, idx.size)
+    spots = np.clip(blur(spots, 0.7) * 3, 0, 1)
+    col = mix(col, rgb(H, W, (0.30, 0.19, 0.10)), spots * 0.7)
+    light = np.zeros((H, W))
+    idx = rng.integers(0, H * W, int(H * W * 0.02))
+    light.flat[idx] = 1
+    light = np.clip(blur(light, 0.6) * 3, 0, 1)
+    col = mix(col, rgb(H, W, (0.72, 0.58, 0.40)), light * 0.5)
+    return {'color': np.clip(col, 0, 1), 'roughness': np.clip(0.9 + 0.05 * n, 0, 1),
+            'normal': normal_from_height(0.6 * light - 0.8 * spots, 1.5)}

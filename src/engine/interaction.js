@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 const CENTER = new THREE.Vector2(0, 0);
-const DEFAULT_COST = { inspect: 'inspect', read: 'read', pickup: 'pickup', toggle: 'search' };
+const DEFAULT_COST = { inspect: 'inspect', read: 'read', pickup: 'pickup', toggle: 'search', ui: 'inspect' };
 const DEFAULT_PROMPT = { inspect: 'Inspect', read: 'Read', pickup: 'Pick up' };
 
 function visibleChain(o) {
@@ -223,10 +223,14 @@ export class InteractionSystem {
     if (!def) return;
     const st = this.state;
 
-    if (def.type === 'inspect') {
+    if (def.type === 'ui') {
+      // opens a screen (board, reports, talk...) handled by main.js
+      this._spend(def);
+      this.onUI?.(def);
+    } else if (def.type === 'inspect') {
       this._spend(def);
       this._grant(def);
-      this.hud.caption(def.text ?? this._firstClue(def)?.text ?? '');
+      this.hud.caption((def.text ?? this._firstClue(def)?.text ?? '').replace('{time}', st.clockLabel()));
     } else if (def.type === 'read') {
       this._spend(def);
       this._grant(def);

@@ -1,0 +1,86 @@
+{
+  "_note": "Addendum v2 section C. Reports appear on the HQ desk at 'unlockAt' (game time). They are background reading (free observations), never evidence.",
+  "reports": [
+    {
+      "id": "autopsy",
+      "title": "Preliminary Medical Report",
+      "from": "Dr. M. Lindqvist, attending physician",
+      "unlockAt": "07:00",
+      "pages": [
+        "SUBJECT: Cornelius Pryce, aged 62.\nFOUND: Seated at his desk, office of the Sable Flat hangar, 06:10, 18 November 1933. Door bolted from within.\n\nExamination was brief and conducted by lamplight. The subject had a long history of angina and took digitalis drops daily on my prescription. Rigor is advanced; I estimate death between nine and midnight.\n\nPROVISIONAL CAUSE: cardiac failure.\n\nI note, for completeness, an unusual pinkness of the face and hands which I am not able to account for in this light. A full examination should be made by the coroner when the road is open.\n\n— M. L."
+      ]
+    },
+    {
+      "id": "bg_vivienne",
+      "title": "Background: Vivienne Pryce",
+      "from": "Agent D. Cole",
+      "unlockAt": "08:00",
+      "pages": [
+        "Chief,\n\nVivienne Pryce, 38, née Vivienne Lark. Played the Belasco and two seasons in London, quit the stage in 1930 to marry Mr. Pryce. Engaged to him at the time of the Marigold crash.\n\nShe holds a block of shares in Pryce Transcontinental in her own name. Under the will (as the lawyer's clerk read it to me over the wire) she inherits most of the rest.\n\nStaff say she and Mr. Pryce kept separate rooms this past year. She was polite to everyone at dinner and watched Captain Strand most of the night.\n\n— D. C."
+      ]
+    },
+    {
+      "id": "bg_billie",
+      "title": "Background: Capt. W. Strand",
+      "from": "Agent D. Cole",
+      "unlockAt": "08:00",
+      "pages": [
+        "Chief,\n\nCaptain Wilhelmina Strand, 34. Air Mail pilot, barnstormer before that. Crashed a Jenny in 1929 and burned both hands. Flies for Pryce under contract.\n\nShe was on the roster to fly the Marigold in November 1931 and refused the flight because of the weather. Mr. Pryce called her a coward in front of the ground crew. Tom Reeve flew in her place. She doesn't talk about it.\n\nShe owes money in three states. Mr. Pryce held her licence paperwork in his safe.\n\n— D. C."
+      ]
+    },
+    {
+      "id": "bg_lindqvist",
+      "title": "Background: Dr. M. Lindqvist",
+      "from": "Agent D. Cole",
+      "unlockAt": "09:00",
+      "pages": [
+        "Chief,\n\nDr. Matthias Lindqvist, 56. Swedish-born, trained in Uppsala and Zürich. Medical examiner to Pryce Transcontinental since 1928: he signs the pilots' fitness certificates.\n\nHe passed Tom Reeve fit to fly the Marigold. Some of the ground crew say Reeve wasn't well that week; nobody says it louder than a mutter.\n\nHe keeps a small practice in Las Cruces but spends a good deal of time out here for a doctor with no patients.\n\n— D. C."
+      ]
+    },
+    {
+      "id": "bg_julian",
+      "title": "Background: J. Ferreira-Blake",
+      "from": "Agent D. Cole",
+      "unlockAt": "09:00",
+      "pages": [
+        "Chief,\n\nJulian Ferreira-Blake, 41, vice-president of Meridian Air. Meridian lost two Air Mail bids to Pryce in 1931 and has been trying to buy the company ever since.\n\nHe came to Sable Flat to close the sale. The kitchen boy says he left Mr. Pryce's office at twenty to nine holding a contract that had been torn in half.\n\nHe flew in his own Waco, which is parked on the apron.\n\n— D. C."
+      ]
+    },
+    {
+      "id": "bg_ox",
+      "title": "Background: A. 'Ox' Brennan",
+      "from": "Agent D. Cole",
+      "unlockAt": "10:00",
+      "pages": [
+        "Chief,\n\nAbel Brennan, 33, called Ox. Chief mechanic at Sable Flat since 1929. Worked on the Marigold. Goes to church in Las Cruces when he can get a ride, keeps racing pigeons, says very little.\n\nHe has lived at the airfield year-round since the crash. He asked for no leave in two years. The quartermaster says he does more of the cooking than his job requires.\n\n— D. C."
+      ]
+    },
+    {
+      "id": "bg_tamsin",
+      "title": "Background: Tamsin Quill",
+      "from": "Agent D. Cole",
+      "unlockAt": "10:00",
+      "pages": [
+        "Chief,\n\nTamsin Quill, 29, Mr. Pryce's secretary since 1930. Types everything that leaves the office, files everything that comes in, including weather reports.\n\nShe said at dinner, in front of everyone, that she 'would not miss him'. Her salary is ordinary. Her clothes are not.\n\n— D. C."
+      ]
+    },
+    {
+      "id": "crash1931",
+      "title": "The Marigold Accident, 1931: Summary",
+      "from": "Bureau of Air Commerce (extract), copied by D. Cole",
+      "unlockAt": "11:00",
+      "pages": [
+        "FORD TRIMOTOR 'MARIGOLD', Pryce Transcontinental Air.\nDEPARTED Sable Flat 14 November 1931, 02:40, for the Air Mail connection at Albuquerque.\nWEATHER on file: 'clear by noon'.\nLOST in a storm over Raven Ridge, 03:17. Six persons aboard. No survivors reported.\n\nFINDINGS: The aircraft flew into high ground in poor visibility. Pilot error in deteriorating weather is the probable cause. Engines and airframe were found serviceable as far as could be determined after the fire.\n\nThe investigation was closed in December 1931 at the request of the operator and with the agreement of the insurer.\n\n(Danny's note: 'closed at the request of the operator'. I've never seen that line in a crash summary before, Chief.)"
+      ]
+    },
+    {
+      "id": "guests",
+      "title": "Sable Flat: Who Is Here This Weekend",
+      "from": "Pryce Transcontinental passenger and staff book, copied by D. Cole",
+      "unlockAt": "12:00",
+      "pages": [
+        "Arrived Thursday 16 Nov: Mrs. V. Pryce (from Los Angeles, by Trimotor). Dr. M. Lindqvist (by road).\nArrived Friday 17 Nov: Mr. J. Ferreira-Blake (own aircraft, Waco). Inspector R. Hart and Agent D. Cole (Air Mail, 17:40, storm closing).\nResident staff: Capt. W. Strand (pilot), Mr. A. Brennan (mechanic), Miss T. Quill (secretary), Mr. W. Hobbs (radio).\n\nAircraft on the field: Ford Trimotor 'Marigold II' (NC-9930); Waco biplane (Meridian); Air Mail Pitcairn.\n\nNo other persons are recorded at Sable Flat.\n\n(Danny's note: ten of us, one storm, nobody leaving. Cosy.)"
+      ]
+    }
+  ]
+}

@@ -737,7 +737,6 @@ def build():
     offset_group(loft, -5.0, -0.5)
     offset_group(se_corner, 5.0, 0.5)
     offset_group(office, 5.0, -0.5)
-    offset_group(survey_rooms, -5.0, 0.5)
     hangar_dressing()
 
 

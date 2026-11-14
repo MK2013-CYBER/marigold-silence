@@ -20,6 +20,7 @@ export function lightsFromMarkers(root) {
       light = new THREE.PointLight(color, d.intensity, d.distance ?? 5, 2);
     }
     if (d.shadow) {
+      light.userData.wantsShadow = true; // quality presets may switch this off
       light.castShadow = true;
       light.shadow.mapSize.set(1024, 1024);
       light.shadow.bias = -0.0004;

@@ -1,12 +1,58 @@
 {
   "signs": {
     "fuelTank": "AVIATION GASOLINE",
-    "fuelNoSmoking": ["NO SMOKING", "WITHIN 50 FEET"],
-    "fuelLog": ["FUEL ISSUED", "LOG ALL GALLONS"],
-    "opsSign": ["PRYCE TRANSCONTINENTAL AIR", "OPERATIONS  ·  PASSENGERS"],
-    "opsWeather": ["WEATHER  SAT 18 NOV", "WIND  W 35  GUSTS 50", "VIS  1/4 MI  DUST", "FIELD CLOSED"],
-    "opsNotice": ["NOTICE", "ALL FLIGHTS", "HELD"],
-    "commsDoor": ["DANGER", "HIGH VOLTAGE"],
-    "shedStencil": "P.T.A. MAINT."
+    "fuelNoSmoking": [
+      "NO SMOKING",
+      "WITHIN 50 FEET"
+    ],
+    "fuelLog": [
+      "FUEL ISSUED",
+      "LOG ALL GALLONS"
+    ],
+    "opsSign": [
+      "PRYCE TRANSCONTINENTAL AIR",
+      "OPERATIONS  \u00b7  PASSENGERS"
+    ],
+    "opsWeather": [
+      "WEATHER  SAT 18 NOV",
+      "WIND  W 35  GUSTS 50",
+      "VIS  1/4 MI  DUST",
+      "FIELD CLOSED"
+    ],
+    "opsNotice": [
+      "NOTICE",
+      "ALL FLIGHTS",
+      "HELD"
+    ],
+    "commsDoor": [
+      "DANGER",
+      "HIGH VOLTAGE"
+    ],
+    "shedStencil": "P.T.A. MAINT.",
+    "quartersRooms": [
+      "V. PRYCE",
+      "W. STRAND",
+      "DR. LINDQVIST",
+      "J. FERREIRA-BLAKE",
+      "A. BRENNAN",
+      "T. QUILL"
+    ],
+    "quartersSign": "QUARTERS",
+    "hqTimelineHours": [
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "00",
+      "01",
+      "02",
+      "03",
+      "04",
+      "05",
+      "06"
+    ],
+    "hqDoor": "NO ADMITTANCE"
   }
 }

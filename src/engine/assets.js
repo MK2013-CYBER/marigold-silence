@@ -12,3 +12,8 @@ export async function loadModel(file) {
   const gltf = await loader.loadAsync(`${base}models/${file}`);
   return gltf.scene;
 }
+
+/** Loads a .glb and returns the whole glTF (scene + animations). */
+export async function loadGLTF(file) {
+  return loader.loadAsync(`${base}models/${file}`);
+}

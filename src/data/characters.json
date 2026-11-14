@@ -1,0 +1,12 @@
+[
+  { "id": "pryce", "name": "Cornelius Pryce", "role": "The victim", "age": 62, "card": "victim", "blurb": "Founder of Pryce Transcontinental Air. Charming, theatrical, used to winning." },
+  { "id": "vivienne", "name": "Vivienne Pryce", "role": "His wife", "age": 38, "card": "suspect", "blurb": "Former stage actress. Sardonic, immaculate, calls you 'Inspector, darling'." },
+  { "id": "billie", "name": "Capt. Wilhelmina 'Billie' Strand", "role": "Pilot", "age": 34, "card": "suspect", "blurb": "Brash, funny, superstitious. Burn-scarred hands. Won't talk about the Marigold." },
+  { "id": "lindqvist", "name": "Dr. Matthias Lindqvist", "role": "Physician", "age": 56, "card": "suspect", "blurb": "Gentle, anxious, precise. His hands tremble." },
+  { "id": "julian", "name": "Julian Ferreira-Blake", "role": "Meridian Air executive", "age": 41, "card": "suspect", "blurb": "Smooth and over-polite. Never raises his voice. Hums opera." },
+  { "id": "ox", "name": "Abel 'Ox' Brennan", "role": "Mechanic", "age": 33, "card": "suspect", "blurb": "Huge, gentle, slow-spoken and devout. Keeps pigeons. A bad liar." },
+  { "id": "tamsin", "name": "Tamsin Quill", "role": "Secretary", "age": 29, "card": "suspect", "blurb": "Brusque, chain-smoking, deadpan. Says openly that she hated him." },
+  { "id": "hobbs", "name": "Walter Hobbs", "role": "Radio operator (witness)", "age": 67, "card": "witness", "blurb": "Kind, half-deaf and rambling. Thinks the wires are haunted." },
+  { "id": "cole", "name": "Agent Danny Cole", "role": "Your associate", "age": 24, "card": "none", "blurb": "Former filing clerk, proud of his neat reports. Calls you 'Chief'." },
+  { "id": "hidden", "name": "Someone else", "role": "Unknown", "age": null, "card": "hidden", "blurb": "", "revealAfter": ["D4", "D8"] }
+]

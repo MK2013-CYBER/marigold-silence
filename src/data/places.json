@@ -1,0 +1,95 @@
+{
+  "_note": "Addendum v2, section B. 'mapNote' is shown to the player; 'contains' lists the puzzles placed here (Stage F).",
+  "places": [
+    {
+      "id": "hangar",
+      "label": "Hangar",
+      "mapNote": "The main hangar and Mr. Pryce's office.",
+      "contains": [
+        "P0",
+        "P1",
+        "P2",
+        "P8"
+      ],
+      "replaces": "Hangar main floor + Pryce's office"
+    },
+    {
+      "id": "ops_building",
+      "label": "Operations",
+      "mapNote": "Passenger lounge, darkroom and records room.",
+      "contains": [
+        "P6",
+        "P17"
+      ],
+      "replaces": "Survey office & darkroom"
+    },
+    {
+      "id": "maint_shed",
+      "label": "Maintenance shed",
+      "mapNote": "Ox's workshop and the airfield generator.",
+      "contains": [
+        "P4",
+        "P11"
+      ],
+      "replaces": "Generator shed"
+    },
+    {
+      "id": "storage_shed",
+      "label": "Storage shed",
+      "mapNote": "Ration stores, spare parts and lockers.",
+      "contains": [
+        "P14"
+      ],
+      "replaces": "Provisioning / lost property"
+    },
+    {
+      "id": "fuel_farm",
+      "label": "Fuel farm",
+      "mapNote": "Aviation fuel tanks and the fuel ledger.",
+      "contains": [
+        "P12"
+      ],
+      "replaces": "Fuel dump"
+    },
+    {
+      "id": "comms_shelter",
+      "label": "Radio & weather",
+      "mapNote": "Hobbs's radio, the Morse key and the weather station.",
+      "contains": [
+        "P3",
+        "P10"
+      ],
+      "replaces": "Radio shack"
+    },
+    {
+      "id": "beacon_tower",
+      "label": "Beacon tower",
+      "mapNote": "The airway beacon, its keeper's room and a pigeon coop.",
+      "contains": [
+        "P13"
+      ],
+      "replaces": "Beacon tower"
+    },
+    {
+      "id": "quarters",
+      "label": "Quarters",
+      "mapNote": "Mess hall, kitchen and six bedrooms.",
+      "contains": [
+        "P5",
+        "P15"
+      ],
+      "replaces": "Mess hall + bunkhouse"
+    },
+    {
+      "id": "hq_shed",
+      "label": "HQ (your shed)",
+      "mapNote": "Your temporary office: the board, reports and Agent Cole.",
+      "contains": [
+        "P7",
+        "P9",
+        "P16"
+      ],
+      "replaces": "(new)"
+    }
+  ]
+}

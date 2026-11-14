@@ -149,6 +149,14 @@ export class Atmosphere {
     this._sheetsPlaced = false;
   }
 
+  /** Quality presets: draw only part of the dust (0..1). */
+  setDustScale(k) {
+    this.dustPoints.geometry.setDrawRange(0, Math.round(this.dust.N * k));
+    this.driftPoints.geometry.setDrawRange(0, Math.round(this.drift.M * k));
+    const n = Math.round(this.sheets.length * k);
+    this.sheets.forEach((s, i) => { s.userData.off = i >= n; });
+  }
+
   _placeSheet(s, p, anywhere) {
     const w = this.wind;
     const d = anywhere ? 20 + Math.random() * 120 : 120 + Math.random() * 40;
@@ -201,7 +209,7 @@ export class Atmosphere {
     const out = 1 - ind;
     const showDust = out > 0.05;
     this.dustPoints.visible = this.driftPoints.visible = showDust;
-    for (const s of this.sheets) s.visible = showDust;
+    for (const s of this.sheets) s.visible = showDust && !s.userData.off;
     if (!showDust) return;
     this.dustPoints.material.opacity = 0.55 * out;
     this.driftPoints.material.opacity = 0.6 * out;

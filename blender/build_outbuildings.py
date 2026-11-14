@@ -5,7 +5,9 @@ THE MARIGOLD SILENCE: Sable Flat outbuildings, each exported as its own .glb.
   maint_shed.glb      tin maintenance shed: flare pots, boundary lights, road drag, tools
   storage_shed.glb    wooden storage shed: paint, tarps, rope, spare markers
   ops_building.glb    operations & passenger building: porch, lounge, counter, telegraph, weather board
-  comms_shelter.glb   windowless radio relay shelter + weather instruments (spinning anemometer)
+  comms_shelter.glb   Radio & weather: Hobbs's radio, Morse key, relay gear, weather instruments
+  quarters.glb        mess hall, kitchen and six bedrooms (addendum v2)
+  hq_shed.glb         the Investigator's Shed: board, timeline, reports, lab table, cot (addendum v2)
 
 Run: /Users/mk/Desktop/Blender.app/Contents/MacOS/Blender -b --factory-startup --python blender/build_outbuildings.py
 Optional: append "-- fuel_farm" (etc.) to build only one.
@@ -24,7 +26,7 @@ import bpy
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, 'lib'))
-from bhelpers import (T, col_box, col_from, export_glb, join, reset_scene, set_origin, tbeam, tbox,  # noqa: E402
+from bhelpers import (T, apply_boolean, col_box, col_from, export_glb, join, marker, reset_scene, set_origin, tbeam, tbox,  # noqa: E402
                       tcyl, tcyl_dir, tquad, tsphere, ttext, ttorus)
 from buildings import (door_leaf, gable_roof, hanging_bulb, materials, shed_roof, uv, wall_colliders,  # noqa: E402
                        walls, window)
@@ -265,6 +267,18 @@ def maint_shed(M):
         p.append(tbox(f'tool_head_{k}', -3.9, -3.8, 0.05, 0.3, z - 0.1, z + 0.1, M['steel']))
     J('MaintShed_ToolRack', p)
     J('MaintShed_Cable', [ttorus(f'cable_{k}', (2.8, 0.03 + k * 0.03, 2.2), 0.35 - k * 0.02, 0.025, 'y', M['rubber'], (20, 5)) for k in range(5)])
+    # the airfield generator and its fuse panel (addendum v2: P4 lives here)
+    p = [uv(tbox('gen_skid', -3.4, -1.6, 0.03, 0.15, 0.6, 1.5, M['iron'])),
+         uv(tbox('gen_block', -3.2, -2.3, 0.15, 0.95, 0.75, 1.35, M['olive'])),
+         tcyl('gen_dynamo', (-1.95, 0.55, 1.05), 0.28, 0.6, 'x', M['grey'], 18),
+         tcyl('gen_flywheel', (-2.25, 0.62, 1.05), 0.42, 0.08, 'x', M['iron'], 24),
+         tbox('gen_radiator', -3.4, -3.25, 0.15, 1.05, 0.7, 1.4, M['steel']),
+         tcyl_dir('gen_exhaust', (-2.8, 0.95, 0.9), (-2.8, 3.2, 0.9), 0.05, M['iron'], 10),
+         tcyl('gen_tank', (-2.75, 1.15, 1.05), 0.16, 0.5, 'x', M['red'], 14)]
+    COL('COL_MS_Generator', J('MaintShed_Generator', p), 0.05, M)
+    J('MaintShed_FusePanel', [tbox('fp_box', 1.6, 2.4, 1.15, 1.95, 2.84, 2.9, M['grey']),
+                              tbox('fp_switch', 2.1, 2.2, 1.35, 1.6, 2.81, 2.84, M['bakelite'])]
+      + [tcyl(f'fp_fuse_{k}', (1.72 + (k % 3) * 0.12, 1.75 - (k // 3) * 0.2, 2.83), 0.03, 0.04, 'z', M['white'], 10) for k in range(6)])
     J('MaintShed_Lamp', hanging_bulb('ms_bulb', 0, h + 0.3, 0, M, 0.9))
 
 
@@ -317,8 +331,9 @@ def storage_shed(M):
 def ops_building(M):
     w, d, h, t = 16.0, 10.0, 3.4, 0.12
     front = [('s', -0.55, 0.55, 0.0, 2.2)]
-    wins = [('s', x, 1.0, 2.2) for x in (-5.5, -2.5, 2.5, 5.5)] + [('e', z, 1.0, 2.2) for z in (-2.5, 2.5)] + [('w', z, 1.0, 2.2) for z in (-2.5, 2.5)]
-    openings = front + [('n', 4.0, 4.9, 0.0, 2.1)] + [(s, a - 0.6, a + 0.6, y0, y1) for s, a, y0, y1 in wins]
+    wins = [('s', x, 1.0, 2.2) for x in (-5.5, -2.5, 2.5, 5.5)] + [('w', z, 1.0, 2.2) for z in (-2.5, 2.5)]
+    # east wall: two doors into the annex (darkroom, records room)
+    openings = front + [('n', 4.0, 4.9, 0.0, 2.1), ('e', 1.0, 1.9, 0.0, 2.1), ('e', -2.6, -1.7, 0.0, 2.1)] + [(s, a - 0.6, a + 0.6, y0, y1) for s, a, y0, y1 in wins]
     parts = walls('ops', w, d, h, t, M['siding'], openings)
     parts.append(uv(tbox('ops_floor', -w / 2, w / 2, 0.0, 0.03, -d / 2, d / 2, M['floor'])))
     parts += gable_roof('ops', w, d, h, 1.8, 0.4, M['roof'], M['siding'])
@@ -342,7 +357,8 @@ def ops_building(M):
     door_leaf('Door_Ops', (-0.55, 0.03, d / 2 - t / 2), 1.1, 2.18, M['siding'], M['wood'], M['brass'])
     door_leaf('Door_OpsBack', (4.0, 0.03, -d / 2 + t / 2), 0.9, 2.08, M['siding'], M['wood'], M['brass'])
     C = M['col']
-    wall_colliders('ops', w, d, t, [('s', -0.55, 0.55, 'COL_Door_Ops'), ('n', 4.0, 4.9, 'COL_Door_OpsBack')], C)
+    wall_colliders('ops', w, d, t, [('s', -0.55, 0.55, 'COL_Door_Ops'), ('n', 4.0, 4.9, 'COL_Door_OpsBack'),
+                                    ('e', 1.0, 1.9, 'COL_Door_OpsDarkroom'), ('e', -2.6, -1.7, 'COL_Door_OpsRecords')], C)
     for x in (-7.8, -3.5, 3.5, 7.8):
         col_box(f'COL_ops_post_{x}', x - 0.1, x + 0.1, pz1 - 0.2, pz1, mat=C)
 
@@ -416,60 +432,161 @@ def ops_building(M):
                     ttorus('clock_rim', (-1.4, 2.6, -4.85), 0.22, 0.02, 'z', M['wood'], (24, 6)),
                     tbox('clock_h', -1.41, -1.39, 2.6, 2.72, -4.84, -4.835, M['stencil']),
                     tbox('clock_m', -1.4, -1.24, 2.595, 2.605, -4.84, -4.835, M['stencil'])])
-    fc = J('Ops_FilingCabinet', [uv(tbox('fc', 7.3, 7.88, 0.0, 1.3, -2.6, -2.0, M['olive']))]
-           + [tbox(f'fc_h_{k}', 7.28, 7.3, 0.25 + k * 0.3, 0.27 + k * 0.3, -2.35, -2.25, M['brass']) for k in range(4)])
-    COL('COL_ops_filing', fc, 0.0, M)
+    ops_annex(M)
     lamps = []
     for x in (-5.0, 0.0, 5.0):
         lamps += hanging_bulb(f'ops_bulb_{x}', x, h, 0.0, M, 0.7)
     J('Ops_Lamps', lamps)
 
 
+def ops_annex(M):
+    """Darkroom + records room wing on the east side of Operations (addendum v2: P6, P17)."""
+    C = M['col']
+    x0, x1, z0, z1, h, t = 8.0, 13.6, -5.0, 3.0, 3.0, 0.12
+    parts = [uv(tbox('ax_s', x0, x1, 0, h, z1 - t, z1, M['siding'])),
+             uv(tbox('ax_e', x1 - t, x1, 0, h, z0, z1, M['siding'])),
+             uv(tbox('ax_floor', x0, x1, 0.0, 0.03, z0, z1, M['floor'])),
+             uv(tbox('ax_part', x0, x1 - t, 0, h, -1.06, -0.94, M['planks']))]
+    north = tbox('ax_n', x0, x1, 0, h, z0, z0 + t, M['siding'])
+    apply_boolean(north, [tbox('cut_axw', 10.2, 11.4, 1.7, 2.3, z0 - 1, z0 + 1, None, 'Cutters')])
+    uv(north)
+    parts.append(north)
+    parts += [tbeam('ax_wf_b', (10.2, 1.72, z0 + t / 2), (11.4, 1.72, z0 + t / 2), t + 0.04, 0.05, M['wood']),
+              tbeam('ax_wf_t', (10.2, 2.28, z0 + t / 2), (11.4, 2.28, z0 + t / 2), t + 0.04, 0.05, M['wood']),
+              tquad('ax_glass', [(10.2, 1.7, z0 + t / 2), (11.4, 1.7, z0 + t / 2), (11.4, 2.3, z0 + t / 2), (10.2, 2.3, z0 + t / 2)], M['glass'])]
+    roof = shed_roof('ax', 8.0, x1 - x0, 2.95, 3.3, 0.2, M['roof'])
+    roof.rotation_euler = (0, 0, math.pi / 2)   # slopes down towards the east
+    roof.location = T(((x0 + x1) / 2, 0, (z0 + z1) / 2))
+    parts.append(roof)
+    J('Ops_Annex', parts)
+    door_leaf('Door_OpsDarkroom', (7.94, 0.03, 1.0), 0.9, 2.08, M['siding'], M['wood'], M['brass'], along='z')
+    door_leaf('Door_OpsRecords', (7.94, 0.03, -2.6), 0.9, 2.08, M['siding'], M['wood'], M['brass'], along='z')
+    col_box('COL_ax_s', x0, x1, z1 - t, z1, mat=C)
+    col_box('COL_ax_n', x0, x1, z0, z0 + t, mat=C)
+    col_box('COL_ax_e', x1 - t, x1, z0, z1, mat=C)
+    col_box('COL_ax_part', x0, x1, -1.06, -0.94, mat=C)
+
+    # darkroom (south half): sink bench, trays, enlarger, chemical shelves, drying line, safelight
+    p = [uv(tbox('dk_sink', 12.85, 13.48, 0, 0.86, -0.8, 2.75, M['wood'])),
+         tbox('dk_lining', 12.9, 13.43, 0.86, 0.9, -0.7, 2.65, M['iron'])]
+    for k, z in enumerate((-0.3, 0.7, 1.7)):
+        p.append(tbox(f'dk_tray_{k}', 12.92, 13.4, 0.9, 0.95, z - 0.3, z + 0.3, M['white']))
+        p.append(tbox(f'dk_liquid_{k}', 12.95, 13.37, 0.93, 0.935, z - 0.27, z + 0.27, M['fuel']))
+    p.append(tcyl_dir('dk_tap', (13.47, 1.4, 0.7), (13.2, 1.4, 0.7), 0.02, M['brass'], 8))
+    COL('COL_dk_sink', J('Ops_DarkroomSink', p), 0.0, M)
+    p = [uv(tbox('dk_entable', 8.3, 9.0, 0.72, 0.76, 1.9, 2.75, M['wood'])),
+         tcyl_dir('dk_column', (8.65, 0.76, 2.65), (8.65, 1.6, 2.65), 0.025, M['iron'], 10),
+         tbox('dk_head', 8.52, 8.78, 1.3, 1.5, 2.25, 2.5, M['bakelite']),
+         tcyl('dk_lens', (8.65, 1.12, 2.35), 0.05, 0.1, 'y', M['iron'], 12)]
+    for x in (8.35, 8.95):
+        for z in (1.95, 2.7):
+            p.append(tbeam(f'dk_enleg_{x}_{z}', (x, 0, z), (x, 0.72, z), 0.04, 0.04, M['wood'], up=(1, 0, 0)))
+    COL('COL_dk_enlarger', J('Ops_DarkroomEnlarger', p), 0.0, M)
+    p = []
+    for k, y in enumerate((0.5, 1.0, 1.5, 2.0)):
+        p.append(uv(tbox(f'dk_shelf_{k}', 9.6, 12.4, y, y + 0.03, 2.6, 2.86, M['wood'])))
+        x = 9.7
+        while x < 12.3:
+            r = R.uniform(0.035, 0.06)
+            hh = R.uniform(0.12, 0.25)
+            p.append(tcyl(f'dk_jar_{k}_{x:.2f}', (x + r, y + 0.03 + hh / 2, 2.73), r, hh, 'y', M['fuel'] if R.random() < 0.6 else M['clearglass'], 10))
+            x += 2 * r + 0.05
+    COL('COL_dk_shelves', J('Ops_DarkroomShelves', p), 0.0, M)
+    p = [tcyl_dir('dk_line', (8.1, 2.15, 0.3), (13.4, 2.15, 0.3), 0.003, M['iron'], 5)]
+    for k in range(4):
+        x = 9.0 + k * 1.0
+        p.append(tbox(f'dk_print_{k}', x - 0.12, x + 0.12, 1.85, 2.13, 0.298, 0.302, M['paper']))
+    p += [tbox('dk_safelight', 13.38, 13.48, 1.9, 2.2, -0.5, -0.1, M['safelight'])]
+    J('Ops_DarkroomDetails', p)
+
+    # records room (north half): filing cabinets, manifest shelves, sorting table
+    p = []
+    for k in range(3):
+        xa = 8.5 + k * 1.3
+        p.append(uv(tbox(f'rc_cab_{k}', xa, xa + 0.6, 0, 1.3, z0 + t, z0 + t + 0.6, M['olive'])))
+        for j in range(4):
+            p.append(tbox(f'rc_h_{k}_{j}', xa + 0.25, xa + 0.35, 0.25 + j * 0.3, 0.27 + j * 0.3, z0 + t + 0.6, z0 + t + 0.62, M['brass']))
+    COL('COL_rc_cabinets', J('Ops_RecordsCabinets', p), 0.0, M)
+    p = []
+    for k, y in enumerate((0.1, 0.65, 1.2, 1.75)):
+        p.append(uv(tbox(f'rc_shelf_{k}', 12.9, 13.48, y, y + 0.03, -4.6, -1.3, M['wood'])))
+        z = -4.5
+        while z < -1.5:
+            wd = R.uniform(0.25, 0.4)
+            p.append(tbox(f'rc_box_{k}_{z:.2f}', 12.95, 13.43, y + 0.03, y + 0.03 + R.uniform(0.2, 0.35), z, z + wd, M['card']))
+            z += wd + 0.04
+    COL('COL_rc_shelves', J('Ops_RecordsShelves', p), 0.0, M)
+    p = [uv(tbox('rc_table', 9.4, 11.4, 0.76, 0.8, -3.2, -2.2, M['pwood'])),
+         tbox('rc_cards', 9.8, 10.6, 0.8, 0.83, -2.9, -2.5, M['paper'])]
+    for x in (9.5, 11.3):
+        for z in (-3.1, -2.3):
+            p.append(tbeam(f'rc_leg_{x}_{z}', (x, 0, z), (x, 0.76, z), 0.05, 0.05, M['pwood'], up=(1, 0, 0)))
+    COL('COL_rc_table', J('Ops_RecordsTable', p), 0.0, M)
+    J('Ops_AnnexLamps', hanging_bulb('ax_bulb_d', 10.8, h, 1.0, M, 0.5) + hanging_bulb('ax_bulb_r', 10.8, h, -3.0, M, 0.5))
+
+
 # ====================================================================== radio relay / weather shelter
 def comms_shelter(M):
-    w, d, h, t = 3.0, 2.5, 2.3, 0.1
+    """Radio & weather (addendum v2): Hobbs's radio, the Morse key and tape, relay gear, weather instruments."""
+    w, d, h, t = 5.0, 3.6, 2.5, 0.1
     parts = walls('cs', w, d, h, t, M['tin'], [('s', -0.45, 0.45, 0.0, 2.0)])
     parts.append(uv(tbox('cs_floor', -w / 2, w / 2, 0.0, 0.04, -d / 2, d / 2, M['concrete'])))
-    parts.append(shed_roof('cs', w, d, h, h + 0.25, 0.15, M['roof']))
+    parts.append(shed_roof('cs', w, d, h, h + 0.3, 0.15, M['roof']))
     parts += [tbox('cs_sign', -0.25, 0.25, 2.03, 2.25, d / 2 + 0.001, d / 2 + 0.01, M['sign_cream']),
               ttext('cs_sign_t', '\n'.join(SIGNS['commsDoor']), 0.06, M['sign_red'], (0.0, 2.14, d / 2 + 0.012), 'z+'),
-              tbox('cs_vent', -1.0, -0.6, 1.9, 2.1, -d / 2 - 0.01, -d / 2, M['iron'])]
+              tbox('cs_vent', -1.6, -1.2, 1.9, 2.1, -d / 2 - 0.01, -d / 2, M['iron'])]
     J('CommsShelter', parts)
     door_leaf('Door_CommsShelter', (-0.45, 0.04, d / 2 - t / 2), 0.9, 1.95, M['grey'], M['steel'], M['brass'])
     wall_colliders('cs', w, d, t, [('s', -0.45, 0.45, 'COL_Door_CommsShelter')], M['col'])
-    # inside: battery racks with glass cells, relay cabinet, line terminal, small desk
+    C = M['col']
+    # Hobbs's radio desk along the back wall: transmitter/receiver, Morse key, sounder, paper-tape reel, logbook
+    p = [uv(tbox('rd_top', -0.2, 2.3, 0.76, 0.8, -1.7, -1.0, M['pwood'])),
+         uv(tbox('rd_radio', 0.3, 1.3, 0.8, 1.35, -1.68, -1.25, M['bakelite']))]
+    for k in range(3):
+        p.append(tcyl(f'rd_dial_{k}', (0.5 + k * 0.3, 1.12, -1.245), 0.07, 0.02, 'z', M['paper'], 16))
+    for k in range(4):
+        p.append(tcyl(f'rd_knob_{k}', (0.45 + k * 0.22, 0.9, -1.24), 0.025, 0.03, 'z', M['brass'], 10))
+    p += [tbox('rd_key_base', 1.5, 1.75, 0.8, 0.82, -1.25, -1.1, M['pwood']),
+          tbox('rd_key_lever', 1.52, 1.73, 0.83, 0.845, -1.2, -1.15, M['brass']),
+          tcyl('rd_key_knob', (1.72, 0.86, -1.175), 0.02, 0.025, 'y', M['bakelite'], 10),
+          tbox('rd_sounder', 1.9, 2.15, 0.8, 0.95, -1.6, -1.4, M['brass']),
+          tcyl('rd_tape', (1.0, 0.86, -1.08), 0.09, 0.05, 'z', M['paper'], 18),
+          tbox('rd_log', -0.05, 0.25, 0.8, 0.83, -1.45, -1.1, M['paper']),
+          tbox('rd_logcover', -0.06, 0.26, 0.795, 0.8, -1.46, -1.09, M['leather'])]
+    for x in (-0.1, 2.2):
+        for z in (-1.65, -1.05):
+            p.append(tbeam(f'rd_leg_{x}_{z}', (x, 0.04, z), (x, 0.76, z), 0.05, 0.05, M['pwood'], up=(1, 0, 0)))
+    COL('COL_cs_radio', J('Comms_RadioDesk', p), 0.0, M)
+    p = [tcyl('rd_chair_seat', (1.0, 0.45, -0.55), 0.2, 0.04, 'y', M['wood'], 14)]
+    for k in range(3):
+        a = k / 3 * math.tau
+        p.append(tcyl_dir(f'rd_chair_leg_{k}', (1.0, 0.44, -0.55), (1.0 + 0.2 * math.cos(a), 0.04, -0.55 + 0.2 * math.sin(a)), 0.02, M['wood'], 6))
+    J('Comms_Chair', p)
+    # call-log cabinet, battery racks, relay cabinet (west side)
+    J('Comms_CallLogCabinet', [uv(tbox('cl_cab', 1.9, 2.4, 0.04, 1.2, 0.4, 1.2, M['olive']))]
+      + [tbox(f'cl_h_{k}', 1.88, 1.9, 0.3 + k * 0.3, 0.33 + k * 0.3, 0.75, 0.85, M['brass']) for k in range(3)])
+    col_box('COL_cs_calllog', 1.9, 2.4, 0.4, 1.2, mat=C)
     p = []
     for y in (0.3, 0.9):
-        p.append(uv(tbox(f'br_shelf_{y}', -1.4, -0.4, y, y + 0.04, -1.15, -0.65, M['wood'])))
+        p.append(uv(tbox(f'br_shelf_{y}', -2.4, -1.4, y, y + 0.04, -1.7, -1.2, M['wood'])))
         for k in range(4):
-            x = -1.3 + k * 0.24
-            p += [tbox(f'cell_{y}_{k}', x, x + 0.18, y + 0.04, y + 0.34, -1.05, -0.8, M['clearglass']),
-                  tbox(f'plate_{y}_{k}', x + 0.03, x + 0.15, y + 0.06, y + 0.3, -0.95, -0.9, M['iron']),
-                  tcyl(f'post_{y}_{k}', (x + 0.09, y + 0.37, -0.92), 0.015, 0.05, 'y', M['brass'], 6)]
+            x = -2.3 + k * 0.24
+            p += [tbox(f'cell_{y}_{k}', x, x + 0.18, y + 0.04, y + 0.34, -1.6, -1.35, M['clearglass']),
+                  tbox(f'plate_{y}_{k}', x + 0.03, x + 0.15, y + 0.06, y + 0.3, -1.5, -1.45, M['iron'])]
     COL('COL_cs_batt', J('Comms_Batteries', p), 0.0, M)
-    p = [uv(tbox('rc_body', 0.3, 1.38, 0.0, 1.8, -1.15, -0.75, M['grey']))]
+    p = [uv(tbox('rc_body', -2.4, -1.9, 0.04, 1.8, -0.9, 0.3, M['grey']))]
     for k in range(3):
-        p.append(tcyl(f'rc_meter_{k}', (0.5 + k * 0.32, 1.45, -0.745), 0.09, 0.02, 'z', M['paper'], 16))
-    for k in range(6):
-        p.append(tbox(f'rc_switch_{k}', 0.45 + k * 0.15, 0.5 + k * 0.15, 1.0, 1.08, -0.75, -0.72, M['bakelite']))
-    p += [tbox('lt_board', 1.37, 1.4, 0.9, 1.7, -0.2, 0.6, M['wood'])]
-    for k in range(5):
-        p.append(tcyl_dir(f'lt_wire_{k}', (1.36, 1.6 - k * 0.15, 0.0 + k * 0.1), (1.36, 2.2, 0.1 + k * 0.1), 0.006, M['rubber'], 4))
+        p.append(tcyl(f'rc_meter_{k}', (-1.895, 1.45, -0.6 + k * 0.32), 0.09, 0.02, 'x', M['paper'], 16))
     COL('COL_cs_relay', J('Comms_RelayCabinet', p), 0.0, M)
-    J('Comms_Desk', [uv(tbox('cd_top', -1.4, -0.6, 0.75, 0.79, 0.0, 0.7, M['wood'])),
-                     tbox('cd_log', -1.2, -0.85, 0.79, 0.82, 0.15, 0.45, M['paper']),
-                     ttorus('cd_headset', (-0.75, 0.83, 0.55), 0.07, 0.012, 'z', M['bakelite'], (14, 5))])
-    col_box('COL_cs_desk', -1.4, -0.6, 0.0, 0.7, mat=M['col'])
-    J('Comms_Lamp', hanging_bulb('cs_bulb', 0.2, h, 0.0, M, 0.4))
+    J('Comms_Lamp', hanging_bulb('cs_bulb', 0.6, h, -0.6, M, 0.4))
     # outside: anemometer mast with spinning cups and a wind vane, instrument screen, rain gauge, aerial
-    mx, mz = 3.2, -1.0
+    mx, mz = 4.4, -1.0
     J('Comms_Mast', [tcyl('mast', (mx, 3.0, mz), 0.05, 6.0, 'y', M['steel'], 10),
                      tcyl_dir('guy1', (mx, 4.5, mz), (mx + 2.5, 0.05, mz + 1.5), 0.008, M['steel'], 4),
                      tcyl_dir('guy2', (mx, 4.5, mz), (mx - 1.0, 0.05, mz - 2.8), 0.008, M['steel'], 4),
                      tcyl_dir('guy3', (mx, 4.5, mz), (mx + 1.6, 0.05, mz - 2.4), 0.008, M['steel'], 4),
                      tbox('vane_tail', mx - 0.55, mx - 0.1, 5.85, 6.15, mz - 0.01, mz + 0.01, M['steel']),
-                     tcyl_dir('vane_arm', (mx - 0.5, 6.0, mz), (mx + 0.35, 6.0, mz), 0.012, M['steel'], 6),
-                     tcyl_dir('vane_tip', (mx + 0.35, 6.0, mz), (mx + 0.5, 6.0, mz), 0.03, M['steel'], 6, r2=0.0)])
+                     tcyl_dir('vane_arm', (mx - 0.5, 6.0, mz), (mx + 0.35, 6.0, mz), 0.012, M['steel'], 6)])
     cups = []
     for k in range(3):
         a = k / 3 * math.tau
@@ -480,7 +597,7 @@ def comms_shelter(M):
     cob = J('Comms_Anemometer', cups)
     cob.location = T((mx, 6.35, mz))
     cob['spinRate'] = 1.4
-    col_box('COL_cs_mast', mx - 0.15, mx + 0.15, mz - 0.15, mz + 0.15, mat=M['col'])
+    col_box('COL_cs_mast', mx - 0.15, mx + 0.15, mz - 0.15, mz + 0.15, mat=C)
     p = [tbox('scr_box', -0.4, 0.4, 0.9, 1.5, -0.3, 0.3, M['white']),
          tbox('scr_roof', -0.45, 0.45, 1.5, 1.55, -0.35, 0.35, M['white'])]
     for k in range(5):
@@ -489,13 +606,290 @@ def comms_shelter(M):
         for z in (-0.2, 0.2):
             p.append(tcyl(f'scr_leg_{x}_{z}', (x, 0.45, z), 0.025, 0.9, 'y', M['wood'], 6))
     screen = J('Comms_InstrumentScreen', p)
-    screen.location = T((-3.0, 0, 0.8))
+    screen.location = T((-4.0, 0, 0.8))
     COL('COL_cs_screen', screen, 0.0, M)
-    J('Comms_RainGauge', [tcyl('rg', (-2.8, 0.45, -1.8), 0.1, 0.9, 'y', M['brass'], 14), tcyl('rg_funnel', (-2.8, 0.95, -1.8), 0.13, 0.1, 'y', M['brass'], 14, r2=0.1)])
-    J('Comms_Aerial', [tcyl('ae_pole', (0.0, 2.8 + 1.3, -1.0), 0.04, 2.6, 'y', M['wood'], 8),
+    J('Comms_RainGauge', [tcyl('rg', (-3.8, 0.45, -1.9), 0.1, 0.9, 'y', M['brass'], 14), tcyl('rg_funnel', (-3.8, 0.95, -1.9), 0.13, 0.1, 'y', M['brass'], 14, r2=0.1)])
+    J('Comms_Aerial', [tcyl('ae_pole', (0.0, 2.8 + 1.3, -1.2), 0.04, 2.6, 'y', M['wood'], 8),
                        tcyl('ae_far_pole', (0.0, 3.0, -16.0), 0.06, 6.0, 'y', M['wood'], 8),
-                       tcyl_dir('ae_wire', (0.0, 5.3, -1.0), (0.0, 5.8, -16.0), 0.006, M['steel'], 4)])
-    col_box('COL_cs_aerialpole', -0.15, 0.15, -16.15, -15.85, mat=M['col'])
+                       tcyl_dir('ae_wire', (0.0, 5.3, -1.2), (0.0, 5.8, -16.0), 0.006, M['steel'], 4)])
+    col_box('COL_cs_aerialpole', -0.15, 0.15, -16.15, -15.85, mat=C)
+
+
+# ====================================================================== interior wall helper
+def inner_wall(name, x0, x1, z0, z1, h, mat, doors, C, door_h=2.1):
+    """Axis-aligned interior wall with door openings. doors: [(a0, a1, collider_name)] along the long axis."""
+    along_x = (x1 - x0) >= (z1 - z0)
+    ob = tbox(name, x0, x1, 0, h, z0, z1, mat)
+    cuts = []
+    for a0, a1, _ in doors:
+        if along_x:
+            cuts.append(tbox('cut', a0, a1, -1, door_h, z0 - 1, z1 + 1, None, 'Cutters'))
+        else:
+            cuts.append(tbox('cut', x0 - 1, x1 + 1, -1, door_h, a0, a1, None, 'Cutters'))
+    if cuts:
+        apply_boolean(ob, cuts)
+    uv(ob)
+    lo, hi = (x0, x1) if along_x else (z0, z1)
+    cur, k = lo, 0
+    for a0, a1, cname in sorted(doors) + [(hi, hi, None)]:
+        if a0 - cur > 0.02:
+            if along_x:
+                col_box(f'COL_{name}_{k}', cur, a0, z0, z1, mat=C)
+            else:
+                col_box(f'COL_{name}_{k}', x0, x1, cur, a0, mat=C)
+            k += 1
+        if cname:
+            if along_x:
+                col_box(cname, a0, a1, z0, z1, mat=C)
+            else:
+                col_box(cname, x0, x1, a0, a1, mat=C)
+        cur = max(cur, a1)
+    return ob
+
+
+# ====================================================================== quarters (mess hall, kitchen, six bedrooms)
+def quarters(M):
+    W, D, H, t = 24.0, 12.0, 3.2, 0.15
+    hw, hd = W / 2, D / 2
+    C = M['col']
+    win_s = [-10.5, -4.5, 0.33, 5.0, 9.67]
+    win_n = [-10.5, -5.0, 0.33, 5.0, 9.67]
+    openings = [('s', -8.55, -7.45, 0.0, 2.15), ('e', -0.5, 0.5, 0.0, 2.15)]
+    openings += [('s', a - 0.6, a + 0.6, 1.0, 2.1) for a in win_s] + [('n', a - 0.6, a + 0.6, 1.0, 2.1) for a in win_n]
+    openings += [('w', a - 0.6, a + 0.6, 1.0, 2.1) for a in (-2.5, 2.5)]
+    parts = walls('q', W, D, H, t, M['siding'], openings)
+    parts.append(uv(tbox('q_floor', -hw, hw, 0.0, 0.03, -hd, hd, M['floor'])))
+    parts += gable_roof('q', W, D, H, 1.6, 0.4, M['roof'], M['siding'])
+    for x in (-8.0, -4.0, 0.0, 4.0, 8.0):
+        parts.append(tbeam(f'q_tie_{x}', (x, H - 0.08, -hd), (x, H - 0.08, hd), 0.12, 0.16, M['wood']))
+    for a in win_s:
+        parts += window(f'q_ws_{a}', 's', a, 1.2, 1.0, 2.1, W, D, t, M)
+    for a in win_n:
+        parts += window(f'q_wn_{a}', 'n', a, 1.2, 1.0, 2.1, W, D, t, M)
+    for a in (-2.5, 2.5):
+        parts += window(f'q_ww_{a}', 'w', a, 1.2, 1.0, 2.1, W, D, t, M)
+    parts += [tbox('q_sign', -10.2, -5.8, 2.45, 2.95, hd, hd + 0.04, M['sign_cream']),
+              ttext('q_sign_t', SIGNS['quartersSign'], 0.32, M['stencil'], (-8.0, 2.7, hd + 0.045), 'z+')]
+    # interior walls: mess | corridor + six bedrooms
+    rooms_x = [0.33, 5.0, 9.67]
+    P = M['planks']
+    parts += [inner_wall('qw_part_n', -2.075, -1.925, -hd + t, -1.075, H, P, [], C),
+              inner_wall('qw_part_s', -2.075, -1.925, 1.075, hd - t, H, P, [], C),
+              inner_wall('qw_corr_n', -1.925, hw - t, -1.075, -0.925, H, P, [(cx - 0.45, cx + 0.45, f'COL_Door_Q_Room{i + 1}') for i, cx in enumerate(rooms_x)], C),
+              inner_wall('qw_corr_s', -1.925, hw - t, 0.925, 1.075, H, P, [(cx - 0.45, cx + 0.45, f'COL_Door_Q_Room{i + 4}') for i, cx in enumerate(rooms_x)], C)]
+    for xd in (2.67, 7.33):
+        parts.append(inner_wall(f'qw_div_n_{xd}', xd - 0.075, xd + 0.075, -hd + t, -1.075, H, P, [], C))
+        parts.append(inner_wall(f'qw_div_s_{xd}', xd - 0.075, xd + 0.075, 1.075, hd - t, H, P, [], C))
+    for i, cx in enumerate(rooms_x):
+        parts.append(ttext(f'q_plate_n{i}', SIGNS['quartersRooms'][i], 0.09, M['stencil'], (cx, 2.3, -0.92), 'z+'))
+        parts.append(ttext(f'q_plate_s{i}', SIGNS['quartersRooms'][i + 3], 0.09, M['stencil'], (cx, 2.3, 0.92), 'z-'))
+    J('Quarters', parts)
+    door_leaf('Door_Q_Front', (-8.55, 0.03, hd - t / 2), 1.1, 2.12, M['siding'], M['wood'], M['brass'])
+    door_leaf('Door_Q_East', (hw - t / 2, 0.03, -0.5), 1.0, 2.12, M['siding'], M['wood'], M['brass'], along='z')
+    wall_colliders('q', W, D, t, [('s', -8.55, -7.45, 'COL_Door_Q_Front'), ('e', -0.5, 0.5, 'COL_Door_Q_East')], C)
+    for i, cx in enumerate(rooms_x):
+        door_leaf(f'Door_Q_Room{i + 1}', (cx - 0.45, 0.03, -1.0), 0.9, 2.08, M['planks'], M['wood'], M['brass'])
+        door_leaf(f'Door_Q_Room{i + 4}', (cx - 0.45, 0.03, 1.0), 0.9, 2.08, M['planks'], M['wood'], M['brass'])
+
+    # ---- kitchen corner and mess hall
+    I = M['iron']
+    p = [uv(tbox('k_counter', -11.85, -11.2, 0, 0.9, -5.6, -1.5, M['wood'])),
+         uv(tbox('k_top', -11.85, -11.15, 0.9, 0.95, -5.65, -1.45, M['planks'])),
+         tbox('k_sink', -11.75, -11.3, 0.85, 0.96, -3.6, -2.9, M['alu']),
+         tcyl_dir('k_pump', (-11.7, 0.95, -3.0), (-11.7, 1.35, -3.0), 0.03, I, 8)]
+    # drying rack: two cups and two plates
+    p += [tbox('k_rack', -11.7, -11.3, 0.95, 0.98, -2.4, -1.8, M['wood'])]
+    for k in range(2):
+        p.append(tcyl(f'k_cup_{k}', (-11.5, 1.03, -2.3 + k * 0.15), 0.04, 0.09, 'y', M['white'], 10))
+        p.append(tcyl(f'k_plate_{k}', (-11.55, 1.1, -2.0 + k * 0.03), 0.11, 0.015, 'x', M['white'], 16))
+    COL('COL_q_counter', J('Quarters_KitchenCounter', p), 0.0, M)
+    p = [uv(tbox('range_body', -10.8, -9.6, 0, 0.85, -5.85, -5.15, I)),
+         tbox('range_top', -10.85, -9.55, 0.85, 0.9, -5.85, -5.1, I),
+         tbox('range_ashpan', -10.6, -10.0, 0.08, 0.2, -5.12, -5.08, M['steel']),
+         tbox('range_door', -10.5, -10.1, 0.35, 0.6, -5.13, -5.1, M['ember']),
+         tcyl_dir('range_flue', (-10.2, 0.9, -5.6), (-10.2, H + 1.4, -5.6), 0.08, I, 12),
+         tcyl('range_kettle', (-10.0, 0.98, -5.5), 0.12, 0.16, 'y', M['alu'], 14),
+         tcyl('range_pot', (-10.5, 1.0, -5.45), 0.15, 0.2, 'y', I, 14)]
+    COL('COL_q_range', J('Quarters_Range', p), 0.05, M)
+    J('Quarters_ProvisionLedger', [tbox('pl_hook', -7.6, -7.5, 1.6, 1.65, -5.85, -5.8, M['brass']),
+                                   tbox('pl_book', -7.75, -7.35, 1.15, 1.6, -5.84, -5.8, M['leather'])])
+    # long table and benches
+    p = [uv(tbox('mt_top', -9.0, -4.0, 0.74, 0.79, 0.3, 1.4, M['pwood']))]
+    for x in (-8.8, -4.2):
+        for z in (0.4, 1.3):
+            p.append(tbeam(f'mt_leg_{x}_{z}', (x, 0, z), (x, 0.74, z), 0.07, 0.07, M['pwood'], up=(1, 0, 0)))
+    for z in (-0.2, 1.9):
+        p.append(uv(tbox(f'mt_bench_{z}', -9.0, -4.0, 0.42, 0.47, z - 0.18, z + 0.18, M['wood'])))
+        for x in (-8.8, -4.2):
+            p.append(tbeam(f'mt_bleg_{z}_{x}', (x, 0, z), (x, 0.42, z), 0.05, 0.3, M['wood'], up=(1, 0, 0)))
+    for k in range(6):
+        p.append(tcyl(f'mt_mug_{k}', (-8.5 + k * 0.8, 0.84, 0.6 + (k % 2) * 0.5), 0.04, 0.09, 'y', M['enamel'], 10))
+    COL('COL_q_table', J('Quarters_MessTable', p), 0.0, M)
+    p = [uv(tbox('bar_cab', -4.2, -2.6, 0, 1.1, hd - t - 0.5, hd - t, M['pwood']))]
+    for k in range(5):
+        p.append(tcyl(f'bar_bottle_{k}', (-4.0 + k * 0.3, 1.25, hd - t - 0.25), 0.04, 0.28, 'y', M['clearglass'] if k % 2 else M['fuel'], 10))
+    COL('COL_q_bar', J('Quarters_BarCabinet', p), 0.0, M)
+    p = [uv(tbox('rp_table', -3.2, -2.4, 0.7, 0.74, -5.8, -5.1, M['pwood'])),
+         uv(tbox('rp_box', -3.1, -2.5, 0.74, 0.9, -5.7, -5.2, M['pwood'])),
+         tcyl('rp_platter', (-2.8, 0.91, -5.45), 0.15, 0.015, 'y', M['bakelite'], 24),
+         tcyl_dir('rp_horn', (-2.6, 0.95, -5.6), (-2.75, 1.35, -5.75), 0.03, M['brass'], 18, r2=0.2, cap=False)]
+    for x in (-3.15, -2.45):
+        for z in (-5.75, -5.15):
+            p.append(tbeam(f'rp_leg_{x}_{z}', (x, 0, z), (x, 0.7, z), 0.04, 0.04, M['pwood'], up=(1, 0, 0)))
+    COL('COL_q_gram', J('Quarters_RecordPlayer', p), 0.0, M)
+    lamps = []
+    for x in (-9.5, -4.5, 2.0, 7.0):
+        lamps += hanging_bulb(f'q_bulb_{x}', x, H, 0.0 if x > 0 else 1.0, M, 0.6)
+    J('Quarters_Lamps', lamps)
+
+    # ---- six bedrooms: bed under the outer wall, chest, chair, table with candle, luggage
+    for i, cx in enumerate(rooms_x * 2):
+        s = -1 if i < 3 else 1          # north rooms (-z) and south rooms (+z)
+        zo = s * (hd - t)               # outer wall face
+        n = i + 1
+        bz0, bz1 = sorted((zo, zo - s * 0.95))
+        p = [uv(tbox(f'r{n}_bed', cx - 2.05, cx - 0.15, 0.25, 0.42, bz0, bz1, M['wood'])),
+             tbox(f'r{n}_mattress', cx - 2.0, cx - 0.2, 0.42, 0.55, bz0 + 0.03, bz1 - 0.03, M['linen']),
+             tbox(f'r{n}_blanket', cx - 1.6, cx - 0.2, 0.55, 0.58, bz0 + 0.02, bz1 - 0.02, M['blanket']),
+             tbox(f'r{n}_pillow', cx - 1.95, cx - 1.65, 0.55, 0.63, bz0 + 0.12, bz1 - 0.12, M['linen'])]
+        for x in (cx - 2.0, cx - 0.2):
+            for z in (bz0 + 0.05, bz1 - 0.05):
+                p.append(tbeam(f'r{n}_bleg_{x}_{z}', (x, 0, z), (x, 0.25, z), 0.05, 0.05, M['wood'], up=(1, 0, 0)))
+        cz0, cz1 = sorted((zo, zo - s * 0.5))
+        p += [uv(tbox(f'r{n}_chest', cx + 0.2, cx + 1.1, 0, 0.5, cz0, cz1, M['pwood'])),
+              tbox(f'r{n}_chest_lock', cx + 0.6, cx + 0.7, 0.35, 0.45, cz1 if s < 0 else cz0, (cz1 if s < 0 else cz0) - s * 0.01, M['brass'])]
+        tz = zo - s * 0.35
+        p += [uv(tbox(f'r{n}_table', cx + 1.4, cx + 2.0, 0.7, 0.74, tz - 0.3, tz + 0.3, M['pwood'])),
+              tcyl(f'r{n}_candle', (cx + 1.7, 0.8, tz), 0.025, 0.12, 'y', M['linen'], 8),
+              tcyl(f'r{n}_holder', (cx + 1.7, 0.75, tz), 0.06, 0.02, 'y', M['brass'], 12)]
+        for x in (cx + 1.45, cx + 1.95):
+            for z in (tz - 0.25, tz + 0.25):
+                p.append(tbeam(f'r{n}_tleg_{x}_{z}', (x, 0, z), (x, 0.7, z), 0.035, 0.035, M['pwood'], up=(1, 0, 0)))
+        lz = s * 1.6
+        p += [uv(tbox(f'r{n}_case', cx + 1.0, cx + 1.7, 0.03, 0.25, lz - 0.25, lz + 0.25, M['leather'])),
+              tbox(f'r{n}_case_handle', cx + 1.25, cx + 1.45, 0.25, 0.29, lz - 0.02, lz + 0.02, M['bakelite']),
+              uv(tbox(f'r{n}_chair', cx + 0.3, cx + 0.75, 0.42, 0.46, s * 3.0 - 0.22, s * 3.0 + 0.22, M['wood'])),
+              uv(tbox(f'r{n}_chair_back', cx + 0.3, cx + 0.75, 0.46, 0.9, s * 3.0 - s * 0.24, s * 3.0 - s * 0.2, M['wood']))]
+        room = J(f'Quarters_Room{n}', p)
+        col_box(f'COL_q_r{n}_bed', cx - 2.05, cx - 0.15, bz0, bz1, mat=C)
+        col_box(f'COL_q_r{n}_chest', cx + 0.2, cx + 1.1, cz0, cz1, mat=C)
+        col_box(f'COL_q_r{n}_table', cx + 1.4, cx + 2.0, tz - 0.3, tz + 0.3, mat=C)
+
+
+# ====================================================================== the Investigator's Shed (HQ)
+def hq_shed(M):
+    W, D, H, t = 7.0, 5.5, 2.8, 0.12
+    hw, hd = W / 2, D / 2
+    C = M['col']
+    openings = [('s', -2.4, -1.5, 0.0, 2.05), ('s', 1.0, 2.2, 1.1, 1.9), ('e', -1.1, 0.1, 1.2, 1.9), ('w', 1.0, 2.2, 1.1, 1.9)]
+    parts = walls('hq', W, D, H, t, M['siding'], openings)
+    parts.append(uv(tbox('hq_floor', -hw, hw, 0.0, 0.03, -hd, hd, M['floor'])))
+    parts += gable_roof('hq', W, D, H, 1.0, 0.3, M['roof'], M['siding'])
+    for x in (-2.0, 0.0, 2.0):
+        parts.append(tbeam(f'hq_tie_{x}', (x, H - 0.08, -hd), (x, H - 0.08, hd), 0.1, 0.14, M['wood']))
+    parts += window('hq_wf', 's', 1.6, 1.2, 1.1, 1.9, W, D, t, M)
+    parts += window('hq_we', 'e', -0.5, 1.2, 1.2, 1.9, W, D, t, M)
+    parts += window('hq_ww', 'w', 1.6, 1.2, 1.1, 1.9, W, D, t, M)
+    parts += [uv(tbox('hq_rug', -1.2, 1.8, 0.03, 0.04, -1.6, 1.0, M['blanket'])),
+              tbox('hq_sign', -2.5, -1.4, 2.12, 2.32, hd, hd + 0.02, M['sign_cream']),
+              ttext('hq_sign_t', SIGNS['hqDoor'], 0.07, M['sign_red'], (-1.95, 2.22, hd + 0.025), 'z+')]
+    J('HQ_Shed', parts)
+    door_leaf('Door_HQ', (-2.4, 0.03, hd - t / 2), 0.9, 2.02, M['siding'], M['wood'], M['brass'])
+    wall_colliders('hq', W, D, t, [('s', -2.4, -1.5, 'COL_Door_HQ')], C)
+    zb = -hd + t
+
+    # the investigation board: a big cork wall with a few blank cards (the real board is the in-game UI)
+    p = [uv(tbox('ib_frame', -2.75, 1.75, 0.72, 2.38, zb, zb + 0.03, M['pwood'])),
+         uv(tbox('ib_cork', -2.65, 1.65, 0.8, 2.3, zb + 0.03, zb + 0.05, M['cork']))]
+    for k in range(7):
+        x = -2.3 + (k % 4) * 1.0 + (0.2 if k > 3 else 0)
+        y = 1.95 - (k // 4) * 0.6
+        p.append(tbox(f'ib_card_{k}', x - 0.16, x + 0.16, y - 0.11, y + 0.11, zb + 0.05, zb + 0.055, M['paper']))
+        p.append(tsphere(f'ib_pin_{k}', (x, y + 0.08, zb + 0.06), 0.012, M['sign_red'], (8, 5)))
+    for a, b in ((0, 2), (1, 5), (2, 6)):
+        xa = -2.3 + (a % 4) * 1.0 + (0.2 if a > 3 else 0); ya = 1.95 - (a // 4) * 0.6 + 0.08
+        xb = -2.3 + (b % 4) * 1.0 + (0.2 if b > 3 else 0); yb = 1.95 - (b // 4) * 0.6 + 0.08
+        p.append(tcyl_dir(f'ib_string_{a}_{b}', (xa, ya, zb + 0.065), (xb, yb, zb + 0.065), 0.003, M['sign_red'], 4))
+    J('HQ_Board', p)
+
+    # the timeline wall: a long strip on the west wall, hours 18:00 to 06:00
+    xw = -hw + t
+    p = [uv(tbox('tl_board', xw, xw + 0.03, 1.3, 2.0, -2.35, 0.9, M['pwood'])),
+         tbox('tl_strip', xw + 0.03, xw + 0.035, 1.55, 1.75, -2.25, 0.8, M['paper'])]
+    hours = SIGNS['hqTimelineHours']
+    for k, lab in enumerate(hours):
+        z = -2.15 + k * (2.85 / (len(hours) - 1))
+        p.append(tbox(f'tl_tick_{k}', xw + 0.035, xw + 0.04, 1.55, 1.75, z - 0.005, z + 0.005, M['stencil']))
+        p.append(ttext(f'tl_lab_{k}', lab, 0.06, M['stencil'], (xw + 0.045, 1.85, z), 'x+'))
+    J('HQ_Timeline', p)
+
+    # cot with army blanket, clock above it
+    p = [uv(tbox('cot_frame', 2.55, 3.35, 0.32, 0.38, -2.5, -0.5, M['wood'])),
+         tbox('cot_canvas', 2.6, 3.3, 0.38, 0.45, -2.45, -0.55, M['linen']),
+         tbox('cot_blanket', 2.58, 3.32, 0.45, 0.48, -2.0, -0.55, M['blanket']),
+         tbox('cot_pillow', 2.7, 3.2, 0.45, 0.53, -2.42, -2.12, M['linen'])]
+    for z in (-2.45, -0.55):
+        p.append(tcyl_dir(f'cot_x1_{z}', (2.6, 0.0, z), (3.3, 0.36, z), 0.015, M['iron'], 6))
+        p.append(tcyl_dir(f'cot_x2_{z}', (3.3, 0.0, z), (2.6, 0.36, z), 0.015, M['iron'], 6))
+    J('HQ_Cot', p)
+    col_box('COL_hq_cot', 2.55, 3.38, -2.5, -0.5, mat=C)
+    xe = hw - t
+    J('HQ_Clock', [tcyl('clk_face', (xe - 0.02, 2.1, -1.8), 0.17, 0.03, 'x', M['paper'], 24),
+                   ttorus('clk_rim', (xe - 0.03, 2.1, -1.8), 0.17, 0.015, 'x', M['pwood'], (24, 6)),
+                   tbox('clk_h', xe - 0.05, xe - 0.045, 2.1, 2.2, -1.81, -1.79, M['stencil']),
+                   tbox('clk_m', xe - 0.05, xe - 0.045, 2.095, 2.105, -1.8, -1.68, M['stencil'])])
+
+    # report desk under the front window: reports, typewriter, paraffin lamp, chair
+    p = [uv(tbox('rd_top', 0.5, 2.6, 0.74, 0.78, 1.85, 2.6, M['pwood'])),
+         uv(tbox('rd_drawers', 2.0, 2.55, 0.1, 0.74, 1.9, 2.55, M['pwood']))]
+    for x in (0.55, 2.55):
+        for z in (1.9, 2.55):
+            p.append(tbeam(f'rd_leg_{x}_{z}', (x, 0, z), (x, 0.74, z), 0.05, 0.05, M['pwood'], up=(1, 0, 0)))
+    J('HQ_Desk', p)
+    col_box('COL_hq_desk', 0.5, 2.6, 1.85, 2.6, mat=C)
+    J('HQ_Reports', [tbox('rep_folder', 0.75, 1.2, 0.78, 0.8, 2.0, 2.35, M['card'])]
+      + [tbox(f'rep_sheet_{k}', 0.8 + k * 0.01, 1.15 + k * 0.01, 0.8 + k * 0.006, 0.805 + k * 0.006, 2.03, 2.32, M['paper']) for k in range(5)])
+    p = [tbox('tw_body', 1.55, 2.0, 0.78, 0.92, 2.05, 2.4, M['bakelite']),
+         tcyl('tw_roller', (1.775, 0.98, 2.33), 0.04, 0.5, 'x', M['bakelite'], 12),
+         tbox('tw_paper', 1.62, 1.93, 0.98, 1.2, 2.35, 2.355, M['paper'])]
+    for r in range(3):
+        for k in range(8):
+            p.append(tcyl(f'tw_key_{r}_{k}', (1.6 + k * 0.05, 0.92 - r * 0.02, 2.1 + r * 0.05), 0.012, 0.01, 'y', M['white'], 8))
+    J('HQ_Typewriter', p)
+    J('HQ_Lamp', [tcyl('pl_base', (2.4, 0.83, 2.0), 0.07, 0.1, 'y', M['brass'], 14),
+                  tcyl('pl_font', (2.4, 0.92, 2.0), 0.06, 0.08, 'y', M['brass'], 14, r2=0.04),
+                  tcyl('pl_chimney', (2.4, 1.05, 2.0), 0.035, 0.18, 'y', M['bulb'], 12, r2=0.025)])
+    marker('LIGHT_HQ', T((2.4, 1.1, 2.0)), {'light': 'point', 'intensity': 11, 'distance': 8, 'color': '#ffc98a', 'flicker': 1}, 'Props')
+    J('HQ_Chair', [uv(tbox('hc_seat', 1.3, 1.75, 0.44, 0.48, 1.2, 1.65, M['wood'])),
+                   uv(tbox('hc_back', 1.3, 1.75, 0.48, 0.92, 1.18, 1.22, M['wood']))]
+      + [tbeam(f'hc_leg_{x}_{z}', (x, 0, z), (x, 0.44, z), 0.035, 0.035, M['wood'], up=(1, 0, 0)) for x in (1.33, 1.72) for z in (1.23, 1.62)])
+
+    # lab table: fingerprint kit, powder, brush, magnifier, tweezers
+    p = [uv(tbox('lt_top', -2.6, -0.9, 0.86, 0.9, -0.5, 0.4, M['pwood']))]
+    for x in (-2.55, -0.95):
+        for z in (-0.45, 0.35):
+            p.append(tbeam(f'lt_leg_{x}_{z}', (x, 0, z), (x, 0.86, z), 0.05, 0.05, M['pwood'], up=(1, 0, 0)))
+    p += [tbox('fk_case', -2.4, -1.9, 0.9, 1.0, -0.3, 0.05, M['leather']),
+          tbox('fk_lid', -2.4, -1.9, 1.0, 1.25, -0.32, -0.3, M['leather']),
+          tcyl('fk_powder', (-1.7, 0.96, -0.2), 0.04, 0.12, 'y', M['bakelite'], 10),
+          tcyl_dir('fk_brush', (-1.55, 0.91, 0.0), (-1.3, 0.91, 0.12), 0.01, M['pwood'], 6),
+          ttorus('mg_ring', (-1.2, 0.915, -0.15), 0.05, 0.008, 'y', M['brass'], (16, 6)),
+          tcyl('mg_lens', (-1.2, 0.915, -0.15), 0.048, 0.004, 'y', M['clearglass'], 16),
+          tcyl_dir('mg_handle', (-1.15, 0.915, -0.1), (-1.0, 0.915, 0.05), 0.012, M['bakelite'], 8),
+          tbox('fk_cards', -2.2, -1.95, 0.9, 0.91, 0.1, 0.3, M['paper'])]
+    J('HQ_LabTable', p)
+    col_box('COL_hq_lab', -2.6, -0.9, -0.5, 0.4, mat=C)
+    # case file box, stove
+    J('HQ_CaseBox', [uv(tbox('cb_box', -0.55, 0.15, 0.03, 0.4, 2.0, 2.5, M['card'])),
+                     tbox('cb_files', -0.5, 0.1, 0.4, 0.46, 2.05, 2.45, M['paper'])])
+    col_box('COL_hq_case', -0.55, 0.15, 2.0, 2.5, mat=C)
+    I = M['iron']
+    J('HQ_Stove', [tcyl('hs_body', (-3.0, 0.45, 1.9), 0.22, 0.5, 'y', I, 16, r2=0.18),
+                   tcyl('hs_top', (-3.0, 0.75, 1.9), 0.18, 0.08, 'y', I, 16),
+                   tbox('hs_grate', -2.8, -2.77, 0.3, 0.45, 1.8, 2.0, M['ember']),
+                   tcyl_dir('hs_flue', (-3.0, 0.8, 1.9), (-3.0, H + 1.2, 1.9), 0.06, I, 10),
+                   tcyl('hs_kettle', (-3.0, 0.84, 1.9), 0.09, 0.12, 'y', M['alu'], 12)])
+    col_box('COL_hq_stove', -3.3, -2.7, 1.6, 2.2, mat=C)
 
 
 BUILDINGS = {
@@ -504,6 +898,8 @@ BUILDINGS = {
     'storage_shed': storage_shed,
     'ops_building': ops_building,
     'comms_shelter': comms_shelter,
+    'quarters': quarters,
+    'hq_shed': hq_shed,
 }
 
 if __name__ == '__main__':

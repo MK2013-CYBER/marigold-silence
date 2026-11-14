@@ -1,0 +1,97 @@
+{
+  "_note": "Addendum v2 section H. Each puzzle earns the clues listed in 'clues' (section G: evidence only comes from solving). 'hints' are Danny Cole's three levels: 1 a nudge, 2 a specific suggestion, 3 the answer to this puzzle step (never the whole case). Puzzles marked 'draft' get their final hint wording when the puzzle itself is built (Stage F). 'order' is the order Danny suggests them in.",
+  "order": ["P0", "P1", "P2", "P8", "P3", "P10", "P4", "P11", "P5", "P15", "P14", "P12", "P13", "P6", "P17", "P7", "P16", "P9"],
+  "hintCost": 5,
+  "puzzles": [
+    { "id": "P0", "name": "Crime Scene Survey", "place": "hangar", "mechanic": "Camera and evidence markers", "clues": ["C03", "C04", "C06", "C07", "C08", "C09", "C10", "C11", "C31"],
+      "hints": [
+        "A scene's like a filing cabinet, Chief: you open the drawer before you read the folder. Wide shots first.",
+        "Every subject wants three plates: wide, medium, then close with the scale ruler. And number your markers in the order you'll write the report.",
+        "Nine subjects, in report order: the body; the desk with decanter and glass; the music box; the door bolt; the window bars; the rug corner; the drawer with the revolver; the calendar and blotter; the note under the door. Wide, medium, close for each." ] },
+    { "id": "P1", "name": "Bench Test", "place": "hangar", "mechanic": "Chemistry dropper reasoning", "clues": ["C01", "C02"],
+      "hints": [
+        "Six drops, Chief. Don't spend them on hunches. Find the other half of that reagent chart first.",
+        "The torn half of the chart is on the darkroom shelf in Operations. Reagent B shows up cyanide; reagent C shows up plant alkaloids.",
+        "Reagent B on the decanter brandy and on the glass dregs: Prussian blue. The tonic only browns with C, and that's just the doctor's heart drops." ] },
+    { "id": "P2", "name": "The Safe", "place": "hangar", "mechanic": "Dial lock with clue deduction", "clues": ["C05a", "C05b", "C05c", "C05d"],
+      "hints": [
+        "Pryce loved riddles. That hollow book on the shelf didn't hollow itself.",
+        "Left is 'her years', middle is 'the wings' hearts', right is 'the minute the sky stopped'. Look at the photograph, count the Trimotor's engines, check his watch.",
+        "Nineteen, three, seventeen. Left, right, left." ] },
+    { "id": "P3", "name": "Telegram and the Hitch", "place": "comms_shelter", "mechanic": "Morse decoding plus rhythm matching", "clues": ["C21", "C26"],
+      "hints": [
+        "The chart's on the wall, Chief. Dots and dashes, one letter at a time.",
+        "Once you've read it, listen to how each operator sends. Everybody's got a 'fist', like handwriting.",
+        "The unknown sender copies Hobbs's hitch on the Q, but slower and perfectly even. Match the telegram to the 'unknown' sample, not to Hobbs." ] },
+    { "id": "P4", "name": "Fuse Panel", "place": "maint_shed", "mechanic": "Wire-routing logic", "clues": ["C18"], "draft": true,
+      "hints": [
+        "Radio and hangar on, mess hall off. And mind the wire budget.",
+        "Use the shortest jumpers you can on the radio and hangar circuits; the mess circuit stays dead.",
+        "Power the hangar and the radio, leave the mess dark, stay inside the budget. Then put your nose to the reset lever." ] },
+    { "id": "P5", "name": "Torn Letters", "place": "quarters", "mechanic": "Jigsaw with two intermixed letters", "clues": ["C15", "C16", "C19"],
+      "hints": [
+        "Two kinds of paper in that stove, Chief. Cream laid and blue ledger.",
+        "Sort the scraps by paper first, then by handwriting, then turn them until the lines run straight.",
+        "The cream laid is a letter to Julian: 'By Saturday we shall be free of him.' The blue ledger is a contract with a forged signature page. And look at the drying rack on your way out." ] },
+    { "id": "P6", "name": "Darkroom", "place": "ops_building", "mechanic": "Timed photo development", "clues": ["C23", "C24"],
+      "hints": [
+        "Developer, stop bath, fixer. In that order, and watch the clock.",
+        "Sixty seconds in the developer. Read the enlarger needle before you expose. One retry per plate.",
+        "Expose when the needle sits in the middle band, sixty seconds of developer, then stop, then fix. Put plate four under the magnifier, and look at the storeroom shelf." ] },
+    { "id": "P7", "name": "Fingerprints", "place": "hq_shed", "mechanic": "Pattern match plus measurement", "clues": ["C13", "C25"],
+      "hints": [
+        "Prints from the glass, the decanter and the music box. Compare them with the dinner glasses.",
+        "Count the matching points, but measure too. Width matters.",
+        "Measure the print width in millimetres. The scarred print is about two centimetres narrower than Captain Strand's hand." ] },
+    { "id": "P8", "name": "Music Box Latch", "place": "hangar", "mechanic": "Audio sequence memory", "clues": ["C06b", "C32"], "unlocks": "trapdoor",
+      "hints": [
+        "That music box plays a tune, and the shelf has eight books. Funny coincidence.",
+        "Every note the box plays is a tooth number. Pull the books in the same order.",
+        "Five, three, one, three, five, eight, five, three." ] },
+    { "id": "P9", "name": "Timeline", "place": "hq_shed", "mechanic": "Logical ordering with constraints", "clues": [], "unlocks": "accusation",
+      "hints": [
+        "Pin down what we're sure of first: dinner, the quarrels, the bolt, the brandy.",
+        "Some cards can't move: the bolt went at 21:25, the tune was heard at 22:00.",
+        "Dinner 19:00; Julian 20:15-20:40; the runway quarrel 20:45; Pryce and the doctor 21:10; the bolt 21:25; the toast 21:40; death 21:46; the tune 22:00; the blackout 22:32-22:50; the bang 22:45; Julian at the door 23:15; Tamsin's note 23:30; the door broken 06:10." ] },
+    { "id": "P10", "name": "The Forgery", "place": "comms_shelter", "mechanic": "UV lamp and magnifier: spot the alterations", "clues": ["C05e", "C22"],
+      "hints": [
+        "Two weather reports that ought to be twins. They're not.",
+        "Try the UV lamp, then the magnifier, then compare the typewriter letters.",
+        "Six changes: the 'clear by noon' ink, the erased 42, the broken 'e', the carbon shade, the date, the clipped signature. The broken 'e' matches Miss Quill's typewriter." ] },
+    { "id": "P11", "name": "Cracked Mount", "place": "maint_shed", "mechanic": "Dye-penetrant crack test", "clues": ["C34"],
+      "hints": [
+        "Spray, wipe, developer, then read. Don't skip the wipe.",
+        "Straight, parallel lines are machining marks. You're looking for something that wanders.",
+        "The jagged, branching red line on the number two mount. Check the tag on it." ] },
+    { "id": "P12", "name": "Fuel Ledger Audit", "place": "fuel_farm", "mechanic": "Read gauges, fill the ledger, find the discrepancy", "clues": ["C14", "C35", "C36"],
+      "hints": [
+        "Read every gauge before you trust a ledger.",
+        "Compare today's gauges with yesterday's entries, tank by tank.",
+        "Tank C reads 188 but the ledger says 226: thirty-eight gallons gone. Tank C feeds the Trimotor. And look at the Waco's fuel cap." ] },
+    { "id": "P13", "name": "Beacon Mirrors", "place": "beacon_tower", "mechanic": "Rotate mirrors to guide a beam", "clues": ["C33"],
+      "hints": [
+        "Two of those mirrors don't move, Chief. Don't fight them.",
+        "Bounce the lamp off the moving mirrors only, in a zig-zag.",
+        "Mirror two, then four, then one, onto the photocell." ] },
+    { "id": "P14", "name": "The Crates", "place": "storage_shed", "mechanic": "Sliding-crate push puzzle", "clues": ["C20", "C29", "C30"], "draft": true,
+      "hints": [
+        "Crates push, they don't pull. Think before you shove.",
+        "Clear a lane to the corner plate first, and never box a crate against a wall.",
+        "Push the middle crate clear first, then the back one, then walk the last around. Fourteen moves or fewer." ] },
+    { "id": "P15", "name": "The Lock", "place": "quarters", "mechanic": "Pin-tumbler lock picking", "clues": ["C12", "C28"],
+      "hints": [
+        "Listen for the click, Chief. Each pin sets with a little give.",
+        "Light tension. Work the pins back to front and stop the moment one clicks.",
+        "The bag case has four pins, the desk drawer five. Back to front, light hands: only three picks." ] },
+    { "id": "P16", "name": "Tamsin's Cipher", "place": "hq_shed", "mechanic": "Keyword substitution cipher", "clues": ["C17"],
+      "hints": [
+        "It's a substitution. Same letter in, same letter out.",
+        "The first three words are in Pryce's shorthand: PAID 200 MONTHLY. That's your crib. The keyword is a name you keep hearing.",
+        "Keyword MARIGOLD. It reads: PAID 200 MONTHLY W/R 31 STORM FALSE." ] },
+    { "id": "P17", "name": "The Manifests", "place": "ops_building", "mechanic": "Sort manifest cards against death certificates", "clues": ["C27"],
+      "hints": [
+        "Six cards, five certificates. Somebody's paperwork went missing.",
+        "Put the cards on the manifest in time order, then pair each with a certificate.",
+        "Seat four: 'C. Pryce, 19'. No certificate. Then check the newspaper." ] }
+  ]
+}

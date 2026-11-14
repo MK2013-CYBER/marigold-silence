@@ -51,8 +51,6 @@ SIDE_E = (1.9, 3.1)                     # east side door (z range)
 BACK = (1.2, 2.4)                       # back door in the north wall (x range)
 
 OFFICE = dict(x0=13.0, x1=20.0, z0=-12.5, z1=-6.5, h=3.2, door=(15.0, 16.0), window=(17.2, 18.8))
-SURVEY = dict(x0=-20.0, x1=-14.9, z0=HZ + TH, z1=16.8, h=3.0, door=(-17.5, -16.5), back_door=(-18.9, -17.9))
-DARK = dict(x0=-20.0, x1=-16.6, z1=19.5, h=2.8)
 
 
 def roof_y(x):
@@ -190,8 +188,7 @@ def build():
             cuts.append(cut('c_office_win', HX - 0.5, HX + 1, 1.2, 2.2, -10.1, -8.9))
         apply_boolean(wall, cuts)
     apply_boolean(north, [cut('cback', *BACK, -1, 2.2, -HZ - 1, -HZ + 1)])
-    apply_boolean(south, [cut('cmain', -MAIN_X, MAIN_X, -1, MAIN_H, HZ - 1, HZ + 1),
-                          cut('csurvey', *SURVEY['door'], -1, 2.1, HZ - 1, HZ + 1)])
+    apply_boolean(south, [cut('cmain', -MAIN_X, MAIN_X, -1, MAIN_H, HZ - 1, HZ + 1)])
     gn = gable('gable_n', -HZ - TH, -HZ, M['wall'])
     gs = gable('gable_s', HZ, HZ + TH, M['wall'])
     for g, zc in ((gn, -HZ), (gs, HZ)):
@@ -285,12 +282,7 @@ def build():
         wood.append(tbeam(f'bar_{z}', (HX + 0.05, 1.2, z), (HX + 0.05, 2.2, z), 0.025, 0.025, I, up=(1, 0, 0), collection='Shell'))
     wood.append(tbeam('ow_sill', (HX - 0.05, 1.17, -10.2), (HX - 0.05, 1.17, -8.8), 0.25, 0.06, W, collection='Shell'))
     glass.append(tquad('glass_office_east', [(HX + 0.2, 1.2, -10.1), (HX + 0.2, 1.2, -8.9), (HX + 0.2, 2.2, -8.9), (HX + 0.2, 2.2, -10.1)], M['glass'], collection='Shell'))
-    # survey office window (in its own west wall)
-    glass.append(tquad('glass_survey', [(-20.12, 1.1, 15.5), (-20.12, 1.1, 14.1), (-20.12, 2.1, 14.1), (-20.12, 2.1, 15.5)], M['glass'], collection='Shell'))
-    for z in (14.1, 14.8, 15.5):
-        wood.append(tbeam(f'sw_v_{z}', (-20.06, 1.1, z), (-20.06, 2.1, z), 0.06, 0.12, W, up=(1, 0, 0), collection='Shell'))
-    for y in (1.1, 2.1):
-        wood.append(tbeam(f'sw_h_{y}', (-20.06, y, 14.05), (-20.06, y, 15.55), 0.12, 0.06, W, collection='Shell'))
+    # (the survey office and darkroom moved to the Operations building: addendum v2, section B)
 
     # door casings for the side and back doors (both faces)
     for key, a0, a1, axis, c in (('dw', *SIDE_W, 'z', -HX - TH / 2), ('de', *SIDE_E, 'z', HX + TH / 2), ('db', *BACK, 'x', -HZ - TH / 2)):
@@ -400,39 +392,6 @@ def rooms(M):
     glass.name = 'Office_WindowGlass'
     door_leaf('Door_Office', (dx0, 0, zf), dx1 - dx0, 2.08, M, style='office', text=('C. PRYCE', 'Private'))
 
-    # ---- survey office + darkroom (outside the south wall, location H)
-    s, d = SURVEY, DARK
-    bx0, bx1 = s['back_door']
-    sx0, sx1 = s['door']
-    parts = [
-        tbox('sv_floor', s['x0'] - t, s['x1'] + t, -0.05, 0.015, s['z0'], s['z1'] + t, FB, 'Shell'),
-        tbox('sv_ceiling', s['x0'] - t, s['x1'] + t, s['h'], s['h'] + 0.12, s['z0'], s['z1'] + t, P, 'Shell'),
-        tbox('sv_east', s['x1'], s['x1'] + t, 0, s['h'], s['z0'], s['z1'] + t, P, 'Shell'),
-    ]
-    svw = tbox('sv_west', s['x0'] - t, s['x0'], 0, s['h'], s['z0'], s['z1'] + t, P, 'Shell')
-    apply_boolean(svw, [cut('cut_svw', s['x0'] - 1, s['x0'] + 1, 1.1, 2.1, 14.1, 15.5)])
-    back = tbox('sv_back', s['x0'] - t, s['x1'] + t, 0, s['h'], s['z1'], s['z1'] + t, P, 'Shell')
-    apply_boolean(back, [cut('cut_svb', bx0, bx1, -1, 2.05, s['z1'] - 1, s['z1'] + 1)])
-    parts += [svw, back]
-    zd0 = s['z1'] + t
-    parts += [
-        tbox('dk_floor', d['x0'] - t, d['x1'] + t, -0.05, 0.015, zd0, d['z1'] + t, FB, 'Shell'),
-        tbox('dk_ceiling', d['x0'] - t, d['x1'] + t, d['h'], d['h'] + 0.12, zd0, d['z1'] + t, P, 'Shell'),
-        tbox('dk_west', d['x0'] - t, d['x0'], 0, d['h'], zd0, d['z1'] + t, P, 'Shell'),
-        tbox('dk_east', d['x1'], d['x1'] + t, 0, d['h'], zd0, d['z1'] + t, P, 'Shell'),
-        tbox('dk_back', d['x0'] - t, d['x1'] + t, 0, d['h'], d['z1'], d['z1'] + t, P, 'Shell'),
-    ]
-    for ob in parts:
-        world_uv(ob, 1, 1, 1)
-    for nm, (a, b), zc, off, hgt in (('svd', (sx0, sx1), HZ + TH / 2, 0.17, 2.1), ('dkd', (bx0, bx1), s['z1'] + t / 2, 0.085, 2.05)):
-        for side in (-1, 1):
-            z = zc + side * off
-            parts.append(tbox(f'{nm}_l_{side}', a - 0.09, a, 0, hgt + 0.1, z - 0.015, z + 0.015, D, 'Shell', uv=(1, 1, 1)))
-            parts.append(tbox(f'{nm}_r_{side}', b, b + 0.09, 0, hgt + 0.1, z - 0.015, z + 0.015, D, 'Shell', uv=(1, 1, 1)))
-            parts.append(tbox(f'{nm}_h_{side}', a - 0.09, b + 0.09, hgt, hgt + 0.1, z - 0.015, z + 0.015, D, 'Shell', uv=(1, 1, 1)))
-    join('Survey_Rooms', parts)
-    door_leaf('Door_Survey', (sx0, 0, HZ + TH / 2), sx1 - sx0, 2.08, M)
-    door_leaf('Door_Darkroom', (bx0, 0, s['z1'] + t / 2), bx1 - bx0, 2.03, M)
 
 
 def collisions(M, posts, zf):
@@ -449,9 +408,7 @@ def collisions(M, posts, zf):
     col_box('COL_Wall_W_1', -HX - TH, -HX, -HZ - TH, SIDE_W[0], mat=C)
     col_box('COL_Wall_W_2', -HX - TH, -HX, SIDE_W[1], HZ + TH, mat=C)
     col_box('COL_Door_SideWest', -HX - TH, -HX + 0.1, SIDE_W[0], SIDE_W[1], mat=C)
-    sx0, sx1 = SURVEY['door']
-    col_box('COL_Wall_S_1', -HX - TH, sx0, HZ, HZ + TH, mat=C)
-    col_box('COL_Wall_S_2', sx1, -MAIN_X, HZ, HZ + TH, mat=C)
+    col_box('COL_Wall_S_1', -HX - TH, -MAIN_X, HZ, HZ + TH, mat=C)
     col_box('COL_Wall_S_3', MAIN_X, HX + TH, HZ, HZ + TH, mat=C)
     # main door leaves, split around the wicket door (a real exit onto the apron)
     # outer leaves 1 and 4 never move; the middle leaves 2 and 3 slide open (the wicket rides on leaf 2)
@@ -469,17 +426,6 @@ def collisions(M, posts, zf):
     col_box('COL_Office_Front_R', dx1, o['x1'], o['z1'] - 0.1, o['z1'] + 0.1, mat=C)
     col_box('COL_Office_West', o['x0'] - 0.1, o['x0'] + 0.1, o['z0'], o['z1'] + 0.1, mat=C)
     col_box('COL_Door_Office', dx0, dx1, o['z1'] - 0.05, o['z1'] + 0.05, mat=C)
-    s, d = SURVEY, DARK
-    col_box('COL_Door_Survey', sx0, sx1, HZ + 0.1, HZ + 0.2, mat=C)
-    col_box('COL_Survey_W', s['x0'] - 0.2, s['x0'], s['z0'], s['z1'] + 0.15, mat=C)
-    col_box('COL_Survey_E', s['x1'], s['x1'] + 0.2, s['z0'], s['z1'] + 0.15, mat=C)
-    bx0, bx1 = s['back_door']
-    col_box('COL_Survey_Back_L', s['x0'] - 0.2, bx0, s['z1'], s['z1'] + 0.15, mat=C)
-    col_box('COL_Survey_Back_R', bx1, s['x1'] + 0.2, s['z1'], s['z1'] + 0.15, mat=C)
-    col_box('COL_Door_Darkroom', bx0, bx1, s['z1'] + 0.03, s['z1'] + 0.12, mat=C)
-    col_box('COL_Dark_W', d['x0'] - 0.2, d['x0'], s['z1'], d['z1'] + 0.2, mat=C)
-    col_box('COL_Dark_E', d['x1'], d['x1'] + 0.2, s['z1'], d['z1'] + 0.2, mat=C)
-    col_box('COL_Dark_Back', d['x0'] - 0.2, d['x1'] + 0.2, d['z1'], d['z1'] + 0.2, mat=C)
 
 
 build()

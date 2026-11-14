@@ -21,6 +21,7 @@ Open http://localhost:5173 in Chrome or Safari, then click the screen.
 | E | Interact with what you're looking at |
 | Tab | Notebook |
 | M | Full airfield map (a minimap is always in the corner) |
+| R | Radio Danny Cole (walkie-talkie, 5 min); 1-4 pick a reply |
 | F | Flashlight |
 | Esc | Pause |
 | ` (backtick) | Debug view: colliders, position, frame rate; then 1-6 teleport (hangar, apron, runway, beacon, gate, dunes) |
@@ -66,10 +67,26 @@ apron, windsock, sun, Raven Ridge, streamed models, indoor zones, planned buildi
   `blender/lib/buildings.py`; sign texts: `src/data/scenes/outbuildings.json`.
 - Minimap: `src/ui/minimap.js`, painted from `world.json` (buildings, paths, fence, runway).
 
+## Stage A + B (addendum v2)
+
+- **Places** (`src/data/places.json`): every location and its purpose; shown in the map legend (M).
+- **New buildings**: Quarters (mess hall, kitchen, six bedrooms) and the Investigator's Shed (HQ) by
+  the entrance road. The survey office and darkroom moved from the hangar to an annex on Operations.
+- **HQ**: investigation board, timeline wall, report desk, lab table, case-file box, typewriter, cot,
+  clock and stove. Screens: `src/ui/board.js`, `src/ui/screens.js`; logic: `src/game/hq.js`.
+- **Agent Danny Cole** (`src/world/cole.js`, model `blender/build_character_cole.py` from the Mixamo
+  files): talk with E, hints at three levels (each costs 5 min), follow / wait, radio with R,
+  reminders at 15:00 and 16:30. Words: `src/data/dialogue/cole.json`.
+- **Evidence rule** (section G): clues only come from solving puzzles (`src/data/puzzles.json` →
+  `clues`). The catalogue is `src/data/clues.json`; reports are `src/data/reports.json`.
+- **Quality**: Auto / Low / Medium / High on the title and pause screen (`src/engine/quality.js`).
+- **Debug cheats** (press ` first): P solves the next puzzle, O resets puzzles, T adds 30 minutes,
+  7 jumps to the HQ, 8 to the Quarters.
+
 ## Clues
 
-All clues are removed for now (`clues.json` and `items.json` are empty; the notes and the key are gone
-from the hangar). The removed practice clues are kept in `src/data/_archive/`.
+The old practice clues (notes, key) are archived in `src/data/_archive/`. The real clue catalogue from
+the bibles is in `src/data/clues.json`; clues are earned only by solving puzzles (Stage F builds them).
 
 ## Blender models
 

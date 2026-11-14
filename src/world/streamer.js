@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { loadModel } from '../engine/assets.js';
+import { lightsFromMarkers, animateLamps } from '../engine/lights.js';
 
 /**
  * Loads each building's .glb when the player comes within its "load" radius and hides
@@ -18,6 +19,8 @@ export class Streamer {
 
   update(dt, p) {
     for (const s of this.spinners) s.rotation.y += dt * s.userData.spinRate * Math.PI * 2;
+    this._t = (this._t ?? 0) + dt;
+    for (const it of this.items) if (it.lamps?.length) animateLamps(it.lamps, dt, this._t);
     this._acc += dt;
     if (this._acc < 0.25) return; // distance checks 4x a second are plenty
     this._acc = 0;
@@ -25,6 +28,11 @@ export class Streamer {
       const d = Math.hypot(p.x - it.position[0], p.z - it.position[2]);
       if (it.state === 'idle' && d < (it.load ?? 400)) this._load(it);
       if (it.root) it.root.visible = d < (it.cull ?? 600);
+      // a building's own lamps only light while you are close (lights cost frames everywhere)
+      if (it.lamps?.length) {
+        const on = d < (it.lightRadius ?? 16);
+        for (const l of it.lamps) l.light.visible = on;
+      }
     }
   }
 
@@ -49,6 +57,7 @@ export class Streamer {
         o.receiveShadow = true;
       });
       for (const c of cols) { this.world.addObject(c, 0, c.name); c.visible = false; }
+      it.lamps = it.id === 'beacon_tower' ? [] : lightsFromMarkers(root);
       it.root = root;
       it.state = 'ready';
       this.onLoad?.(it.id, root);

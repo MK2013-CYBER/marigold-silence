@@ -17,12 +17,20 @@ import { buildAirfield } from './world/airfield.js';
 import { Atmosphere } from './world/atmosphere.js';
 import { Streamer } from './world/streamer.js';
 import { Minimap } from './ui/minimap.js';
+import { Cole } from './world/cole.js';
+import { HQ } from './game/hq.js';
+import { Quality } from './engine/quality.js';
 import config from './data/game.json';
 import interactables from './data/interactables.json';
 import placeholderInteractables from './data/interactables_placeholder.json';
 import clues from './data/clues.json';
 import items from './data/items.json';
 import worldCfg from './data/world.json';
+import placesData from './data/places.json';
+import puzzlesData from './data/puzzles.json';
+import characters from './data/characters.json';
+import reportsData from './data/reports.json';
+import coleLines from './data/dialogue/cole.json';
 
 const { renderer, scene, camera } = createRenderer(document.getElementById('app'));
 const post = createPostFX(renderer, scene, camera);
@@ -82,7 +90,17 @@ const interaction = new InteractionSystem({
 });
 
 // doors and props inside streamed buildings become interactive when each model arrives
-streamer.onLoad = (id, root) => { interaction.addLocation(id, root); interaction._syncCollider(); };
+streamer.onLoad = (id, root) => {
+  interaction.addLocation(id, root);
+  interaction._syncCollider();
+  const it = streamer.items.find((i) => i.id === id);
+  if (it?.lamps?.length) { // prepare both 'lamp on' and 'lamp off' shaders now (no stutter later)
+    for (const l of it.lamps) l.light.visible = true;
+    renderer.compile(scene, camera);
+    for (const l of it.lamps) l.light.visible = false;
+    renderer.compile(scene, camera);
+  }
+};
 for (const it of streamer.items) if (it.root) streamer.onLoad(it.id, it.root);
 
 const controller = new FirstPersonController(camera, renderer.domElement, world);
@@ -100,7 +118,32 @@ else controller.setPosition(hangar.spawn.x, hangar.spawn.z, hangar.spawn.yaw);
 hud.setClock(state.clockLabel());
 
 const flashlight = new Flashlight(camera);
-const minimap = new Minimap(worldCfg);
+
+// ---------- Agent Danny Cole and the HQ (addendum v2: sections C, D, G) ----------
+status.textContent = 'Waking Danny\u2026';
+const cole = await Cole.create(scene, world, ground, worldCfg.cole);
+interaction.addLocation('npc', cole.root);
+const hq = new HQ({
+  state, hud, audio, cole, controller,
+  puzzles: puzzlesData, clues, characters, places: placesData.places, reports: reportsData.reports, lines: coleLines,
+});
+interaction.onUI = (def) => hq.handle(def);
+let releasingForScreen = false;
+hq.onScreenOpened = () => {
+  syncFreeze();
+  if (controller.locked) { releasingForScreen = true; document.exitPointerLock(); } // screens need the mouse
+};
+hq.onScreenClosed = () => {
+  syncFreeze();
+  if (controller.active && !controller.locked) controller.lock();
+};
+let resting = false;
+hq.onFreezeChange = (rest) => { if (rest !== undefined) resting = rest; syncFreeze(); };
+
+// ---------- quality presets (Low / Medium / High / Auto) ----------
+const quality = new Quality({ renderer, post, atmosphere, scene });
+quality.mount(document.getElementById('settings'));
+const minimap = new Minimap(worldCfg, placesData.places);
 controller.onFootstep = (amt) => audio.footstep(amt);
 atmosphere.onLightning = (delay) => audio.thunder(delay, 0.6 + Math.random() * 0.5);
 
@@ -115,7 +158,7 @@ if (hangar.setLights) { hangar.setLights(false); renderer.compile(scene, camera)
 renderer.compile(scene, camera);
 
 // distance from a point to the hangar's footprint (0 inside)
-const HANGAR_RECT = { x: [-20.3, 20.3], z: [-12.8, 19.6] };
+const HANGAR_RECT = { x: [-20.3, 20.3], z: [-12.8, 12.8] };
 function hangarDistance(p) {
   const dx = Math.max(HANGAR_RECT.x[0] - p.x, 0, p.x - HANGAR_RECT.x[1]);
   const dz = Math.max(HANGAR_RECT.z[0] - p.z, 0, p.z - HANGAR_RECT.z[1]);
@@ -142,7 +185,7 @@ const hint = document.getElementById('hint');
 const debugEl = document.getElementById('debug');
 const actions = document.getElementById('overlay-actions');
 const newGame = document.getElementById('new-game');
-const HINT = 'E interact · Tab notebook · M map · F flashlight · Shift sprint';
+const HINT = 'E interact · Tab notebook · M map · R radio Danny · F flashlight · Shift sprint';
 const DRAG_HINT = 'Hold mouse button and drag to look · ' + HINT;
 
 status.textContent = 'Click to enter Sable Flat';
@@ -151,7 +194,7 @@ if (hasSave) {
   actions.classList.remove('hidden');
 }
 
-const syncFreeze = () => { controller.frozen = hud.readerOpen || hud.notebookOpen; };
+function syncFreeze() { controller.frozen = hud.readerOpen || hud.notebookOpen || hq.busy || resting; }
 
 function enter() {
   audio.start();
@@ -165,6 +208,8 @@ function enter() {
 }
 function pause() {
   hud.closeAll();
+  hq.closeScreen();
+  hq.dialogue.close();
   syncFreeze();
   controller.setActive(false);
   savePlayer();
@@ -189,7 +234,9 @@ newGame.addEventListener('click', (e) => {
 });
 
 controller.onLockChange = (locked) => {
-  if (!locked && controller.active) pause(); // Esc released the mouse
+  // Esc released the mouse -> pause (but not when we released it ourselves for an HQ screen)
+  if (!locked && controller.active && !releasingForScreen && !hq.screen) pause();
+  releasingForScreen = false;
   hint.textContent = locked ? HINT : DRAG_HINT;
 };
 
@@ -201,10 +248,17 @@ const TELEPORTS = {
   Digit4: [-245, 62, 1.9], // west end, beacon tower
   Digit5: [20, -172, Math.PI], // the gate
   Digit6: [-140, -260, 0.6], // out past the fence, in the dunes
+  Digit7: [26, -151.5, -Math.PI / 2], // outside the HQ door
+  Digit8: [-83, -19, 0], // outside the Quarters
 };
 
 window.addEventListener('keydown', (e) => {
   if (!controller.active) return;
+  // an HQ screen (board, reports...) is open: only Esc matters
+  if (hq.screen) { if (e.code === 'Escape') hq.closeScreen(); return; }
+  // talking to Danny: number keys pick, E or Esc closes
+  if (hq.dialogue.key(e)) { e.preventDefault(); syncFreeze(); return; }
+  if (e.code === 'KeyR' && !e.repeat && !hud.readerOpen && !hud.notebookOpen) { hq.talk(true); syncFreeze(); return; }
   if (e.code === 'Tab') {
     e.preventDefault();
     hud.closeReader();
@@ -230,6 +284,10 @@ window.addEventListener('keydown', (e) => {
     world.debug.visible = !world.debug.visible;
     debugEl.classList.toggle('hidden', !world.debug.visible);
   }
+  // debug cheats (only with the ` debug view on): P solves the next puzzle, O un-solves all, T +30 min
+  if (world.debug.visible && e.code === 'KeyP') { const p = hq.debugSolveNext(); hud.toast(p ? `DEBUG: solved ${p.id} ${p.name}` : 'DEBUG: all puzzles solved'); }
+  if (world.debug.visible && e.code === 'KeyO') { hq.debugReset(); hud.toast('DEBUG: puzzles and evidence reset'); }
+  if (world.debug.visible && e.code === 'KeyT') { const s = state.advance(30); hud.timePassed(s, state.clockLabel()); state.save(); }
   if (world.debug.visible && TELEPORTS[e.code]) {
     const [x, z, yaw] = TELEPORTS[e.code];
     controller.setPosition(x, z, yaw);
@@ -240,7 +298,17 @@ window.addEventListener('beforeunload', savePlayer);
 // ---------- loop ----------
 const clock = new THREE.Clock();
 const hangarCentre = new THREE.Vector3(0, 0, 0);
-let fpsAcc = 0, fpsFrames = 0, fps = 0, saveAcc = 0, shadowTick = 1;
+let fpsAcc = 0, fpsFrames = 0, fps = 0, saveAcc = 0, shadowTick = 1, visitTick = 0;
+
+// places you have been near appear as cards on the investigation board
+const PLACE_SPOTS = [{ id: 'hangar', x: 0, z: 0, r: 30 }, ...worldCfg.models.map((m) => ({
+  id: m.id, x: m.position[0], z: m.position[2], r: Math.max(...(m.footprint ?? [10, 10])) / 2 + 10,
+}))];
+function markVisited(p) {
+  for (const s of PLACE_SPOTS) {
+    if (Math.hypot(p.x - s.x, p.z - s.z) < s.r && state.visit(s.id)) state.save();
+  }
+}
 const lastShadowPos = new THREE.Vector3(1e9, 0, 0);
 
 renderer.setAnimationLoop(() => {
@@ -263,6 +331,13 @@ renderer.setAnimationLoop(() => {
   hangar.setLights?.(inside || hangarDistance(pos) < 10);
   hangar.update(dt, t, atmosphere.flash);
   interaction.update(dt, controller.active && !controller.frozen);
+  cole.update(dt, pos, controller.yaw);
+  hq.update();
+  const qmsg = quality.update(dt, controller.active);
+  if (qmsg) hud.toast(qmsg);
+  post.grain.uniforms.time.value = t % 100;
+  visitTick += dt;
+  if (visitTick > 0.5) { visitTick = 0; markVisited(pos); }
 
   minimap.update(dt, pos, controller.yaw, zone ? zone.name : 'outdoors');
   audio.setExposure(inside ? (interaction.stormExposed() ? 0.45 : 0) : 1);
@@ -285,9 +360,11 @@ renderer.setAnimationLoop(() => {
   if (world.debug.visible) {
     debugEl.textContent = `fps ${fps}\nx ${pos.x.toFixed(1)}  z ${pos.z.toFixed(1)}  ${zone ? zone.name : 'outdoors'}\n`
       + `yaw ${(controller.yaw * 57.3).toFixed(0)}°\ncolliders ${world.boxes.length}\ndraw calls ${renderer.info.render.calls}\n`
-      + 'teleport: 1 hangar 2 apron 3 runway\n4 beacon 5 gate 6 dunes';
+      + `quality ${quality.level} (${quality.mode})\n`
+      + 'teleport: 1 hangar 2 apron 3 runway\n4 beacon 5 gate 6 dunes 7 HQ 8 quarters\n'
+      + 'cheats: P solve next puzzle, O reset, T +30 min';
   }
 });
 
 // Test hook for automated checks in dev builds only.
-if (import.meta.env.DEV) window.__game = { THREE, scene, camera, controller, world, flashlight, renderer, state, interaction, hud, atmosphere, ground, streamer, hangar };
+if (import.meta.env.DEV) window.__game = { THREE, scene, camera, controller, world, flashlight, renderer, state, interaction, hud, atmosphere, ground, streamer, hangar, cole, hq, quality };

@@ -21,7 +21,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, 'lib'))
 import pbr_textures as tex  # noqa: E402
 from bhelpers import (T, col_box, export_glb, join, marker, material, parent, reset_scene,  # noqa: E402
-                      tbeam, tbox, tcyl, tcyl_dir, texture_set, world_uv)
+                      tbeam, tbox, tcyl, tcyl_dir, texture_set, tsphere, world_uv)
+import bpy as _bpy  # noqa: E402
+from buildings import door_leaf, materials, shed_roof, uv, wall_colliders, walls  # noqa: E402
 
 PROJECT = os.path.dirname(HERE)
 TEX_DIR = os.path.join(HERE, 'textures')
@@ -31,7 +33,7 @@ H = 14.0
 
 
 def build():
-    reset_scene(['Props', 'Collision'])
+    reset_scene(['Props', 'Collision', 'Cutters'])
     steel = material('TowerSteel', texture_set('towersteel', tex.painted_metal(512, 160, (0.36, 0.33, 0.28)), TEX_DIR))
     conc = material('Footing', color=(0.5, 0.48, 0.44), rough=0.95)
     lamp_red = material('BeaconLens', color=(0.4, 0.3, 0.1), emission=(1.0, 0.82, 0.45), emission_strength=4.0)
@@ -92,6 +94,67 @@ def build():
     tower.rotation_euler = (0, LEAN, 0)
     col_box('COL_BeaconTower', -1.9, 1.9, -1.9, 1.9, mat=material('Collision', color=(0, 1, 0.3)))
     col_box('COL_GuyAnchor', 7.7, 8.3, 7.7, 8.3, mat=bpy.data.materials['Collision'])
+    extras()
+
+
+def _shift(objs, dx, dz):
+    for o in objs:
+        o.location.x += dx
+        o.location.y -= dz
+
+
+def extras():
+    """Addendum v2: a small beacon room (mirrors + keeper's box, P13) and Ox's pigeon coop at the base."""
+    M = materials(TEX_DIR)
+    ox, oz = 4.6, -1.4
+    w, d, h, t = 2.8, 2.6, 2.4, 0.1
+    before = set(_bpy.data.objects.keys())
+    parts = walls('br', w, d, h, t, M['tin'], [('s', -0.45, 0.45, 0.0, 2.0)])
+    parts.append(uv(tbox('br_floor', -w / 2, w / 2, 0, 0.04, -d / 2, d / 2, M['concrete'])))
+    parts.append(shed_roof('br', w, d, h, h + 0.25, 0.15, M['roof']))
+    room = join('BeaconRoom', parts, 'Props')
+    # four mirrors on swivel stands (two of them will turn, two are fixed decoys: P13)
+    mirrors = []
+    for k, (mx, mz) in enumerate([(-0.8, -0.7), (0.6, -0.8), (-0.6, 0.5), (0.8, 0.4)]):
+        mp = [tcyl(f'mr_post_{k}', (0, 0.55, 0), 0.025, 1.1, 'y', M['iron'], 8),
+              tcyl(f'mr_foot_{k}', (0, 0.03, 0), 0.15, 0.04, 'y', M['iron'], 12),
+              tbox(f'mr_frame_{k}', -0.18, 0.18, 1.0, 1.4, -0.015, 0.015, M['steel']),
+              tbox(f'mr_glass_{k}', -0.16, 0.16, 1.02, 1.38, 0.015, 0.02, M['mirror'])]
+        m = join(f'Beacon_Mirror_{k + 1}', mp, 'Props')
+        m.location = T((mx, 0, mz))
+        m.rotation_euler = (0, 0, 0.6 * k)
+        mirrors.append(m)
+    kb = join('Beacon_KeeperBox', [uv(tbox('kb_box', 0.75, 1.3, 0.04, 0.55, -1.25, -0.85, M['grey'])),
+                                    tcyl('kb_cell', (1.02, 0.6, -1.05), 0.06, 0.05, 'y', M['fuel'], 12),
+                                    tbox('kb_lock', 1.25, 1.3, 0.3, 0.38, -1.1, -1.0, M['brass'])], 'Props')
+    lamp = join('Beacon_RoomLamp', [tcyl('rl_body', (-1.1, 1.2, -1.05), 0.12, 0.25, 'z', M['grey'], 14),
+                                    tcyl('rl_lens', (-1.1, 1.2, -0.92), 0.1, 0.02, 'z', M['fuel'], 14)], 'Props')
+    door_leaf('Door_BeaconRoom', (-0.45, 0.04, d / 2 - t / 2), 0.9, 1.95, M['grey'], M['steel'], M['brass'])
+    wall_colliders('br', w, d, t, [('s', -0.45, 0.45, 'COL_Door_BeaconRoom')], M['col'])
+    col_box('COL_br_keeperbox', 0.75, 1.3, -1.25, -0.85, mat=M['col'])
+    for c in list(_bpy.data.collections['Cutters'].objects):
+        _bpy.data.objects.remove(c)
+    new = [o for o in _bpy.data.objects if o.name not in before and o.parent is None]
+    _shift(new, ox, oz)
+
+    # pigeon coop on legs: wire-mesh front, perches, a few birds
+    cx, cz = -3.4, 2.2
+    p = [uv(tbox('pc_body', -0.8, 0.8, 0.8, 1.9, -0.5, 0.5, M['planks'])),
+         uv(tbox('pc_roof', -0.9, 0.9, 1.9, 1.97, -0.6, 0.65, M['roof'])),
+         tbox('pc_mesh', -0.75, 0.75, 0.85, 1.85, 0.5, 0.505, M['chainlink'])]
+    for x in (-0.7, 0.7):
+        for z in (-0.4, 0.4):
+            p.append(tbeam(f'pc_leg_{x}_{z}', (x, 0, z), (x, 0.8, z), 0.06, 0.06, M['wood'], up=(1, 0, 0)))
+    for k in range(3):
+        p.append(tcyl(f'pc_perch_{k}', (0, 1.1 + k * 0.25, 0.1), 0.015, 1.4, 'x', M['wood'], 6))
+    for k, (bx, by) in enumerate([(-0.4, 1.17), (0.1, 1.42), (0.45, 1.17), (-0.15, 1.67)]):
+        p.append(tsphere(f'pigeon_{k}', (bx, by, 0.1), 0.08, M['feather'], (10, 6), (1.3, 0.9, 0.9)))
+        p.append(tsphere(f'pigeon_head_{k}', (bx + 0.09, by + 0.07, 0.1), 0.035, M['feather'], (8, 5)))
+    p += [tbox('pc_seedbag', 0.95, 1.35, 0.0, 0.45, 0.0, 0.3, M['sack']),
+          tbox('pc_label', 1.0, 1.3, 0.25, 0.38, 0.305, 0.31, M['paper'])]
+    coop = join('PigeonCoop', p, 'Props')
+    coop.location = T((cx, 0, cz))
+    col_box('COL_PigeonCoop', cx - 0.9, cx + 0.9, cz - 0.6, cz + 0.6, mat=M['col'])
 
 
 build()

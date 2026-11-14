@@ -183,42 +183,6 @@
     "openText": "Pryce's office. Cold air, cold ashes in the stove, and a desk lamp that has burned all night."
   },
   {
-    "id": "survey_door",
-    "type": "toggle",
-    "location": "hangar",
-    "object": "Door_Survey",
-    "motion": {
-      "kind": "rotate",
-      "axis": "y",
-      "to": -1.6
-    },
-    "prompts": {
-      "closed": "Open door",
-      "open": "Close door"
-    },
-    "timeCost": 0,
-    "collider": "COL_Door_Survey",
-    "openText": "The survey office. Maps, plan chests, and the sour chemical smell of a darkroom somewhere beyond."
-  },
-  {
-    "id": "darkroom_door",
-    "type": "toggle",
-    "location": "hangar",
-    "object": "Door_Darkroom",
-    "motion": {
-      "kind": "rotate",
-      "axis": "y",
-      "to": -1.6
-    },
-    "prompts": {
-      "closed": "Open door",
-      "open": "Close door"
-    },
-    "timeCost": 0,
-    "collider": "COL_Door_Darkroom",
-    "openText": "Red light and the sharp vinegar smell of stop bath. The darkroom."
-  },
-  {
     "id": "wicket_door",
     "type": "toggle",
     "location": "hangar",
@@ -492,5 +456,299 @@
     },
     "timeCost": 0,
     "collider": "COL_Door_CommsShelter"
+  },
+  {
+    "id": "ops_darkroom_door",
+    "type": "toggle",
+    "location": "ops_building",
+    "object": "Door_OpsDarkroom",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": 1.5
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_OpsDarkroom"
+  },
+  {
+    "id": "ops_records_door",
+    "type": "toggle",
+    "location": "ops_building",
+    "object": "Door_OpsRecords",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": 1.5
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_OpsRecords"
+  },
+  {
+    "id": "quarters_front_door",
+    "type": "toggle",
+    "location": "quarters",
+    "object": "Door_Q_Front",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": 1.5
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_Q_Front"
+  },
+  {
+    "id": "quarters_east_door",
+    "type": "toggle",
+    "location": "quarters",
+    "object": "Door_Q_East",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": -1.5
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_Q_East"
+  },
+  {
+    "id": "quarters_room1_door",
+    "type": "toggle",
+    "location": "quarters",
+    "object": "Door_Q_Room1",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": 1.5
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_Q_Room1"
+  },
+  {
+    "id": "quarters_room2_door",
+    "type": "toggle",
+    "location": "quarters",
+    "object": "Door_Q_Room2",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": 1.5
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_Q_Room2"
+  },
+  {
+    "id": "quarters_room3_door",
+    "type": "toggle",
+    "location": "quarters",
+    "object": "Door_Q_Room3",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": 1.5
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_Q_Room3"
+  },
+  {
+    "id": "quarters_room4_door",
+    "type": "toggle",
+    "location": "quarters",
+    "object": "Door_Q_Room4",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": -1.5
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_Q_Room4"
+  },
+  {
+    "id": "quarters_room5_door",
+    "type": "toggle",
+    "location": "quarters",
+    "object": "Door_Q_Room5",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": -1.5
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_Q_Room5"
+  },
+  {
+    "id": "quarters_room6_door",
+    "type": "toggle",
+    "location": "quarters",
+    "object": "Door_Q_Room6",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": -1.5
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_Q_Room6"
+  },
+  {
+    "id": "hq_door",
+    "type": "toggle",
+    "location": "hq_shed",
+    "object": "Door_HQ",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": 1.5
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_HQ"
+  },
+  {
+    "id": "beacon_room_door",
+    "type": "toggle",
+    "location": "beacon_tower",
+    "object": "Door_BeaconRoom",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": 1.5
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_BeaconRoom"
+  },
+  {
+    "id": "hq_board",
+    "type": "ui",
+    "location": "hq_shed",
+    "object": "HQ_Board",
+    "ui": "board",
+    "prompt": "Study the board",
+    "timeCost": 5
+  },
+  {
+    "id": "hq_timeline",
+    "type": "ui",
+    "location": "hq_shed",
+    "object": "HQ_Timeline",
+    "ui": "timeline",
+    "prompt": "Study the timeline",
+    "timeCost": 0
+  },
+  {
+    "id": "hq_reports",
+    "type": "ui",
+    "location": "hq_shed",
+    "object": "HQ_Reports",
+    "ui": "reports",
+    "prompt": "Read reports",
+    "timeCost": 0
+  },
+  {
+    "id": "hq_lab",
+    "type": "ui",
+    "location": "hq_shed",
+    "object": "HQ_LabTable",
+    "ui": "lab",
+    "prompt": "Use the lab table",
+    "timeCost": 0
+  },
+  {
+    "id": "hq_casebox",
+    "type": "ui",
+    "location": "hq_shed",
+    "object": "HQ_CaseBox",
+    "ui": "casefile",
+    "prompt": "Open the case file",
+    "timeCost": 0
+  },
+  {
+    "id": "hq_typewriter",
+    "type": "ui",
+    "location": "hq_shed",
+    "object": "HQ_Typewriter",
+    "ui": "typewriter",
+    "prompt": "Use the typewriter",
+    "timeCost": 0
+  },
+  {
+    "id": "hq_cot",
+    "type": "ui",
+    "location": "hq_shed",
+    "object": "HQ_Cot",
+    "ui": "rest",
+    "prompt": "Rest (30 minutes)",
+    "timeCost": 0
+  },
+  {
+    "id": "hq_clock",
+    "type": "inspect",
+    "location": "hq_shed",
+    "object": "HQ_Clock",
+    "prompt": "Check the time",
+    "timeCost": 0,
+    "text": "{time}. The clock ticks loud enough to argue with the wind."
+  },
+  {
+    "id": "hq_stove",
+    "type": "inspect",
+    "location": "hq_shed",
+    "object": "HQ_Stove",
+    "prompt": "Warm your hands",
+    "timeCost": 5,
+    "text": "The little stove ticks and glows. For a minute the storm is somebody else's problem."
+  },
+  {
+    "id": "cole",
+    "type": "ui",
+    "location": "npc",
+    "object": "ColeNPC",
+    "ui": "talk",
+    "prompt": "Talk to Danny",
+    "timeCost": 0
   }
 ]

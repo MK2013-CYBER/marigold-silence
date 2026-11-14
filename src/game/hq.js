@@ -1,0 +1,186 @@
+import { parseTime } from '../engine/state.js';
+import { DialogueBox } from '../ui/dialogue.js';
+import { InvestigationBoard } from '../ui/board.js';
+import { CaseFileScreen, ReportsScreen, TimelineScreen } from '../ui/screens.js';
+
+const pick = (list) => list[Math.floor(Math.random() * list.length)];
+
+/**
+ * The Investigator's Shed and Agent Danny Cole (addendum v2, sections C, D, G):
+ * HQ screens (board, reports, case file, timeline), the cot, the typewriter, Danny's
+ * conversation with three-level hints, walkie-talkie calls, clock reminders and his
+ * reactions when evidence is earned. All words come from the JSON data files.
+ */
+export class HQ {
+  constructor(o) {
+    Object.assign(this, o); // state, hud, audio, cole, controller, puzzles, clues, characters, places, reports, lines
+    this.puzzleById = new Map(this.puzzles.puzzles.map((p) => [p.id, p]));
+    this.clueById = new Map(this.clues.map((c) => [c.id, c]));
+    this.dialogue = new DialogueBox();
+    this.board = new InvestigationBoard({ state: this.state, clues: this.clues, characters: this.characters, places: this.places, puzzles: this.puzzles.puzzles });
+    this.reportsScreen = new ReportsScreen({ state: this.state, reports: this.reports });
+    this.caseFile = new CaseFileScreen({ state: this.state, clues: this.clues, puzzles: this.puzzles.puzzles });
+    this.timeline = new TimelineScreen({ message: this.lines.timelineEmpty });
+    this.screen = null; // the mouse screen currently open
+    for (const s of [this.board, this.reportsScreen, this.caseFile, this.timeline]) {
+      s.onClose = () => { this.screen = null; this.onScreenClosed?.(); };
+    }
+    this.dialogue.onClose = () => { this.cole.talking = false; this.onFreezeChange?.(); };
+    this.fade = document.createElement('div');
+    this.fade.className = 'fade';
+    document.body.appendChild(this.fade);
+    this.cole.setFollow(this.state.data.cole.follow);
+  }
+
+  /** Something is open that should stop the player walking. */
+  get busy() { return !!this.screen || this.dialogue.open; }
+
+  // ------------------------------------------------------------------ interactables (type "ui")
+  handle(def) {
+    switch (def.ui) {
+      case 'board': return this.openScreen(this.board);
+      case 'reports': return this.openScreen(this.reportsScreen);
+      case 'casefile': return this.openScreen(this.caseFile);
+      case 'timeline': return this.openScreen(this.timeline);
+      case 'lab': return this.danny(this.lines.lab);
+      case 'typewriter': return this.danny(this.lines.typewriter);
+      case 'rest': return this.rest();
+      case 'talk': return this.talk(false);
+      default: return null;
+    }
+  }
+
+  openScreen(screen) {
+    this.screen = screen;
+    this.onScreenOpened?.(screen); // main.js releases the mouse
+    screen.show();
+  }
+
+  closeScreen() { this.screen?.close(); }
+
+  danny(text, seconds = 7) { this.hud.caption(`Danny: ${text}`, seconds); }
+
+  rest() {
+    this.fade.classList.add('on');
+    this.onFreezeChange?.(true);
+    setTimeout(() => {
+      const spent = this.state.advance(30);
+      this.hud.timePassed(spent, this.state.clockLabel());
+      this.state.save();
+      this.fade.classList.remove('on');
+      this.onFreezeChange?.(false);
+      this.danny(this.lines.rest, 4);
+    }, 1200);
+  }
+
+  // ------------------------------------------------------------------ Danny's conversation
+  talk(remote) {
+    if (this.dialogue.open) return;
+    if (remote) {
+      const near = Math.hypot(this.cole.pos.x - this.controller.position.x, this.cole.pos.z - this.controller.position.z) < 4;
+      if (!near) this._spend(5); // the walkie-talkie costs time (addendum D)
+      this.audio.click();
+      this.menu(pick(this.lines.walkieOpen), !near);
+    } else {
+      this.menu(pick(this.lines.greetings), false);
+    }
+  }
+
+  menu(line, remote = this.remote) {
+    this.remote = remote;
+    this.cole.talking = !remote;
+    const L = this.lines;
+    const unread = this.reportsScreen.unreadCount();
+    const following = this.state.data.cole.follow;
+    const choices = [
+      { label: L.menu.hint, onPick: () => this.hint() },
+      { label: L.menu.reports + (unread ? ` (${unread} new)` : ''), onPick: () => this.menu(unread ? L.reportsNew.replace('{n}', unread) : L.reportsNone) },
+      following
+        ? { label: L.menu.stay, onPick: () => { this._follow(false); this.menu(L.stay); } }
+        : { label: L.menu.follow, onPick: () => { this._follow(true); this.menu(L.follow); } },
+      { label: L.menu.bye, onPick: () => { this.dialogue.close(); this.danny(L.bye, 2); } },
+    ];
+    this.dialogue.show(L.speaker + (remote ? ' (radio)' : ''), line, choices);
+    this.onFreezeChange?.();
+  }
+
+  _follow(on) {
+    this.state.data.cole.follow = on;
+    this.cole.setFollow(on);
+    this.state.save();
+  }
+
+  /** The first puzzle (in Danny's suggested order) that is not solved yet. */
+  currentPuzzle() {
+    return this.puzzles.order.map((id) => this.puzzleById.get(id)).find((p) => p && !this.state.isSolved(p.id)) ?? null;
+  }
+
+  hint() {
+    const L = this.lines;
+    const p = this.currentPuzzle();
+    if (!p) return this.menu(L.hintNone);
+    const level = this.state.data.hints[p.id] ?? 0;
+    if (level >= 3) return this.menu(L.hintMaxed);
+    this._spend(this.puzzles.hintCost);
+    this.state.data.hints[p.id] = level + 1;
+    this.state.save();
+    const text = `${pick(L.hintIntro)}\n\n${p.name} (hint ${level + 1} of 3): ${p.hints[level]}`;
+    const choices = [];
+    if (level + 1 < 3) choices.push({ label: L.hintMore, onPick: () => this.hint() });
+    choices.push({ label: 'Thanks, Danny.', onPick: () => this.menu(pick(L.greetings)) });
+    this.dialogue.show(L.speaker, text, choices);
+  }
+
+  _spend(minutes) {
+    const spent = this.state.advance(minutes);
+    if (spent > 0) this.hud.timePassed(spent, this.state.clockLabel());
+  }
+
+  // ------------------------------------------------------------------ evidence (section G)
+  /** The ONLY way evidence is earned: a puzzle is solved and grants its clues. */
+  solvePuzzle(pid) {
+    const p = this.puzzleById.get(pid);
+    if (!p) return [];
+    const earned = this.state.solvePuzzle(pid, p.clues);
+    this.state.save();
+    if (earned.length) {
+      const first = this.clueById.get(earned[0]);
+      this.hud.toast(`New evidence: ${first?.name ?? earned[0]}${earned.length > 1 ? ` (+${earned.length - 1})` : ''}`);
+      const r = this.lines.reactions;
+      const id = earned.find((c) => r[c]);
+      this.danny(id ? r[id] : r.default, 6);
+    }
+    return earned;
+  }
+
+  /** Debug cheat: solve the next puzzle in order (until the real puzzles exist). */
+  debugSolveNext() {
+    const p = this.currentPuzzle();
+    if (!p) return null;
+    this.solvePuzzle(p.id);
+    return p;
+  }
+
+  debugReset() {
+    const d = this.state.data;
+    d.solved = [];
+    d.clues = [];
+    d.hints = {};
+    for (const k of Object.keys(d.board.cards)) if (k.startsWith('e:')) delete d.board.cards[k];
+    d.board.links = d.board.links.filter(([a, b]) => !a.startsWith('e:') && !b.startsWith('e:'));
+    this.state.save();
+  }
+
+  // ------------------------------------------------------------------ per frame
+  update() {
+    // clock reminders at 15:00 and 16:30, once each
+    for (const [time, text] of Object.entries(this.lines.reminders)) {
+      if (this.state.data.minutes >= parseTime(time) && !this.state.data.reminders.includes(time)) {
+        this.state.data.reminders.push(time);
+        this.state.save();
+        this.audio.click();
+        this.hud.caption(`Danny (radio): ${text}`, 9);
+      }
+    }
+  }
+}
