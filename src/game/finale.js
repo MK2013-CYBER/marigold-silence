@@ -40,6 +40,11 @@ export class Finale {
     if (!this.interaction.byId.has(trap.id)) { this.interaction.defs.push(trap); this.interaction.byId.set(trap.id, trap); }
     this.interaction.addLocation('office', this.crime.group);
     if (this.state.data.solved.includes('S6')) this.state.setFlag('trapOpen');
+    if (this.underground) {
+      this._people(); // a game saved down here: put her back on her bed
+      const p = this.controller.position;
+      if (Math.hypot(p.x - (UC.x + 14), p.z - UC.z) > 25) this.controller.setPosition(UC.x, UC.z - 0.6, -Math.PI / 2); // safety: back to the ladder
+    }
   }
 
   get underground() { return !!this.state.data.underground; }

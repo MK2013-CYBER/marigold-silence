@@ -33,6 +33,15 @@ export class GameState {
       board: { cards: {}, links: [], notes: [] },
       cole: { follow: false },
       reminders: [],
+      found: {},               // finding id -> its sources (v4 evidence model)
+      notes: [],               // things you noticed (notebook)
+      seq: {},                 // progress inside each investigation sequence
+      examined: [],            // things examined in the office
+      trust: {},               // person id -> trust 0..100
+      heard: {}, shown: {},    // topics heard, evidence shown, per person
+      smoke: { until: 0, seen: [] },
+      underground: false,
+      ending: null,
     };
   }
 

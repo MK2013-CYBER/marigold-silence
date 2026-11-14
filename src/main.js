@@ -203,6 +203,14 @@ finale.onEnding = () => { hq.closeScreen(); hq.dialogue.close(); };
 seqScreen.finale = finaleData;
 seqScreen.characters = characters;
 seqScreen.onWrongTheory = () => finale.ending('E4');
+// debug cheat P: solve the next investigation properly (with its evidence), in Danny's order
+hq.debugSolveNext = () => {
+  const id = puzzlesData.order.find((x) => !state.data.solved.includes(x) && sequencesData[x]);
+  if (!id) return null;
+  seqScreen.solve(id);
+  if (id === 'S6') { crime.openTrapdoor(true); state.setFlag('trapOpen'); }
+  return puzzlesData.puzzles.find((p) => p.id === id);
+};
 controller.groundHeight = (x, z) => (finale.underground ? finale.groundY : ground.heightAt(x, z));
 
 // ---------- Stage E: the people of Sable Flat ----------
@@ -449,6 +457,8 @@ function markVisited(p) {
   }
 }
 const lastShadowPos = new THREE.Vector3(1e9, 0, 0);
+const walkFrom = new THREE.Vector3();
+let walked = 0;
 
 renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.05);
@@ -457,8 +467,19 @@ renderer.setAnimationLoop(() => {
   const pos = controller.position;
   boundaryCool = Math.max(0, boundaryCool - dt);
 
+  const before = walkFrom.copy(controller.position);
   controller.update(dt);
   flashlight.update(dt);
+  // v4 1.3: walking costs time, about a minute for every 40 m (HQ to the hangar is ~4 minutes)
+  if (controller.active && !controller.frozen && !intro.active) {
+    walked += Math.hypot(controller.position.x - before.x, controller.position.z - before.z);
+    if (walked >= worldCfg.metresPerMinute) {
+      const mins = Math.floor(walked / worldCfg.metresPerMinute);
+      walked -= mins * worldCfg.metresPerMinute;
+      state.advance(mins);
+      hud.setClock(state.clockLabel());
+    }
+  }
 
   const zone = finale.underground ? UNDERCROFT_ZONE : zoneAt(pos);
   const inside = !!zone?.indoor;

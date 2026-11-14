@@ -120,6 +120,7 @@ export class Walks {
     this.group.add(grate);
     // the Waco's fuel cap (S16): a spot on the parked biplane's top wing
     spot('WK_wacocap', V(-3, 2.6, 46), [0.5, 0.4, 0.5]);
+    spot('WK_newspaper', V(32.4, 1.5, -151.0), [0.12, 0.5, 0.5]); // pinned up at the HQ
     // smoke plumes
     this.plumes = {};
     for (const [k, p] of Object.entries({ ...P.smoke, stack: at(P.ventstack, 1.3) })) this.plumes[k] = this._plume(p, k === 'stack' ? 0.9 : 0.5);
@@ -139,6 +140,7 @@ export class Walks {
       { id: 'wk_ledger', ui: 'seq', seq: 'S14', object: 'WK_ledger', prompt: W.ledger.prompt },
       { id: 'wk_crates', ui: 'seq', seq: 'S15', object: 'WK_crates', prompt: W.crates.prompt },
       { id: 'wk_hatch', ui: 'walk', key: 'hatch', object: 'WK_hatch', prompt: W.hatch.prompt },
+      { id: 'wk_newspaper', ui: 'walk', key: 'newspaper', object: 'WK_newspaper', prompt: this.W.newspaper.prompt },
       { id: 'wk_wacocap', ui: 'walk', key: 'wacocap', object: 'WK_wacocap', prompt: this.data.wacocap.prompt },
       ...[...(this.data.spots4 ?? []), ...(this.data.spots5 ?? [])].map((t) => ({ id: `wk_${t.seq}`, ui: 'seq', seq: t.seq, object: `WK_${t.seq}`, prompt: t.prompt })),
     ].map((d) => ({ type: 'ui', location: 'walks', timeCost: d.ui === 'walk' ? 2 : 0, ...d }));

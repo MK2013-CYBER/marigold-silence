@@ -520,6 +520,25 @@
             ]
           ],
           "trust": 3
+        },
+        "F15": {
+          "text": "He stares at the floor a long time. \"She needs things. Ordinary things. A coat. Ribbons. I bring them. That's all I do.\"",
+          "gives": [
+            [
+              "F15",
+              "ox"
+            ]
+          ],
+          "trust": 2
+        },
+        "F17": {
+          "text": "\"It's only a lamp. She reads by it. Don't take that away.\" He catches himself. \"I mean. Nobody reads down there.\"",
+          "gives": [
+            [
+              "F17",
+              "ox"
+            ]
+          ]
         }
       },
       "presentDefault": "He looks at it, then at his boots. \"Don't know nothing about that.\""
@@ -571,6 +590,20 @@
           "text": "Nineteen, three, seventeen. Left, right, left. He made me memorise it in case he dropped dead. Funny.",
           "flag": "tamsinCombo",
           "trust": -2
+        },
+        {
+          "id": "rations",
+          "label": "Who keeps the ration books?",
+          "requires": [
+            "F14"
+          ],
+          "text": "Me. Don't look at me like that. I only count what I'm told. One extra, every day, signed by Ox. I assumed he ate it.",
+          "gives": [
+            [
+              "F14",
+              "tamsin"
+            ]
+          ]
         }
       ],
       "present": {
@@ -651,6 +684,31 @@
               "hobbs"
             ]
           ]
+        },
+        {
+          "id": "lights",
+          "label": "Have you seen lights at night?",
+          "text": "Every dusk there's a glow under the hangar roof vent. Like somebody lighting a lamp below the floor. Ghost lights, I always said.",
+          "gives": [
+            [
+              "F17",
+              "hobbs"
+            ]
+          ],
+          "trust": 1
+        },
+        {
+          "id": "log",
+          "label": "Do you keep logs of old calls?",
+          "minTrust": 50,
+          "text": "Every one, Inspector. The Marigold's last call: I wrote down a girl's voice at the very end. 'Daddy, I can see the ridge.' The inquiry said I was mistaken. I wasn't.",
+          "gives": [
+            [
+              "F20",
+              "hobbslog"
+            ]
+          ],
+          "trust": 1
         }
       ],
       "present": {

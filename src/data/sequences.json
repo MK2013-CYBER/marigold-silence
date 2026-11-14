@@ -489,6 +489,10 @@
       [
         "F13",
         "S6"
+      ],
+      [
+        "F08",
+        "S6"
       ]
     ]
   },
@@ -751,6 +755,22 @@
       "name": "Hatch in the back room",
       "prompt": "Look at the hatch",
       "text": "A square hatch in the floor of the little back room, with a fresh rope handle. Cold air comes up around it. This is where Ox brings his trays."
+    },
+    "newspaper": {
+      "name": "A newspaper from 1931",
+      "prompt": "Read the old newspaper cutting",
+      "text": "Pinned above the HQ desk, Danny's cutting from the Reno Evening Gazette, 16 May 1931: 'MARIGOLD LOST ON RAVEN RIDGE. Six aboard; five bodies recovered. Search for Miss C. Pryce, 19, abandoned.' Six aboard. Five bodies.",
+      "sources": [
+        [
+          "F19",
+          "newspaper"
+        ],
+        [
+          "F18",
+          "newspaper"
+        ]
+      ],
+      "note": "1931 newspaper: six aboard the Marigold, only five bodies recovered."
     }
   },
   "S17": {
@@ -1093,6 +1113,10 @@
       [
         "F31",
         "S8"
+      ],
+      [
+        "F06",
+        "scuffs"
       ]
     ]
   },
@@ -1471,7 +1495,17 @@
       {
         "id": "plan",
         "name": "The flight plan in the cockpit",
-        "text": "Sable Flat to Zürich, by Lisbon. Depart 05:00, 18 November. Pilot: W. Strand. Passengers: 2. Signed C. Pryce."
+        "text": "Sable Flat to Zürich, by Lisbon. Depart 05:00, 18 November. Pilot: W. Strand. Passengers: 2. Signed C. Pryce.",
+        "sources": [
+          [
+            "F21",
+            "flightplan"
+          ],
+          [
+            "F32",
+            "flightplan"
+          ]
+        ]
       }
     ],
     "question": "What was this plane being readied for?",

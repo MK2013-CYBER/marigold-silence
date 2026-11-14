@@ -202,6 +202,7 @@ export class SequenceScreen {
       const death = parseTime(c.mustInclude);
       if (!(st.from <= death && st.to >= death) || st.from < parseTime(c.earliest) || st.to > parseTime(c.latest)) { this.spend(2); return this.msg(d.wrong); }
       if (st.to - st.from > c.maxWidth) return this.msg(d.tooWide);
+      this.spend(10); // the arithmetic and the checks take a while
       this.solve('S3');
       this.render();
       this.msg(d.done, true);
@@ -331,6 +332,7 @@ export class SequenceScreen {
         if (this.solved('S6')) return;
         const n = i + 1;
         this.bell(n, 0.25);
+        this.spend(1);
         if (d.tune[st.pulled.length] === n) {
           st.pulled.push(n);
           if (st.pulled.length === d.tune.length) { this.solve('S6'); this.render(); this.msg(d.done, true); return; }
@@ -982,7 +984,7 @@ export class SequenceScreen {
     for (const it of d.items) {
       const r = this._row(sec, `<span class="seq-label">${esc(it.name)}</span>`);
       if (st.seen.includes(it.id)) r.insertAdjacentHTML('beforeend', `<div class="seq-text">${esc(it.text)}</div>`);
-      else r.appendChild(this._btn('Look', () => { st.seen.push(it.id); this.spend(2); this.render(); }));
+      else r.appendChild(this._btn('Look', () => { st.seen.push(it.id); this.spend(2); for (const [f, src] of it.sources ?? []) this.evidence.add(f, src); this.render(); }));
     }
     this.body.appendChild(sec);
     if (this.solved('S7')) return;
