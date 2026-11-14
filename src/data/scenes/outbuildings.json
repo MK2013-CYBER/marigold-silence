@@ -1,0 +1,12 @@
+{
+  "signs": {
+    "fuelTank": "AVIATION GASOLINE",
+    "fuelNoSmoking": ["NO SMOKING", "WITHIN 50 FEET"],
+    "fuelLog": ["FUEL ISSUED", "LOG ALL GALLONS"],
+    "opsSign": ["PRYCE TRANSCONTINENTAL AIR", "OPERATIONS  ·  PASSENGERS"],
+    "opsWeather": ["WEATHER  SAT 18 NOV", "WIND  W 35  GUSTS 50", "VIS  1/4 MI  DUST", "FIELD CLOSED"],
+    "opsNotice": ["NOTICE", "ALL FLIGHTS", "HELD"],
+    "commsDoor": ["DANGER", "HIGH VOLTAGE"],
+    "shedStencil": "P.T.A. MAINT."
+  }
+}

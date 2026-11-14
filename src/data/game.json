@@ -1,0 +1,19 @@
+{
+  "clock": {
+    "start": "06:10",
+    "end": "17:30",
+    "dayLabel": "Saturday 18 November 1933"
+  },
+  "costs": {
+    "inspect": 5,
+    "search": 5,
+    "read": 5,
+    "pickup": 5,
+    "talk": 15,
+    "puzzle": 20,
+    "walk": 5
+  },
+  "interactRange": 2.4,
+  "unlockAll": true,
+  "_unlockAll": "While true, every lock (doors, drawers, lockers) is ignored so the whole map can be explored. Lock data stays in interactables.json for later."
+}

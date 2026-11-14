@@ -1,0 +1,92 @@
+[
+  {
+    "id": "workbench",
+    "type": "inspect",
+    "location": "hangar",
+    "object": "workbench",
+    "prompt": "Inspect",
+    "grants": ["X01"],
+    "setsFlags": ["inspected_workbench"]
+  },
+  {
+    "id": "toolbox",
+    "type": "toggle",
+    "location": "hangar",
+    "model": "toolbox",
+    "position": [-14.62, 0.94, -1.0],
+    "rotationY": 1.5708,
+    "part": "lid",
+    "motion": { "kind": "rotate", "axis": "x", "to": -1.9 },
+    "prompts": { "closed": "Open", "open": "Close" },
+    "costType": "search",
+    "openText": "The lid creaks up. Spanners, a coil of safety wire... and a folded note."
+  },
+  {
+    "id": "toolbox_note",
+    "type": "read",
+    "location": "hangar",
+    "model": "note",
+    "parent": "toolbox",
+    "position": [0.06, 0.082, 0.03],
+    "rotationY": 0.3,
+    "requires": ["open:toolbox"],
+    "prompt": "Read note",
+    "grants": ["X02"],
+    "takes": true
+  },
+  {
+    "id": "locker_3",
+    "type": "toggle",
+    "location": "hangar",
+    "object": "locker_3",
+    "part": "door",
+    "motion": { "kind": "rotate", "axis": "y", "to": -1.9 },
+    "prompts": { "closed": "Open locker", "open": "Close locker" },
+    "costType": "search",
+    "grants": ["X03"]
+  },
+  {
+    "id": "parts_cabinet",
+    "type": "toggle",
+    "location": "hangar",
+    "model": "partsCabinet",
+    "position": [-14.75, 0, 2.75],
+    "rotationY": 1.5708,
+    "solid": true,
+    "part": "drawer",
+    "motion": { "kind": "slide", "axis": "z", "to": 0.32 },
+    "prompts": { "closed": "Open drawer", "open": "Close drawer" },
+    "costType": "search",
+    "lock": {
+      "item": "small_key",
+      "prompt": "Unlock drawer",
+      "lockedText": "Locked. A small brass keyhole, scratched around the edges. The key must be somewhere close.",
+      "unlockText": "The small key turns stiffly. The drawer rattles open."
+    }
+  },
+  {
+    "id": "drawer_note",
+    "type": "read",
+    "location": "hangar",
+    "model": "note",
+    "parent": "parts_cabinet.drawer",
+    "position": [0, 0.022, 0.08],
+    "rotationY": -0.2,
+    "requires": ["open:parts_cabinet"],
+    "prompt": "Read paper",
+    "grants": ["X05"],
+    "takes": true
+  },
+  {
+    "id": "small_key",
+    "type": "pickup",
+    "location": "hangar",
+    "model": "smallKey",
+    "position": [9.0, 1.003, 10.7],
+    "rotationY": 0.7,
+    "prompt": "Pick up key",
+    "item": "small_key",
+    "grants": ["X04"],
+    "text": "A small brass key, tagged PARTS. You pocket it."
+  }
+]

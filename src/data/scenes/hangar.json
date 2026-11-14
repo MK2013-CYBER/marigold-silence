@@ -1,0 +1,70 @@
+{
+  "id": "hangar",
+  "name": "Hangar",
+  "spawn": {
+    "x": 0,
+    "z": 10,
+    "yaw": 0
+  },
+  "signs": {
+    "wallBanner": [
+      "PRYCE TRANSCONTINENTAL AIR"
+    ],
+    "officeDoor": [
+      "C. PRYCE",
+      "Private"
+    ],
+    "crate": [
+      "P.T.A.",
+      "SABLE FLAT"
+    ],
+    "noSmoking": [
+      "NO SMOKING",
+      "BY ORDER"
+    ],
+    "fire": [
+      "FIRE"
+    ]
+  },
+  "acoustics": {
+    "default": 1.0,
+    "rooms": [
+      {
+        "name": "office",
+        "x": [
+          13,
+          20
+        ],
+        "z": [
+          -12.5,
+          -6.5
+        ],
+        "reverb": 0.12
+      },
+      {
+        "name": "survey",
+        "x": [
+          -20,
+          -14.9
+        ],
+        "z": [
+          12.8,
+          16.8
+        ],
+        "reverb": 0.18
+      },
+      {
+        "name": "darkroom",
+        "x": [
+          -20,
+          -16.6
+        ],
+        "z": [
+          16.9,
+          19.5
+        ],
+        "reverb": 0.08
+      }
+    ]
+  }
+}

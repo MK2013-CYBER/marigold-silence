@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Marigold Silence</title>
+    <link rel="stylesheet" href="/src/ui/style.css" />
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <div id="crosshair"></div>
+
+    <div id="overlay">
+      <div class="card">
+        <p class="eyebrow">Sable Flat &middot; Saturday 18 November 1933</p>
+        <h1>The Marigold Silence</h1>
+        <p class="status" id="overlay-status">Loading the hangar&hellip;</p>
+        <ul class="controls">
+          <li><kbd>Mouse</kbd> look around (or hold the button and drag)</li>
+          <li><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move</li>
+          <li><kbd>Shift</kbd> sprint &middot; <kbd>C</kbd> walk slowly</li>
+          <li><kbd>E</kbd> interact</li>
+          <li><kbd>Tab</kbd> notebook &middot; <kbd>M</kbd> map</li>
+          <li><kbd>F</kbd> flashlight</li>
+          <li><kbd>Esc</kbd> pause</li>
+          <li><kbd>`</kbd> debug view (colliders, position)</li>
+        </ul>
+        <div class="overlay-actions hidden" id="overlay-actions">
+          <button id="new-game" type="button">Start a new game</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="hint">E interact &middot; Tab notebook &middot; F flashlight</div>
+    <pre id="debug" class="hidden"></pre>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

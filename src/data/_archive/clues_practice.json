@@ -1,0 +1,37 @@
+[
+  {
+    "id": "X01",
+    "name": "Ox's workbench",
+    "type": "P",
+    "kind": "Observation",
+    "text": "Abel Brennan's workbench. Every spanner hangs inside its own painted outline, and a coffee tin does duty as a pencil cup. A tidy man, or a careful one."
+  },
+  {
+    "id": "X02",
+    "name": "Note in the toolbox",
+    "type": "P",
+    "kind": "Note",
+    "text": "Ox,\nBorrowed your 9/16 spanner for the Trimotor. Left a dime for your trouble. Don't tell the Old Man.\n— B."
+  },
+  {
+    "id": "X03",
+    "name": "Locker 3",
+    "type": "P",
+    "kind": "Observation",
+    "text": "Locker 3: a pair of oil-black overalls, a tin of boot blacking, and a photograph of a racing pigeon pinned up like a sweetheart."
+  },
+  {
+    "id": "X04",
+    "name": "Small brass key",
+    "type": "P",
+    "kind": "Item",
+    "text": "A small brass key with a paper tag reading PARTS. It was lying on top of a crate in the south-east corner, as if someone had set it down and forgotten it."
+  },
+  {
+    "id": "X05",
+    "name": "Parts requisition",
+    "type": "P",
+    "kind": "Note",
+    "text": "PARTS REQUISITION, SABLE FLAT\nSpark plugs, 12. Magneto points, 2. Cotter pins, 1 box.\nApproved: C. Pryce.\n\nIn the margin, in pencil: \"He counts every pin.\""
+  }
+]

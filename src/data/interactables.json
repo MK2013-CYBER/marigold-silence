@@ -1,0 +1,496 @@
+[
+  {
+    "id": "workbench",
+    "type": "inspect",
+    "location": "hangar",
+    "object": "Workbench",
+    "prompt": "Inspect",
+    "setsFlags": [
+      "inspected_workbench"
+    ],
+    "text": "A long workbench. Every spanner hangs inside its own painted outline, and a coffee tin does duty as a pencil cup."
+  },
+  {
+    "id": "toolbox",
+    "type": "toggle",
+    "location": "hangar",
+    "object": "Toolbox",
+    "part": "Toolbox_Lid",
+    "motion": {
+      "kind": "rotate",
+      "axis": "z",
+      "to": 1.9
+    },
+    "prompts": {
+      "closed": "Open",
+      "open": "Close"
+    },
+    "costType": "search",
+    "openText": "The lid creaks up. Spanners and a coil of safety wire."
+  },
+  {
+    "id": "parts_cabinet",
+    "type": "toggle",
+    "location": "hangar",
+    "object": "PartsCabinet",
+    "part": "PartsCabinet_Drawer",
+    "motion": {
+      "kind": "slide",
+      "axis": "x",
+      "to": 0.32
+    },
+    "prompts": {
+      "closed": "Open drawer",
+      "open": "Close drawer"
+    },
+    "costType": "search",
+    "lock": {
+      "item": "small_key",
+      "prompt": "Unlock drawer",
+      "lockedText": "Locked. A small brass keyhole, scratched around the edges. The key must be somewhere close.",
+      "unlockText": "The small key turns stiffly. The drawer rattles open."
+    }
+  },
+  {
+    "id": "locker_1",
+    "type": "toggle",
+    "location": "hangar",
+    "object": "Locker_1",
+    "part": "Locker_1_Door",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": -1.9
+    },
+    "prompts": {
+      "closed": "Open locker",
+      "open": "Close locker"
+    },
+    "costType": "search",
+    "openText": "Empty, apart from a bent coat hanger and a dead moth."
+  },
+  {
+    "id": "locker_2",
+    "type": "toggle",
+    "location": "hangar",
+    "object": "Locker_2",
+    "part": "Locker_2_Door",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": -1.9
+    },
+    "prompts": {
+      "closed": "Open locker",
+      "open": "Close locker"
+    },
+    "costType": "search",
+    "openText": "A pair of work boots, resoled more than once. Size eleven."
+  },
+  {
+    "id": "locker_3",
+    "type": "toggle",
+    "location": "hangar",
+    "object": "Locker_3",
+    "part": "Locker_3_Door",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": -1.9
+    },
+    "prompts": {
+      "closed": "Open locker",
+      "open": "Close locker"
+    },
+    "costType": "search",
+    "openText": "A pair of oil-black overalls, a tin of boot blacking, and a photograph of a racing pigeon."
+  },
+  {
+    "id": "locker_4",
+    "type": "toggle",
+    "location": "hangar",
+    "object": "Locker_4",
+    "part": "Locker_4_Door",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": -1.9
+    },
+    "prompts": {
+      "closed": "Open locker",
+      "open": "Close locker"
+    },
+    "costType": "search",
+    "openText": "A thermos flask and a dented lunch tin. The coffee inside is long cold."
+  },
+  {
+    "id": "locker_5",
+    "type": "toggle",
+    "location": "hangar",
+    "object": "Locker_5",
+    "part": "Locker_5_Door",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": -1.9
+    },
+    "prompts": {
+      "closed": "Open locker",
+      "open": "Close locker"
+    },
+    "costType": "search",
+    "lock": {
+      "item": "locker_5_key",
+      "prompt": "Unlock locker",
+      "lockedText": "Padlocked. The padlock is new, newer than the locker. Somebody wants this one kept shut.",
+      "unlockText": "The padlock springs open."
+    }
+  },
+  {
+    "id": "locker_6",
+    "type": "toggle",
+    "location": "hangar",
+    "object": "Locker_6",
+    "part": "Locker_6_Door",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": -1.9
+    },
+    "prompts": {
+      "closed": "Open locker",
+      "open": "Close locker"
+    },
+    "costType": "search",
+    "openText": "An oilskin rain slicker that has never seen rain. Dust in every fold."
+  },
+  {
+    "id": "office_door",
+    "type": "toggle",
+    "location": "hangar",
+    "object": "Door_Office",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": 1.6
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_Office",
+    "openText": "Pryce's office. Cold air, cold ashes in the stove, and a desk lamp that has burned all night."
+  },
+  {
+    "id": "survey_door",
+    "type": "toggle",
+    "location": "hangar",
+    "object": "Door_Survey",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": -1.6
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_Survey",
+    "openText": "The survey office. Maps, plan chests, and the sour chemical smell of a darkroom somewhere beyond."
+  },
+  {
+    "id": "darkroom_door",
+    "type": "toggle",
+    "location": "hangar",
+    "object": "Door_Darkroom",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": -1.6
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_Darkroom",
+    "openText": "Red light and the sharp vinegar smell of stop bath. The darkroom."
+  },
+  {
+    "id": "wicket_door",
+    "type": "toggle",
+    "location": "hangar",
+    "object": "Door_Wicket",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": -1.4
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "exposesStorm": true,
+    "openText": "The wind tears the door out of your hand. Outside, the apron vanishes into moving brown dust; the runway is a rumour twenty yards away.",
+    "collider": "COL_Door_Wicket"
+  },
+  {
+    "id": "main_door_1",
+    "type": "inspect",
+    "location": "hangar",
+    "object": "SlidingDoor_1",
+    "prompt": "Inspect",
+    "timeCost": 0,
+    "text": "The outer leaf of the big hangar door, fixed on its track. The middle leaves are the ones that slide."
+  },
+  {
+    "id": "main_door_2",
+    "type": "toggle",
+    "location": "hangar",
+    "object": "SlidingDoor_2",
+    "motion": {
+      "kind": "move",
+      "offset": [
+        -5.95,
+        0,
+        -0.22
+      ]
+    },
+    "duration": 3.0,
+    "prompts": {
+      "closed": "Slide door open",
+      "open": "Slide door shut"
+    },
+    "timeCost": 0,
+    "exposesStorm": true,
+    "collider": [
+      "COL_Door_Main2a",
+      "COL_Door_Wicket",
+      "COL_Door_Main2b"
+    ],
+    "openText": "The leaf grinds along its track. Sand and wind pour in through the gap."
+  },
+  {
+    "id": "main_door_3",
+    "type": "toggle",
+    "location": "hangar",
+    "object": "SlidingDoor_3",
+    "motion": {
+      "kind": "move",
+      "offset": [
+        5.95,
+        0,
+        -0.22
+      ]
+    },
+    "duration": 3.0,
+    "prompts": {
+      "closed": "Slide door open",
+      "open": "Slide door shut"
+    },
+    "timeCost": 0,
+    "exposesStorm": true,
+    "collider": "COL_Door_Main3",
+    "openText": "The leaf grinds along its track. Beyond it the apron vanishes into brown dust."
+  },
+  {
+    "id": "main_door_4",
+    "type": "inspect",
+    "location": "hangar",
+    "object": "SlidingDoor_4",
+    "prompt": "Inspect",
+    "timeCost": 0,
+    "text": "The outer leaf of the big hangar door, fixed on its track. The middle leaves are the ones that slide."
+  },
+  {
+    "id": "side_door_west",
+    "type": "toggle",
+    "location": "hangar",
+    "object": "Door_SideWest",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": 1.45
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "exposesStorm": true,
+    "openText": "The wind slams the door back against the wall and sand pours over the threshold. Out there is the salt flat, and the storm.",
+    "collider": "COL_Door_SideWest"
+  },
+  {
+    "id": "side_door_east",
+    "type": "toggle",
+    "location": "hangar",
+    "object": "Door_SideEast",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": -1.45
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "lock": {
+      "item": "east_door_key",
+      "prompt": "Unlock door",
+      "lockedText": "Locked. Through the keyhole you can feel sand drifting against the outside.",
+      "unlockText": "The lock turns."
+    },
+    "collider": "COL_Door_SideEast",
+    "exposesStorm": true,
+    "openText": "The door swings in and the wind comes with it. Outside: the salt flat, east towards the fuel dump."
+  },
+  {
+    "id": "back_door",
+    "type": "toggle",
+    "location": "hangar",
+    "object": "Door_Back",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": -1.45
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "lock": {
+      "item": "back_door_key",
+      "prompt": "Unbar door",
+      "lockedText": "Barred. A heavy timber bar sits across it, and the bolts are padlocked. Someone wanted this door to stay shut.",
+      "unlockText": "You lift the bar."
+    },
+    "collider": "COL_Door_Back",
+    "exposesStorm": true,
+    "openText": "You lift the bar aside and the door swings in. Behind the hangar, the road runs north into the dust."
+  },
+  {
+    "id": "fuel_booth_door",
+    "type": "toggle",
+    "location": "fuel_farm",
+    "object": "Door_FuelBooth",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": 1.5
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_FuelBooth"
+  },
+  {
+    "id": "maint_door_left",
+    "type": "toggle",
+    "location": "maint_shed",
+    "object": "Door_MaintShed_L",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": 1.5
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_MaintShed_L"
+  },
+  {
+    "id": "maint_door_right",
+    "type": "toggle",
+    "location": "maint_shed",
+    "object": "Door_MaintShed_R",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": -1.5
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_MaintShed_R"
+  },
+  {
+    "id": "storage_door",
+    "type": "toggle",
+    "location": "storage_shed",
+    "object": "Door_StorageShed",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": 1.5
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_StorageShed"
+  },
+  {
+    "id": "ops_front_door",
+    "type": "toggle",
+    "location": "ops_building",
+    "object": "Door_Ops",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": 1.5
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_Ops"
+  },
+  {
+    "id": "ops_back_door",
+    "type": "toggle",
+    "location": "ops_building",
+    "object": "Door_OpsBack",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": -1.5
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_OpsBack"
+  },
+  {
+    "id": "comms_door",
+    "type": "toggle",
+    "location": "comms_shelter",
+    "object": "Door_CommsShelter",
+    "motion": {
+      "kind": "rotate",
+      "axis": "y",
+      "to": 1.5
+    },
+    "prompts": {
+      "closed": "Open door",
+      "open": "Close door"
+    },
+    "timeCost": 0,
+    "collider": "COL_Door_CommsShelter"
+  }
+]

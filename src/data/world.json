@@ -1,0 +1,596 @@
+{
+  "fieldName": "SABLE FLAT",
+  "fence": {
+    "x": [
+      -350,
+      350
+    ],
+    "z": [
+      -180,
+      320
+    ],
+    "postSpacing": 3.0,
+    "gaps": [
+      {
+        "side": "north",
+        "from": 120,
+        "to": 138
+      },
+      {
+        "side": "west",
+        "from": 40,
+        "to": 52
+      },
+      {
+        "side": "south",
+        "from": -60,
+        "to": -35
+      },
+      {
+        "side": "east",
+        "from": -100,
+        "to": -92
+      },
+      {
+        "side": "east",
+        "from": 210,
+        "to": 231
+      }
+    ]
+  },
+  "gate": {
+    "x": 20,
+    "z": -180,
+    "width": 8
+  },
+  "walkBounds": {
+    "x": [
+      -460,
+      460
+    ],
+    "z": [
+      -290,
+      430
+    ]
+  },
+  "boundaryText": "The dust closes in like a wall. Any further and you would lose the airfield entirely.",
+  "wind": {
+    "dirX": 1.0,
+    "dirZ": 0.28,
+    "speed": 11
+  },
+  "runway": {
+    "x": [
+      -250,
+      250
+    ],
+    "z": [
+      60,
+      90
+    ],
+    "markerSpacing": 50
+  },
+  "apron": {
+    "x": [
+      -45,
+      45
+    ],
+    "z": [
+      12.5,
+      61
+    ]
+  },
+  "road": {
+    "width": 6,
+    "points": [
+      [
+        20,
+        -1100
+      ],
+      [
+        22,
+        -400
+      ],
+      [
+        20,
+        -180
+      ],
+      [
+        17,
+        -110
+      ],
+      [
+        10,
+        -55
+      ],
+      [
+        4,
+        -13.5
+      ]
+    ]
+  },
+  "windsock": {
+    "x": 70,
+    "z": 54
+  },
+  "groundText": {
+    "x": 0,
+    "z": 38,
+    "size": 5
+  },
+  "sun": {
+    "azimuthDeg": 112,
+    "elevationDeg": 9
+  },
+  "mountains": {
+    "name": "Raven Ridge",
+    "distance": 1900,
+    "fromDeg": 285,
+    "toDeg": 345,
+    "height": [
+      120,
+      260
+    ]
+  },
+  "models": [
+    {
+      "id": "beacon_tower",
+      "label": "Beacon tower",
+      "file": "beacon_tower.glb",
+      "position": [
+        -262,
+        0,
+        50
+      ],
+      "rotationY": 0.35,
+      "load": 650,
+      "cull": 600,
+      "footprint": [
+        4,
+        4
+      ]
+    },
+    {
+      "id": "fuel_farm",
+      "label": "Fuel farm",
+      "file": "fuel_farm.glb",
+      "position": [
+        85,
+        0,
+        32
+      ],
+      "rotationY": -1.5708,
+      "load": 320,
+      "cull": 260,
+      "footprint": [
+        18,
+        12
+      ]
+    },
+    {
+      "id": "maint_shed",
+      "label": "Maintenance shed",
+      "file": "maint_shed.glb",
+      "position": [
+        -58,
+        0,
+        22
+      ],
+      "rotationY": 1.5708,
+      "load": 320,
+      "cull": 260,
+      "footprint": [
+        8,
+        6
+      ]
+    },
+    {
+      "id": "storage_shed",
+      "label": "Storage shed",
+      "file": "storage_shed.glb",
+      "position": [
+        -58,
+        0,
+        36
+      ],
+      "rotationY": 1.5708,
+      "load": 320,
+      "cull": 260,
+      "footprint": [
+        6,
+        5
+      ]
+    },
+    {
+      "id": "ops_building",
+      "label": "Operations",
+      "file": "ops_building.glb",
+      "position": [
+        45,
+        0,
+        -22
+      ],
+      "rotationY": 0,
+      "load": 320,
+      "cull": 260,
+      "footprint": [
+        16,
+        12.2
+      ]
+    },
+    {
+      "id": "comms_shelter",
+      "label": "Radio & weather",
+      "file": "comms_shelter.glb",
+      "position": [
+        40,
+        0,
+        112
+      ],
+      "rotationY": 3.1416,
+      "load": 320,
+      "cull": 260,
+      "footprint": [
+        3,
+        2.5
+      ]
+    }
+  ],
+  "hangar": {
+    "propsCull": 90,
+    "label": "Hangar",
+    "footprint": [
+      40.6,
+      25.6
+    ],
+    "rooms": [
+      {
+        "label": "Survey",
+        "x": [
+          -20.1,
+          -14.8
+        ],
+        "z": [
+          12.8,
+          19.6
+        ]
+      }
+    ]
+  },
+  "zones": [
+    {
+      "name": "office",
+      "x": [
+        13,
+        20
+      ],
+      "z": [
+        -12.5,
+        -6.5
+      ],
+      "indoor": true,
+      "reverb": 0.12
+    },
+    {
+      "name": "survey",
+      "x": [
+        -20,
+        -14.9
+      ],
+      "z": [
+        12.8,
+        16.8
+      ],
+      "indoor": true,
+      "reverb": 0.18
+    },
+    {
+      "name": "darkroom",
+      "x": [
+        -20,
+        -16.6
+      ],
+      "z": [
+        16.9,
+        19.5
+      ],
+      "indoor": true,
+      "reverb": 0.08
+    },
+    {
+      "name": "hangar",
+      "x": [
+        -20,
+        20
+      ],
+      "z": [
+        -12.5,
+        12.5
+      ],
+      "indoor": true,
+      "reverb": 1.0
+    },
+    {
+      "name": "fuel booth",
+      "x": [
+        81.03,
+        82.97
+      ],
+      "z": [
+        37.13,
+        39.27
+      ],
+      "indoor": true,
+      "reverb": 0.15
+    },
+    {
+      "name": "maintenance shed",
+      "x": [
+        -60.9,
+        -55.1
+      ],
+      "z": [
+        18.1,
+        25.9
+      ],
+      "indoor": true,
+      "reverb": 0.35
+    },
+    {
+      "name": "storage shed",
+      "x": [
+        -60.4,
+        -55.6
+      ],
+      "z": [
+        33.1,
+        38.9
+      ],
+      "indoor": true,
+      "reverb": 0.25
+    },
+    {
+      "name": "operations",
+      "x": [
+        37.1,
+        52.9
+      ],
+      "z": [
+        -26.9,
+        -17.1
+      ],
+      "indoor": true,
+      "reverb": 0.3
+    },
+    {
+      "name": "radio shelter",
+      "x": [
+        38.6,
+        41.4
+      ],
+      "z": [
+        110.85,
+        113.15
+      ],
+      "indoor": true,
+      "reverb": 0.12
+    }
+  ],
+  "outdoorReverb": 0.1,
+  "plannedBuildings": [
+    {
+      "id": "mess_hall",
+      "stage": 2,
+      "position": [
+        -80,
+        0,
+        -10
+      ]
+    },
+    {
+      "id": "bunkhouse",
+      "stage": 2,
+      "position": [
+        -90,
+        0,
+        -60
+      ]
+    },
+    {
+      "id": "radio_shack",
+      "stage": 2,
+      "position": [
+        85,
+        0,
+        -45
+      ]
+    },
+    {
+      "id": "generator_shed",
+      "stage": 2,
+      "position": [
+        110,
+        0,
+        5
+      ]
+    },
+    {
+      "id": "water_tank",
+      "stage": 2,
+      "position": [
+        -40,
+        0,
+        -40
+      ]
+    },
+    {
+      "id": "pigeon_coop",
+      "stage": 2,
+      "position": [
+        -254,
+        0,
+        42
+      ]
+    },
+    {
+      "id": "trimotor",
+      "stage": 3,
+      "position": [
+        -25,
+        0,
+        40
+      ]
+    },
+    {
+      "id": "waco",
+      "stage": 3,
+      "position": [
+        30,
+        0,
+        44
+      ]
+    }
+  ],
+  "paths": [
+    {
+      "width": 2.6,
+      "points": [
+        [
+          45,
+          32
+        ],
+        [
+          62,
+          32
+        ],
+        [
+          78,
+          32
+        ]
+      ]
+    },
+    {
+      "width": 2.4,
+      "points": [
+        [
+          -45,
+          28
+        ],
+        [
+          -51,
+          24.5
+        ],
+        [
+          -55,
+          22
+        ]
+      ]
+    },
+    {
+      "width": 2.2,
+      "points": [
+        [
+          -45,
+          33
+        ],
+        [
+          -51,
+          36
+        ],
+        [
+          -55.5,
+          37.5
+        ]
+      ]
+    },
+    {
+      "width": 2.4,
+      "points": [
+        [
+          21,
+          2.5
+        ],
+        [
+          32,
+          -4
+        ],
+        [
+          41,
+          -11
+        ],
+        [
+          45,
+          -14.6
+        ]
+      ]
+    },
+    {
+      "width": 2.2,
+      "points": [
+        [
+          37.5,
+          -22
+        ],
+        [
+          26,
+          -32
+        ],
+        [
+          12,
+          -42
+        ]
+      ]
+    },
+    {
+      "width": 2.0,
+      "points": [
+        [
+          49.4,
+          -27.2
+        ],
+        [
+          52,
+          -36
+        ],
+        [
+          60,
+          -48
+        ]
+      ]
+    },
+    {
+      "width": 2.2,
+      "points": [
+        [
+          40,
+          91
+        ],
+        [
+          40,
+          100
+        ],
+        [
+          40,
+          110.5
+        ]
+      ]
+    },
+    {
+      "width": 2.4,
+      "points": [
+        [
+          -21,
+          2.5
+        ],
+        [
+          -35,
+          4
+        ],
+        [
+          -45,
+          6
+        ]
+      ]
+    }
+  ]
+}
