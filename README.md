@@ -130,7 +130,7 @@ the door, the doctor's bag and Hart's camera case. Press E on anything to examin
 | S11 Raking Light | Operations lounge grate | move the lamp angle until each charred line shows |
 | S12 The Blackout | maintenance shed fuse panel | balance five circuits on two generators (the hangar goes dark at 12:00 until this is done) |
 | S13 The Cracked Mount | maintenance shed | dye, wait, wipe, developer, in order; find the real crack |
-| S16 The Night Burn | fuel farm booth (and the Waco's fuel cap) | read four dial gauges, compare with yesterday and the issue log |
+| S16 The Night Burn | fuel farm booth (the Waco's fuel cap is a red herring) | read four dial gauges, compare with yesterday and the issue log |
 | S19 The Barograph Overlay | Radio & weather | slide the 1931 trace over the report, then match the typewriter's chipped 'e' |
 | S21 The Stakeout | beacon tower keeper's room | wait for dusk, pan the binoculars, call it when the vent glows |
 | S24 Tamsin's Shorthand | HQ | find the keyword that turns the cipher into words |
@@ -181,10 +181,27 @@ room of whoever you are near. They fidget and turn to face you. E to talk: ask a
 or need trust), show them something you found, or watch them for a tell. Trust starts at 50: kind
 questions raise it, pressing lowers it. Data: `src/data/npcs.json`. Code: `src/game/npcs.js`.
 
-## Clues
+## Clues, leads and findings
 
-The old practice clues (notes, key) are archived in `src/data/_archive/`. The real clue catalogue from
-the bibles is in `src/data/clues.json`; clues are earned only by solving puzzles (Stage F builds them).
+Evidence lives in `src/data/findings.json` (32 findings). Each finding has a **name**, which is its
+conclusion ("Tamsin was blackmailing Pryce"), and **leads**: one plain sentence for each source, saying only
+what that source showed ("A typed note under the door demanding money"). Until a finding is established,
+the toasts, the notebook and the "show them something" list only show its leads. The name appears
+once it is proven. (The old `clues.json` is from Stage B and no longer handed out.)
+
+### Story check
+
+    node tools/check-story.mjs
+
+This reads all the story JSON and checks it agrees with itself:
+- every clue has a lead
+- every finding can be established
+- nobody's refusal counts as testimony
+- the answer keys follow from their clues: the thermometer maths, the safe riddle, Hobbs's tune, the
+  manifest, the fuel figures, the fingerprints, the cipher and the ration ledger
+- the telegram, the blackmail amounts, the crash date and the pilot's name agree everywhere
+
+Run it after changing any story text.
 
 ## Blender models
 

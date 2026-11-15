@@ -227,7 +227,7 @@ export class People {
     if (!known.length) return this._say(id, U.nothingToPresent, [{ label: U.back, onPick: () => this.menu(id, 'Anything else?') }]);
     const shown = (this.state.data.shown ??= {});
     const toChoice = (f) => ({
-      label: f.name,
+      label: this.evidence.label(f.id), // only what you've seen, unless it's proven
       onPick: () => {
         this.spend(3);
         const r = p.present?.[f.id];

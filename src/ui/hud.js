@@ -106,8 +106,10 @@ export class Hud {
       const li = el('li', '', list);
       const meta = el('div', 'nb-meta', li);
       const n = this.evidence.sources(f.id).length;
-      el('span', 'nb-kind', meta, this.evidence.isEstablished(f.id) ? 'Established' : `Lead ${n} of ${f.need}`);
-      el('div', 'nb-name', li, f.name);
+      const est = this.evidence.isEstablished(f.id);
+      el('span', 'nb-kind', meta, est ? 'Established' : `Lead ${n} of ${f.need}`);
+      if (est) el('div', 'nb-name', li, f.name);
+      else for (const s of this.evidence.sources(f.id)) el('div', 'nb-name', li, this.evidence.lead(f.id, s));
     }
     el('h3', '', p, 'Things you noticed');
     const notes = el('ol', 'nb-list', p);

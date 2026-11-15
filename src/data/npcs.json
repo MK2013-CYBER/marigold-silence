@@ -94,7 +94,7 @@
         {
           "id": "night",
           "label": "Where were you last night?",
-          "text": "In my room with a book I wasn't reading. At ten o'clock I heard his music box through the wall of the hangar office. Cornelius never played it. Never. He couldn't bear to.",
+          "text": "In my room with a book I wasn't reading. At ten I gave up and walked over to have it out with him. The door was bolted. He didn't answer, but through the door I heard his music box playing. Cornelius never played it. Never. He couldn't bear to. So I went back to bed.",
           "gives": [
             [
               "F07",
@@ -265,7 +265,7 @@
             "F16"
           ],
           "minTrust": 50,
-          "text": "...Ask me again when you know the whole truth, Inspector. Please.",
+          "text": "He takes off his spectacles. \"Box 41, Reno. 'Mrs. Marsh'. Pryce collected them himself. The first year I went with him at night to change the dressings. I never once looked at the patient's face, Inspector. I didn't want to know whose it was.\"",
           "gives": [
             [
               "F16",
@@ -311,7 +311,7 @@
         {
           "id": "night",
           "label": "Where were you last night?",
-          "text": "I went to speak with Cornelius at a quarter past eleven. His door was locked and he didn't answer. I assumed he'd gone to bed in a sulk. Then I went to bed myself.",
+          "text": "I went to speak with Cornelius at a quarter past eleven. His door was locked and he didn't answer. I assumed he'd gone to bed in a sulk. There was nothing under the door then, if that's what you're wondering. Then I went to bed myself.",
           "trust": 1
         },
         {
@@ -478,7 +478,7 @@
       ],
       "present": {
         "F27": {
-          "text": "She laughs without smiling. \"Yes. Five hundred a month for the real weather report. Blackmail isn't murder, Inspector. Dead men don't pay.\"",
+          "text": "She laughs without smiling. \"Yes, that's mine. Two hundred a month for two years, for the real 1931 weather report. When I heard he meant to tell the papers himself, I asked for five hundred more while it was still worth something, and pushed it under his door at half past eleven. Blackmail isn't murder, Inspector. Dead men don't pay.\"",
           "gives": [
             [
               "F27",
@@ -508,7 +508,13 @@
           "id": "telegram",
           "label": "Did you send the telegram that brought me here?",
           "text": "Not me, Inspector. The key was cold when I came in. But someone sent it from this line, and sent it slow and even, like a pupil. I always fumble my Q. They copied that.",
-          "trust": 2
+          "trust": 2,
+          "gives": [
+            [
+              "F12",
+              "hobbs"
+            ]
+          ]
         },
         {
           "id": "ghost",
@@ -583,7 +589,7 @@
       ],
       "present": {
         "F02": {
-          "text": "\"Under the office? Well I never. Then the tapping... no. No, that's ghost talk.\""
+          "text": "\"Under the office? The old culvert runs right beneath it, aye. Then the tapping I hear... no. No, that's ghost talk.\""
         }
       },
       "presentDefault": "\"Eh? Speak up, Inspector. Oh, that. Can't say I know.\""

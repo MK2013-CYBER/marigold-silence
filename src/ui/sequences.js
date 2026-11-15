@@ -226,7 +226,7 @@ export class SequenceScreen {
           this.spend(r.minutes);
           if (r.trustNeeded && this.trust.get(r.who) < r.trustNeeded) { this.trust.change(r.who, -2); return this.msg(r.no); }
           if (r.trustCost) this.trust.change(r.who, -r.trustCost);
-          if (r.id === 'ask') this.evidence.add('F29', 'S4', true);
+          if (r.id === 'ask') this.evidence.add('F29', 'S4'); // his slip about 'my other patient'
           st.chart = r.id;
           this.render();
           this.msg(r.ok, true);

@@ -165,7 +165,7 @@ export class Finale {
     const C = this.data.clementine;
     const name = C.name;
     const say = (t, choices) => { this.dialogue.show(name, t, choices); this.onFreezeChange?.(); };
-    const known = () => this.evidence.known();
+    const known = () => this.evidence.established(); // "what you know, not what you think"
     let right = 0;
     const prompt = (k) => {
       if (k >= C.prompts.length) return right >= C.needed ? confess(0) : say(C.notEnough, [{ label: 'Leave her for now', onPick: () => this.dialogue.close() }]);

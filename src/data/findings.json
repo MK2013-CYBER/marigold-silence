@@ -1,5 +1,5 @@
 {
-  "_note": "v4 findings catalog. A finding is ESTABLISHED when it has 3 independent sources (or all its sources, if it lists fewer than 3). Only established findings go on the board. 'need' = sources required.",
+  "_note": "v4 findings catalog. A finding is ESTABLISHED when it has 3 independent sources (or all its sources, if it lists fewer than 3). Only established findings go on the board. 'need' = sources required. 'name' is the conclusion: the game only shows it once the finding is established. Until then it shows 'leads': what each source actually showed you, in plain words, with no conclusions drawn.",
   "findings": [
     {
       "id": "F01",
@@ -11,7 +11,13 @@
         "billie",
         "tamsin"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S1": "Every way out of the office except the floor is impossible",
+        "S25": "The bolt stayed thrown from 21:25 until the door was broken",
+        "billie": "Billie: the bolt was still thrown on the inside when she broke in",
+        "tamsin": "Tamsin: she saw the bolt was thrown from inside"
+      }
     },
     {
       "id": "F02",
@@ -24,19 +30,32 @@
         "hobbs",
         "ox"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S1": "The office floor sounds hollow under the rug",
+        "S6": "A trapdoor under the office rug",
+        "S17": "Smoke from the fuel farm came up through the office floor vent",
+        "hobbs": "Hobbs: an old fuel culvert runs under the hangar",
+        "ox": "Ox: an old fuel line runs 'under everything'"
+      }
     },
     {
       "id": "F03",
-      "name": "Pryce died between 21:30 and 22:15",
-      "text": "The body's temperature, stiffness and the settled blood all point to the same window.",
+      "name": "Pryce died around 21:40, before the music box played",
+      "text": "The thermometer, the stiffness and the settled blood all point to about twenty to ten: after he bolted his door at 21:25, and before the tune at ten.",
       "sources": [
         "S3",
         "S2",
         "S25",
         "vivienne"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S3": "The thermometer puts his death at about twenty to ten",
+        "S2": "His body is fully stiff: he died many hours before dawn",
+        "S25": "On the timeline he died between the bolt (21:25) and the tune (22:00)",
+        "vivienne": "Vivienne knocked at ten and nobody answered"
+      }
     },
     {
       "id": "F04",
@@ -47,7 +66,12 @@
         "S4",
         "lindqvist"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S2": "Pink skin, pink nails, cherry-red blood, bitter almonds: not a heart attack",
+        "S4": "Prussian blue in the brandy: a cyanide reaction",
+        "lindqvist": "Lindqvist admits he smelled cyanide and said 'heart'"
+      }
     },
     {
       "id": "F05",
@@ -57,18 +81,23 @@
         "S4",
         "S8"
       ],
-      "need": 2
+      "need": 2,
+      "leads": {
+        "S4": "The decanter brandy and his glass both test for cyanide",
+        "S8": "A cyanide jar in the darkroom is short, unlogged"
+      }
     },
     {
       "id": "F06",
       "name": "The darkroom's cyanide jar is a scoop short",
       "text": "The darkroom's cyanide jar is a scoop short.",
       "sources": [
-        "S8",
-        "scuffs",
-        "S17"
+        "S8"
       ],
-      "need": 3
+      "need": 1,
+      "leads": {
+        "S8": "The darkroom's cyanide jar is thirty grams light, with nothing in the log"
+      }
     },
     {
       "id": "F07",
@@ -80,7 +109,13 @@
         "S25",
         "vivienne"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S3": "He was dead before ten, yet the music box played at ten",
+        "S6": "The music box tune opens a latch: whoever wound it knew the tune",
+        "S25": "The tune was heard at ten, after he died, in a bolted room",
+        "vivienne": "Vivienne heard the music box playing at ten through the bolted door"
+      }
     },
     {
       "id": "F08",
@@ -90,7 +125,11 @@
         "S23",
         "S6"
       ],
-      "need": 2
+      "need": 2,
+      "leads": {
+        "S23": "The prints on the decanter and the music box match nobody at dinner",
+        "S6": "A small print on the music box key, too small for Pryce"
+      }
     },
     {
       "id": "F09",
@@ -101,7 +140,12 @@
         "S16",
         "billie"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S1": "The revolver in the drawer is fully loaded and clean",
+        "S16": "38 gallons gone from the Trimotor's tank overnight, unlogged",
+        "billie": "Billie: the bang at 22:45 sounded like a backfire"
+      }
     },
     {
       "id": "F10",
@@ -111,18 +155,27 @@
         "S12",
         "hobbs"
       ],
-      "need": 2
+      "need": 2,
+      "leads": {
+        "S12": "The lightning arrestor is burnt, and the reset lever has radio solder on it",
+        "hobbs": "Hobbs: lightning hit at half past ten, and he reset the power"
+      }
     },
     {
       "id": "F11",
-      "name": "Ox lied about his night",
-      "text": "Ox lied about his night.",
+      "name": "Ox has been lying: about the power, the rations and the back room",
+      "text": "Ox claimed he reset the power (Hobbs did), signs out a ration nobody eats, and hides a back room behind his crates.",
       "sources": [
         "S12",
         "S14",
         "S15"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S12": "Ox claims he reset the power. The solder on the lever says otherwise",
+        "S14": "Ox signs out one extra ration every day",
+        "S15": "Behind Ox's crates: a hidden back room"
+      }
     },
     {
       "id": "F12",
@@ -130,9 +183,15 @@
       "text": "The telegram sender learned Morse by listening.",
       "sources": [
         "S18",
-        "hobbs"
+        "hobbs",
+        "spoonkey"
       ],
-      "need": 2
+      "need": 2,
+      "leads": {
+        "S18": "The telegram was sent slowly and evenly, copying Hobbs's stumble on the Q",
+        "hobbs": "Hobbs: whoever sent the telegram copied the way he sends a Q",
+        "spoonkey": "A Morse key made from a spoon, under the hangar"
+      }
     },
     {
       "id": "F13",
@@ -140,10 +199,15 @@
       "text": "The telegraph line was tapped; the tap runs to the hangar.",
       "sources": [
         "S18",
-        "S17",
-        "S6"
+        "S6",
+        "spoonkey"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S18": "A new wire is spliced into the telegraph cable and runs toward the hangar",
+        "S6": "A spliced telegraph cable runs down the shaft under the office",
+        "spoonkey": "The spoon key is wired into the telegraph cable"
+      }
     },
     {
       "id": "F14",
@@ -154,7 +218,12 @@
         "rack",
         "tamsin"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S14": "The ration ledger: one more ration signed out than people fed, every day",
+        "rack": "Two cups and two plates on Ox's drying rack every night",
+        "tamsin": "Tamsin: one extra ration every day, signed by Ox"
+      }
     },
     {
       "id": "F15",
@@ -165,7 +234,12 @@
         "ox",
         "S22"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S15": "A woman's coat, ribbons and stockings in a hidden back room",
+        "ox": "Ox: 'She needs things. I bring them.'",
+        "S22": "A shopping list in a woman's hand in Lindqvist's case"
+      }
     },
     {
       "id": "F16",
@@ -176,7 +250,12 @@
         "S10",
         "lindqvist"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S22": "Two years of burn dressings sent to 'Mrs. E. Marsh, Box 41, Reno'",
+        "S10": "A Reno post box for a 'Mrs. E. Marsh', paid for by Pryce's airline",
+        "lindqvist": "Lindqvist: he dressed the burns of a patient he never looked at"
+      }
     },
     {
       "id": "F17",
@@ -187,7 +266,12 @@
         "hobbs",
         "ox"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S21": "A lamp glows under the hangar roof vent at dusk",
+        "hobbs": "Hobbs: a glow under the hangar roof vent every dusk",
+        "ox": "Ox: 'It's only a lamp. She reads by it.'"
+      }
     },
     {
       "id": "F18",
@@ -196,9 +280,16 @@
       "sources": [
         "S9",
         "S10",
-        "S20"
+        "S20",
+        "newspaper"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S9": "Billie's 1931 photo: a truck at the wreck before the rescuers, and a stretcher",
+        "S10": "Seat four was paid for but never certified dead",
+        "S20": "A young woman's voice at the end of the Marigold's last call",
+        "newspaper": "1931: only five bodies recovered; the search for Miss C. Pryce was abandoned"
+      }
     },
     {
       "id": "F19",
@@ -209,7 +300,12 @@
         "newspaper",
         "vivienne"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S10": "Six passenger cards, five death certificates",
+        "newspaper": "1931 newspaper: six aboard, five bodies recovered",
+        "vivienne": "Vivienne: there were six aboard the Marigold"
+      }
     },
     {
       "id": "F20",
@@ -219,7 +315,11 @@
         "S20",
         "hobbslog"
       ],
-      "need": 2
+      "need": 2,
+      "leads": {
+        "S20": "The wax cylinder: 'Daddy, I can see the ridge!'",
+        "hobbslog": "Hobbs's log: a girl's voice at the end of the last call"
+      }
     },
     {
       "id": "F21",
@@ -230,7 +330,12 @@
         "S7",
         "flightplan"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S1": "Blotter: ZÜRICH 0500 / 2 PASS",
+        "S7": "The Trimotor was made ready for a long flight",
+        "flightplan": "Flight plan: Sable Flat to Zürich, 05:00 today, 2 passengers"
+      }
     },
     {
       "id": "F22",
@@ -241,7 +346,12 @@
         "calendar",
         "tamsin"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S5": "A half-burnt letter: 'tomorrow I end the silence'",
+        "calendar": "His calendar for today says END IT",
+        "tamsin": "Tamsin: he said 'Tomorrow I end it'"
+      }
     },
     {
       "id": "F23",
@@ -252,7 +362,12 @@
         "S5",
         "S24"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S19": "Hobbs's 1931 barograph shows a storm the official report left out",
+        "S5": "The 1931 weather report in the safe says 'Clear by noon'",
+        "S24": "Tamsin's cipher ledger: 'W/R 31 STORM FALSE'"
+      }
     },
     {
       "id": "F24",
@@ -263,7 +378,12 @@
         "S5",
         "ox"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S13": "The Marigold's No. 2 engine mount has a real crack",
+        "S5": "Maintenance log: 'Hairline crack, monitor' / 'Passed. A. Brennan.'",
+        "ox": "Ox: 'Mr. Pryce said pass it, so I passed it.'"
+      }
     },
     {
       "id": "F25",
@@ -274,7 +394,12 @@
         "S5",
         "S10"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S11": "A charred inquiry page with a signature traced over pencil",
+        "S5": "A Meridian Air note: 'Signature attended to. J.F-B.'",
+        "S10": "A Meridian Air cheque to the 1931 inquiry's clerk"
+      }
     },
     {
       "id": "F26",
@@ -285,19 +410,32 @@
         "vivienne",
         "julian"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S11": "A charred letter from V.: 'By Saturday we shall be free of him'",
+        "vivienne": "Vivienne: she had a train ticket, not poison",
+        "julian": "Julian: Vivienne was leaving him"
+      }
     },
     {
       "id": "F27",
       "name": "Tamsin was blackmailing Pryce and left a demand note",
-      "text": "A typed note under the door demands money. Bank stubs in the safe carry her initials.",
+      "text": "A typed note under the door demands money, typed on Miss Quill's chipped machine. Cheque stubs in the safe and her own ledger show two years of payments.",
       "sources": [
-        "S24",
-        "S5",
         "S1",
-        "S19"
+        "S5",
+        "S19",
+        "S24",
+        "tamsin"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S1": "A typed note under the door demanding money (the 'e' is chipped)",
+        "S5": "Cheque stubs in the safe: $200 a month, initialled 'T.Q.'",
+        "S19": "The chipped 'e' matches Miss Quill's typewriter",
+        "S24": "Tamsin's cipher ledger: 'PAID 200 MONTHLY'",
+        "tamsin": "Tamsin admits the note is hers"
+      }
     },
     {
       "id": "F28",
@@ -308,7 +446,12 @@
         "S23",
         "billie"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S16": "Someone ran the Trimotor's engines for a long time last night",
+        "S23": "Billie's scarred prints are too wide to be the print on the decanter",
+        "billie": "Billie: Pryce had her run up the Trimotor's engines at night"
+      }
     },
     {
       "id": "F29",
@@ -319,7 +462,12 @@
         "S4",
         "S7"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S22": "Lindqvist's prescription book: a secret burns patient",
+        "S4": "Lindqvist let slip he has 'another patient'",
+        "S7": "A sedative kit in the Trimotor, stamped with Lindqvist's name"
+      }
     },
     {
       "id": "F30",
@@ -327,10 +475,13 @@
       "text": "Hobbs has heard tapping in the wires for months.",
       "sources": [
         "hobbs",
-        "S18",
-        "S21"
+        "S18"
       ],
-      "need": 3
+      "need": 2,
+      "leads": {
+        "hobbs": "Hobbs: tapping in the wires late at night, for months",
+        "S18": "The telegram matches the 'night traffic' Hobbs recorded"
+      }
     },
     {
       "id": "F31",
@@ -339,10 +490,16 @@
       "sources": [
         "S17",
         "S15",
-        "S8",
+        "scuffs",
         "S6"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S17": "Smoke from the fuel farm came up in the office, the storage shed and the darkroom",
+        "S15": "A hatch in the floor of the hidden back room",
+        "scuffs": "Behind the darkroom's chemical shelf: scuffs, and a cold draught",
+        "S6": "A trapdoor and a shaft under the office floor"
+      }
     },
     {
       "id": "F32",
@@ -353,7 +510,12 @@
         "S22",
         "flightplan"
       ],
-      "need": 3
+      "need": 3,
+      "leads": {
+        "S7": "A stretcher cot with straps in the Trimotor",
+        "S22": "A bottle of sedative is missing from Lindqvist's case",
+        "flightplan": "The flight plan lists two passengers to Zürich"
+      }
     }
   ]
 }

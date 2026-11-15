@@ -174,8 +174,7 @@ export class Walks {
         if (st.flag('wireNoticed')) { st.setFlag(`wire:${def.key}`); this.seq.checkS18?.(); }
         break;
       case 'wacocap':
-        show(this.data.wacocap);
-        this.evidence.add('F28', 'wacocap');
+        show(this.data.wacocap); // a red herring: Ox fuelled her this morning (it gives no evidence)
         break;
       default:
         show(W[def.key]);

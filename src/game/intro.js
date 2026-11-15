@@ -14,7 +14,7 @@ import { IntroAudio } from '../engine/introAudio.js';
  *   4 the cabin: Danny    5 alongside the wing        6 landing, beacon, windsock
  *   7 Hobbs and his lantern at the hangar
  *   8 Friday dinner: Pryce's toast, six faces          9 night: dust, a music box stops
- *  10 a scream; "SATURDAY, 6:10 A.M."  -> gameplay
+ *  10 "SATURDAY, 6:10 A.M.", then a scream: the body is found  -> gameplay
  *
  * All words: src/data/scenes/intro.json. People: src/data/cast.json.
  */
@@ -609,9 +609,10 @@ export class Intro {
       dur: 7.5,
       enter: () => this.black(true, 0.05),
       events: [
-        [0.5, () => { this.sfx.scream(); this.say({ speaker: '', text: D.scream }, 2.8); }],
-        [3.4, () => { this.dom.dawn.textContent = D.dawn; this.dom.dawn.classList.add('on'); }],
-        [6.6, () => this.dom.dawn.classList.remove('on')],
+        // dawn first, then the scream: it's the body being found at 6:10, not something in the night
+        [0.4, () => { this.dom.dawn.textContent = D.dawn; this.dom.dawn.classList.add('on'); }],
+        [3.4, () => this.dom.dawn.classList.remove('on')],
+        [3.9, () => { this.sfx.scream(); this.say({ speaker: '', text: D.scream }, 3.2); }],
       ],
     };
 

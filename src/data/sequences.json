@@ -47,7 +47,7 @@
       "name": "Typed note under the door",
       "prompt": "Pick up the note",
       "text": "Typed on yellow paper and pushed under the door: 'Five hundred by Saturday or the papers get the real Marigold weather report. You know I kept a copy.' No signature. The letter 'e' is chipped throughout.",
-      "note": "A typed demand note was pushed under the door. The 'e' is chipped."
+      "note": "A typed demand note was pushed under the door: five hundred by Saturday. The 'e' is chipped."
     },
     "revolver": {
       "name": "Desk drawer",
@@ -261,12 +261,12 @@
     "title": "Time of Death",
     "intro": "Work out when he died. A body cools about 1.5°F an hour from the normal 98.6°F. Stiffness and settled blood must agree with your answer. Set the earliest and latest possible times.",
     "reading": {
-      "temp": 85.0,
+      "temp": 84.6,
       "time": "07:00",
-      "deathMinutes": 1306
+      "deathMinutes": 1300
     },
     "facts": [
-      "Thermometer, 07:00: 85.0°F.",
+      "Thermometer, 07:00: 84.6°F.",
       "Normal body temperature: 98.6°F. Cooling: about 1.5°F per hour (the stove was cold).",
       "Stiffness: complete. That takes six to twelve hours.",
       "Settled blood: fixed, does not move when pressed. That takes eight hours or more."
@@ -276,14 +276,14 @@
       "02:00"
     ],
     "check": {
-      "mustInclude": "21:46",
+      "mustInclude": "21:40",
       "earliest": "21:00",
-      "latest": "22:45",
-      "maxWidth": 90
+      "latest": "22:00",
+      "maxWidth": 60
     },
     "wrong": "Danny runs the numbers on his pad. \"Chief, that window doesn't fit the thermometer. Try again.\"",
     "tooWide": "\"That's true, but it's too wide to be any use, Chief. Narrow it down.\"",
-    "done": "He died between half past nine and quarter past ten last night. So who was playing the music box at ten?",
+    "done": "He died around twenty to ten last night, before ten o'clock. So who was playing the music box at ten?",
     "sources": [
       [
         "F03",
@@ -305,7 +305,7 @@
         "minutes": 5,
         "trustNeeded": 45,
         "who": "lindqvist",
-        "ok": "He hesitates, then hands it over. \"I should have stopped him drinking after ten,\" he murmurs.",
+        "ok": "He hesitates, then hands it over. \"Keep it away from the... from my other patient,\" he murmurs, and then won't say who he means.",
         "no": "\"I, er, seem to have mislaid it.\" He won't meet your eye."
       },
       {
@@ -477,7 +477,7 @@
       "label": "Crowbar the floorboards (15 min, very loud)",
       "minutes": 15
     },
-    "done": "A latch clicks under the floor. The rug sags: there is a trapdoor beneath it, and a breath of cold air comes up from the dark.",
+    "done": "A latch clicks under the floor. The rug sags: there is a trapdoor beneath it, and a breath of cold air comes up from the dark. Down the side of the shaft runs a black telegraph cable with a fresh splice in it. And on the music box's brass key, under your lens: a small, narrow print, far too small for Pryce's hands.",
     "trapdoor": "A trapdoor, and iron rungs going down into darkness. You'll need a proper light and a reason to go down there. Later.",
     "sources": [
       [
@@ -494,6 +494,10 @@
       ],
       [
         "F08",
+        "S6"
+      ],
+      [
+        "F31",
         "S6"
       ]
     ]
@@ -515,7 +519,7 @@
         "id": "covert",
         "label": "Lift them quietly from last night's dinner glasses (35 min)",
         "minutes": 35,
-        "text": "Ox never washed up after dinner. The glasses are still on the drying rack, each at its owner's place."
+        "text": "Ox stacked last night's dinner glasses by the sink and never washed them. Each one is still by its owner's place card."
       }
     ],
     "people": {
@@ -618,13 +622,13 @@
       },
       {
         "id": "death",
-        "text": "21:30-22:15 Pryce dies",
-        "t": 1306,
+        "text": "About 21:40 Pryce dies",
+        "t": 1300,
         "requires": "solved:S3"
       },
       {
         "id": "tune",
-        "text": "22:00 The music box is heard through the wall",
+        "text": "22:00 The music box is heard through the bolted door",
         "t": 1320,
         "fixed": true,
         "requires": "F07"
@@ -643,7 +647,7 @@
       },
       {
         "id": "note",
-        "text": "23:30 A typed demand note is pushed under the door",
+        "text": "After 23:15 A typed demand note is pushed under the door",
         "t": 1410,
         "requires": "examined:note"
       },
@@ -785,14 +789,6 @@
       [
         "F31",
         "S17"
-      ],
-      [
-        "F13",
-        "S17"
-      ],
-      [
-        "F06",
-        "S17"
       ]
     ],
     "minutes": 40,
@@ -910,14 +906,14 @@
       },
       {
         "label": "November 1931",
-        "text": "The extra ration starts on 12 November 1931. Before that, the numbers match."
+        "text": "The extra ration starts on 16 November 1931. Before that, the numbers match."
       }
     ],
     "question": "Since when has someone been signing out an extra ration?",
     "options": [
       "Since last week",
       "Since May 1931, the Marigold crash",
-      "Since 12 November 1931, six months after the crash"
+      "Since 16 November 1931, six months after the crash"
     ],
     "answer": 2,
     "wrong": "Check your sums against the roster, Chief.",
@@ -1114,10 +1110,6 @@
       ],
       [
         "F31",
-        "S8"
-      ],
-      [
-        "F06",
         "scuffs"
       ]
     ]
@@ -1153,7 +1145,7 @@
     "miss": "That's in the official photo too.",
     "ruined": "Ruined: the plate is black. You have one retry.",
     "lost": "That plate is lost for good. Plate 4 still matters most.",
-    "done": "Someone drove a truck to the wreck before the rescue party got there, and dragged something to it on a stretcher. Billie, watching from the door, goes white. \"He was there first. I knew it.\"",
+    "done": "Someone drove a truck to the wreck before the rescue party got there, and carried something to it on a stretcher. Billie took these pictures in 1931 and never printed them. Maybe she didn't want to know.",
     "sources": [
       [
         "F18",
@@ -1167,7 +1159,7 @@
     "cards": [
       [
         "1",
-        "Capt. R. Hale, pilot"
+        "Capt. T. Reeve, pilot"
       ],
       [
         "2",
@@ -1191,20 +1183,20 @@
       ]
     ],
     "certs": [
-      "Capt. R. Hale",
+      "Capt. T. Reeve",
       "M. Ortega",
       "Mrs. D. Fenn",
       "Rev. A. Lowell",
       "T. Sato"
     ],
     "none": "No certificate",
-    "payout": "Insurer's payout: six claims, all paid in full, June 1931. Claim 4 paid to Pryce Transcontinental 'on behalf of the estate'.",
+    "payout": "Insurer's payout: six claims, all paid in full, June 1931. Claim 4 paid to Pryce Transcontinental 'on behalf of the estate'. Pinned under it: a Meridian Air cheque for $10,000 to the clerk of the 1931 inquiry board, signed J. Ferreira-Blake.",
     "receipt": "Clipped behind the payout list: a receipt for a post-office box in Reno, rented in the name of 'Mrs. E. Marsh'. Paid by P.T.A.",
     "question": "Which passenger was paid for but never declared dead?",
     "answer": "4",
     "wrongOrder": "The seat numbers are on the cards, Chief.",
     "wrongMatch": "Those don't match. Read the names carefully.",
-    "done": "Six aboard, five certificates. Seat four, C. Pryce, nineteen years old: paid out on, never certified dead. Julian, in the doorway, stops smiling.",
+    "done": "Six aboard, five certificates. Seat four, C. Pryce, nineteen years old: paid out on, never certified dead. And Meridian Air paid the man who kept the inquiry's papers.",
     "sources": [
       [
         "F19",
@@ -1270,7 +1262,7 @@
     "markLabel": "Mark this moment",
     "wrongMark": "Nothing but static and engine there.",
     "wrong": "Listen to it again, Chief.",
-    "done": "The last voice on the Marigold was a young woman's, calling for her father. Vivienne, in the doorway, puts a hand over her mouth.",
+    "done": "The last voice on the Marigold was a young woman's, calling for her father.",
     "sources": [
       [
         "F20",
@@ -1321,7 +1313,7 @@
     "springy": "Springy. That pin isn't binding yet.",
     "broke": "Snap. Too much tension: the pick broke.",
     "outOfPicks": "No picks left. You'll have to ask him, or get the warrant.",
-    "contents": "A prescription book: two years of burn dressings, salve and a sedative, all shipped to 'Mrs. E. Marsh, Box 41, Reno'. A brown bottle of sedative is missing from its slot.",
+    "contents": "A prescription book: two years of burn dressings, salve and a sedative, all shipped to 'Mrs. E. Marsh, Box 41, Reno'. A brown bottle of sedative is missing from its slot. Tucked in the lid, a list in small, careful handwriting: 'Ribbons. Stockings. Size 5 gloves. A blue coat.'",
     "done": "Someone has been treated for burns, secretly, for two years. And a sedative is missing.",
     "sources": [
       [
@@ -1467,8 +1459,8 @@
   "wacocap": {
     "name": "The Waco's fuel cap",
     "prompt": "Look at the Waco's fuel cap",
-    "text": "The fuel cap on the Waco's top wing is loose, and there's a greasy thumbprint smeared across it: a big thumb, black with engine grease. Not Billie's.",
-    "note": "A big greasy thumbprint on the Waco's loose fuel cap."
+    "text": "The fuel cap on the Waco's top wing is loose, with a big greasy thumbprint across it. Ox's, by the size of it: the fuel log says he put five gallons in her this morning. Nothing wrong here.",
+    "note": "The Waco was fuelled this morning (Ox's thumbprint on the cap). Nothing odd."
   },
   "S7": {
     "title": "Readied for Flight",
@@ -1493,6 +1485,11 @@
         "id": "hat",
         "name": "A hat box",
         "text": "Inside, a soft felt cloche with a veil. Something to hide a face."
+      },
+      {
+        "id": "kit",
+        "name": "A doctor's sedative kit",
+        "text": "A leather syringe case on the seat by the cot, stamped 'Dr. M. Lindqvist'. One syringe is filled and capped."
       },
       {
         "id": "plan",
@@ -1520,7 +1517,7 @@
     "answer": 2,
     "needAll": "Look at everything first.",
     "wrong": "Look again at the cot and the straps, Chief.",
-    "done": "A stretcher, straps and a trunk for a woman called E. Marsh. Pryce meant to fly someone out at five this morning, lying down and sedated. Billie goes very quiet. \"He told me it was a medical charter.\"",
+    "done": "A stretcher, straps, a doctor's syringe and a trunk for a woman called E. Marsh. Pryce meant to fly someone out at five this morning, lying down and sedated. The pilot on the plan: W. Strand. Billie.",
     "sources": [
       [
         "F21",
@@ -1569,7 +1566,7 @@
             40
           ],
           [
-            "...no fault attaches to Meridian Air or its agents...",
+            "...no fault attaches to the operator or its agents...",
             95
           ],
           [
@@ -1583,12 +1580,12 @@
     "question": "What do these sheets show?",
     "options": [
       "Vivienne planned to poison her husband with Julian",
-      "Vivienne was leaving her husband, and Julian forged a signature on the inquiry",
+      "Vivienne was leaving her husband, and someone forged a signature on the inquiry",
       "Julian wrote both"
     ],
     "answer": 1,
     "wrong": "Read the letter again, Chief. Free of him how?",
-    "done": "Vivienne was running away, not plotting murder: she had train tickets. And Julian forged a signature to bury the 1931 inquiry. Vivienne walks in and sees what you're holding.",
+    "done": "Vivienne was running away, not plotting murder: she had train tickets. And somebody forged a signature on the 1931 inquiry to bury it.",
     "sources": [
       [
         "F25",
@@ -1761,7 +1758,7 @@
     "answer": 2,
     "aligned": "Lined up: Hobbs's trace drops like a stone at nine, a deep storm, while the report says 'clear by noon'. Someone typed a lie.",
     "wrong": "Look at the 'e', Chief.",
-    "done": "The 1931 weather report was falsified, typed on Miss Quill's machine. Tamsin lights a cigarette before she says anything at all.",
+    "done": "The 1931 weather report was falsified, typed on Miss Quill's machine. The same chipped 'e' as the note under Pryce's door.",
     "sources": [
       [
         "F23",
@@ -1789,10 +1786,6 @@
     "sources": [
       [
         "F17",
-        "S21"
-      ],
-      [
-        "F30",
         "S21"
       ]
     ]

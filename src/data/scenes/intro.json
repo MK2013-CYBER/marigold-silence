@@ -2,15 +2,15 @@
   "skipLabel": "Skip intro",
   "skipHold": "Hold Space to skip",
   "telegram": {
-    "header": "WESTERN UNION · NIGHT LETTER · 17 NOV 1933 · 4.52 PM",
+    "header": "WESTERN UNION · NIGHT LETTER · 13 NOV 1933 · 11.48 PM",
     "lines": [
       "INSPECTOR HART",
       "COME TO SABLE FLAT STOP",
-      "THE TRUTH ABOUT THE MARIGOLD STOP",
+      "THE MARIGOLD INQUIRY LIED STOP",
       "TELL NO ONE STOP",
       "C PRYCE"
     ],
-    "vo": "Inspector Hart. Come to Sable Flat. The truth about the Marigold. Tell no one. C. Pryce.",
+    "vo": "Inspector Hart. Come to Sable Flat. The Marigold inquiry lied. Tell no one. C. Pryce.",
     "who": "hart"
   },
   "title": "THE MARIGOLD SILENCE",
@@ -34,7 +34,7 @@
     "hobbs": {
       "who": "hobbs",
       "speaker": "Walter Hobbs",
-      "text": "Mr. Pryce said you'd come. He didn't say the storm would, too."
+      "text": "Mr. Pryce says he never sent for you, Inspector. He went white as a sheet when I told him you were coming."
     },
     "pryce": {
       "who": "pryce",
@@ -80,6 +80,6 @@
       "anim": "Sit"
     }
   ],
-  "scream": "[A scream, somewhere in the dark]",
+  "scream": "[A scream from the hangar: they've broken the office door down]",
   "dawn": "SATURDAY, 6:10 A.M."
 }

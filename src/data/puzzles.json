@@ -38,7 +38,7 @@
       "built": true,
       "hints": [
         "Before anything gets moved, Chief, check every way in or out of that office: the door bolt, the window, the stove pipe, the ceiling, the floor vent and the floor itself. Mark each one possible or impossible.",
-        "Try the bolt with a bit of thread, look at the window bars and the stove pipe, and knock on the floor. Only one of those six could let a person through. Use your camera plates on the things that matter: the body, the desk, the bolt, the note.",
+        "Try the bolt with a bit of thread, look at the window bars and the stove pipe, and knock on the floor. Only one of those six could let a person through. Use your camera plates on the things that matter: the body, the decanter, the bolt, the note and the music box.",
         "The door bolt, the window, the stove pipe, the ceiling and the vent are all impossible. The floor is the only one you should mark possible."
       ],
       "clues": []
@@ -65,7 +65,7 @@
       "hints": [
         "Bodies cool at roughly one and a half degrees an hour, Chief. Work backwards from the thermometer reading.",
         "Normal is 98.6. Take away the reading, divide by 1.5, and count back from the time you took it. Then check the stiffness and the settled blood agree.",
-        "He was 85.0 at seven o'clock: that's about nine hours of cooling, so around ten to ten last night. Set the window from half past nine to quarter past ten."
+        "He was 84.6 at seven o'clock: that's fourteen degrees, about nine hours and twenty minutes of cooling. So around twenty to ten last night. Set a window like quarter past nine to ten."
       ],
       "clues": []
     },
@@ -76,7 +76,7 @@
       "mechanic": "Six drops, four samples, three reagents",
       "built": true,
       "hints": [
-        "Six drops of test chemical, four samples, Chief. Don't waste drops before you know what each chemical shows.",
+        "Six drops of test chemical, five samples, Chief. Don't waste drops before you know what each chemical shows.",
         "You need the chart that says which chemical reacts to what. Ask the doctor nicely, use my reference book, or force the kit open.",
         "Put chemical B on the decanter brandy and on the glass: deep blue means cyanide. The heart drops go brown with C, but that's only his medicine."
       ],
@@ -169,7 +169,7 @@
       "hints": [
         "The lounge fireplace in Operations is still warm, Chief. Somebody burned papers before dawn.",
         "Move the lamp slowly around each sheet. Each line only shows at its own angle.",
-        "The letter is Vivienne leaving him, not killing him. The contract page has Julian's forged signature."
+        "The letter is Vivienne leaving him, not killing him. The contract page has a forged signature: a pen line traced over pencil."
       ],
       "clues": []
     },
@@ -208,7 +208,7 @@
       "hints": [
         "Compare the ration ledger in the storage shed with the mess roster, Chief. Day by day.",
         "Take the people fed away from the rations signed out. Then turn back through the ledger pages to see when it started.",
-        "It's one extra ration every day, signed by Ox, starting 12 November 1931."
+        "It's one extra ration every day, signed by Ox, starting 16 November 1931."
       ],
       "clues": []
     },
@@ -234,7 +234,7 @@
       "hints": [
         "Read every fuel gauge yourself, Chief, before you believe the ledger.",
         "Compare today's reading with yesterday's, then check what Ox logged as issued.",
-        "Tank C, the Trimotor's, is 38 gallons short with nothing logged. Then look at the Waco's fuel cap."
+        "Tank C, the Trimotor's, is 38 gallons short with nothing logged."
       ],
       "clues": []
     },
