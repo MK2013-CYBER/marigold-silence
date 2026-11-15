@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "voices": "node tools/voices.mjs",
-    "music": "/Users/mk/Desktop/Blender.app/Contents/MacOS/Blender -b --factory-startup --python tools/music.py"
+    "music": "/Users/mk/Desktop/Blender.app/Contents/MacOS/Blender -b --factory-startup --python tools/music.py",
+    "voices:gemini": "node tools/voices-gemini.mjs"
   },
   "dependencies": {
     "three": "^0.170.0"

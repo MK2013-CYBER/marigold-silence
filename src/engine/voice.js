@@ -59,6 +59,15 @@ class VoiceEngine {
     this.stop();
     const token = ++this._token;
     const who = profile.id;
+    // a whole line acted by its Gemini voice (tools/voices-gemini.mjs), if there is one
+    const whole = this.manifest?.gemini?.[who]?.[spokenText(text)];
+    if (this.audio?.ctx && whole) {
+      try {
+        const buf = await this._buffer(whole);
+        if (token === this._token) await this._play(buf, opts);
+        return;
+      } catch { /* fall through to the sentence files */ }
+    }
     const sentences = spokenSentences(text);
     const files = sentences.map((s) => this.manifest?.lines?.[who]?.[s]);
     if (this.audio?.ctx && sentences.length && files.every(Boolean)) {

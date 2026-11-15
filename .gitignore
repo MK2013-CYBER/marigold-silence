@@ -8,3 +8,6 @@ __pycache__/
 *.pyc
 blender/textures/cast/
 .env.local
+
+# Gemini voice previews (auditions, not used by the game)
+tools/voice-samples/

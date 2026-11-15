@@ -122,10 +122,11 @@ export class People {
   // ------------------------------------------------------------------ conversation
   _label(id) { return `${this.names.get(id) ?? id} · ${this.data.ui.trust} ${this.trust.get(id)}`; }
 
-  _say(id, text, choices) {
+  _say(id, text, choices, silent = false) {
     this.talking = id;
     this.dialogue.show(this._label(id), text, choices);
-    Voice.speak(text.replace(/"/g, ''), this.cast[id]?.voice);
+    // the whole line goes to the voice: it speaks only the quoted words and skips the narration
+    if (silent) Voice.stop(); else Voice.speak(text, this.cast[id]?.voice);
     this.onFreezeChange?.();
   }
 
@@ -200,7 +201,7 @@ export class People {
     const p = this.data.people[id];
     const U = this.data.ui;
     const known = this.evidence.known();
-    if (!known.length) return this._say(id, U.nothingToPresent, [{ label: U.back, onPick: () => this.menu(id, 'Anything else?') }]);
+    if (!known.length) return this._say(id, U.nothingToPresent, [{ label: U.back, onPick: () => this.menu(id, 'Anything else?') }], true);
     const shown = (this.state.data.shown ??= {});
     const toChoice = (f) => ({
       label: f.name,
@@ -220,7 +221,7 @@ export class People {
     const extra = [{ label: U.back, onPick: () => this.menu(id, 'Anything else?') }];
     const show = (pg) => this.dialogue.show(this._label(id), U.presentIntro, pagedChoices(known, toChoice, show, extra, pg));
     const choices = pagedChoices(known, toChoice, show, extra, 0);
-    this._say(id, U.presentIntro, choices);
+    this._say(id, U.presentIntro, choices, true); // a question to you, not something they say
   }
 
   observe(id) {

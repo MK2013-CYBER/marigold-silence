@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { Character } from '../world/character.js';
 import { Voice } from '../engine/voice.js';
+import { isNarration } from '../engine/speech-text.js';
 import { parseTime } from '../engine/state.js';
 import { pagedChoices } from '../ui/dialogue.js';
 
@@ -73,7 +74,10 @@ export class Finale {
   descend() {
     if (this.state.flag('oxPassed')) return this._go(true);
     const S = this.data.standoff;
-    const say = (who, text, choices) => { this.dialogue.show(who, text, choices); if (who === 'Ox') Voice.speak(text, this.cast.ox?.voice); };
+    const say = (who, text, choices) => {
+      this.dialogue.show(who, text, choices);
+      if (who === 'Ox') { if (isNarration(text)) Voice.stop(); else Voice.speak(text, this.cast.ox?.voice); }
+    };
     const opts = S.options.filter((o) => !o.requires || this._req(o.requires)).map((o) => ({
       label: o.label,
       onPick: () => {
@@ -166,7 +170,7 @@ export class Finale {
     if (this.state.data.ending) return;
     const C = this.data.clementine;
     const name = C.name;
-    const speak = (t) => Voice.speak(t.replace(/"/g, ''), this.cast.clementine?.voice);
+    const speak = (t) => (isNarration(t) ? Voice.stop() : Voice.speak(t, this.cast.clementine?.voice));
     const say = (t, choices) => { this.dialogue.show(name, t, choices); speak(t); this.onFreezeChange?.(); };
     const known = () => this.evidence.known();
     let right = 0;

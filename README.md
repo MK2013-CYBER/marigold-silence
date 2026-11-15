@@ -142,12 +142,20 @@ Code: `src/game/evidence.js`, `src/game/crimeScene.js`, `src/ui/sequences.js`.
 
 ## Stage H: voices, music, realism
 
-- **Voices**: every spoken line (706 sentences, 12 voices) is pre-rendered to audio files with the
+- **Voices**: every spoken line (312 lines, 12 voices) is pre-rendered to audio files with the
   Mac's own voices: `npm run voices` (output in `public/audio/vo/`). Lines play through the room's
   echo; Danny's radio calls go through a walkie-talkie filter. For much better voices, download free
   Premium/Enhanced voices (System Settings > Accessibility > Spoken Content > System Voice > Manage
   Voices: e.g. Evan, Zoe, Ava, Oliver, Jamie, Kate, Serena, Tom), then run `npm run voices -- --all`.
   Real voice actors can later replace the files one by one.
+- **Gemini voices (better acting)**: `npm run voices:gemini` renders each whole line with Google's
+  Gemini text-to-speech: a custom-designed voice per character and an acting direction per line,
+  all in `tools/voice-direction.json` (edit a line's `style` and run it again: only changed lines
+  are re-rendered). The key lives in `.env.local` (ignored by git; save it with
+  `zsh tools/set-gemini-key-dialog.sh`); the game itself never calls Google, it only plays the files.
+  The game prefers a Gemini take wherever one exists and uses the Mac voices for the rest. Free tier:
+  10 lines a day on the best model; the tool stops cleanly and carries on next run. `--test` renders
+  one line per character, `--only=ox` one character, `--lite` the cheaper model.
 - **Music**: three original tracks composed in code from the music-box tune (`npm run music`,
   `tools/music.py`): the theme (title, intro, endings), the investigation (quiet, all day) and the
   Undercroft. It dips under dialogue. Music volume and voices on/off are on the pause screen.

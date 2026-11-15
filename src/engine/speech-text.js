@@ -12,6 +12,26 @@ export function spokenText(text) {
   return t.replace(/\s+/g, ' ').trim();
 }
 
+/**
+ * The narration around the quoted words ('He closes his eyes.'): never spoken, but the Gemini
+ * voice tool uses it as acting direction for the line.
+ */
+export function narrationOf(text) {
+  const t = String(text ?? '');
+  if (!/["“]/.test(t)) return '';
+  return t.replace(/["“][^"”]*["”]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * A line that is only a stage direction ('His shoulders drop. He lowers the wrench, slowly.'):
+ * no quotation marks, starts with He/She/His/Her, no I/me/you. Shown on screen, never spoken.
+ * Only the finale writes lines like this, so only the finale checks for them.
+ */
+export function isNarration(text) {
+  const t = String(text ?? '').trim();
+  return !/["“]/.test(t) && /^(He|She|His|Her)\b/.test(t) && !/\b(I|I'm|I'd|I'll|me|my|you|your|we|us|our)\b/i.test(t);
+}
+
 export function spokenSentences(text) {
   const t = spokenText(text);
   if (!t) return [];
