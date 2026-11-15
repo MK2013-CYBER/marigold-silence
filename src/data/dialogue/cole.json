@@ -1,6 +1,6 @@
 {
   "speaker": "Danny Cole",
-  "greetingFirst": "Morning, Chief. Well, I wouldn't call it morning, exactly. You can't see the sun for all this dust.",
+  "greetingFirst": "Morning, Chief. Well, I wouldn't call it morning, exactly. You can't see the sun for all this dust. Remember: the storm lifts around half past five, and then everyone flies out. We've got until 5:30 to crack this.",
   "greetings": [
     "Chief. The coffee's terrible, but at least it's hot.",
     "There you are, Chief. Anything you need?",
@@ -97,5 +97,6 @@
     "S4": "Prussian blue. That's cyanide, all right. In the decanter.",
     "S5": "Four people's secrets in one tin box. He kept everyone on a leash, didn't he?",
     "S6": "A trapdoor. Chief, there's something under this airfield."
-  }
+  },
+  "startRadio": "Chief, it's Danny. Nobody can leave Sable Flat: the dust storm has every plane grounded until about half past five this evening. When it lifts, everyone flies home, including whoever killed Pryce. So we've got until 5:30 to solve this. Press R if you need me."
 }

@@ -237,6 +237,15 @@ export class HQ {
     this.danny(r[fid] ?? r.default, 6);
   }
 
+  /** The start of a new game: Danny radios in with the deadline (once). */
+  startCall() {
+    if (this.state.flag('startCall')) return;
+    this.state.setFlag('startCall');
+    this.state.save();
+    this.audio.click();
+    this.hud.caption(`Danny (radio): ${this.lines.startRadio}`, 14);
+  }
+
   // ------------------------------------------------------------------ per frame
   update() {
     // clock reminders at 15:00 and 16:30, once each

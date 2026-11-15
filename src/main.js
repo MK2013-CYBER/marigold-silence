@@ -325,6 +325,8 @@ function enter() {
   minimap.show(true);
   controller.lock(); // may be refused; the game works either way
   setTimeout(() => { if (!controller.locked) hint.textContent = DRAG_HINT; }, 400);
+  // the first time you're in control, Danny radios in with the deadline (17:30)
+  if (state.data.minutes < 12 * 60) setTimeout(() => { if (!overlay.classList.contains('hidden')) return; hq.startCall(); }, 2500);
 }
 function pause() {
   hud.closeAll();

@@ -96,7 +96,10 @@ apron, windsock, sun, Raven Ridge, streamed models, indoor zones, planned buildi
   Words: `src/data/scenes/intro.json`. The lines are subtitles.
 - Danny now walks like a person: follows your footsteps through doors, opens and closes doors,
   turns before walking, eases in and out of his stride, looks at you, nods and points. He can
-  wait where you leave him or walk back to HQ. **J** opens the case file anywhere.
+  wait where you leave him or walk back to HQ. Sent home, he plans a route around walls and
+  through doorways that open (`src/engine/pathfind.js`, A* on the collision boxes) and walks it,
+  through the middle of each door. At the start of a game he radios in: you have until 17:30.
+  **J** opens the case file anywhere.
 
 ## Stage D: the crime scene (v4, S1-S6)
 

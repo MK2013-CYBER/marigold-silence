@@ -130,7 +130,11 @@ export class SequenceScreen {
       const ok = d.exits.every((e) => st.marks[e.id] === e.answer);
       if (!ok) return this.msg(d.wrong);
       const missing = d.mustPhotograph.filter((k) => !st.photos.includes(k));
-      if (missing.length) return this.msg(`You haven't photographed everything that matters yet (${missing.length} left). If you run out of plates, Danny has a spare box at the HQ.`);
+      if (missing.length) {
+        const names = missing.map((k) => this.data.examine[k]?.name.toLowerCase() ?? k);
+        const list = names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0];
+        return this.msg(d.missingPhotos.replace('{list}', list) + (st.photos.length >= d.plates ? ` ${d.noPlates}` : ''));
+      }
       this.solve('S1');
       this.render();
       this.msg(d.done, true);

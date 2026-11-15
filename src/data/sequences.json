@@ -178,7 +178,9 @@
         "F27",
         "S1"
       ]
-    ]
+    ],
+    "missingPhotos": "Still not on film: {list}. Anything not in your list above hasn't been examined yet: find it in the room and press E on it first.",
+    "noPlates": "You're out of plates. Danny keeps a spare box at HQ (the button below), and only the photos that matter are kept."
   },
   "S2": {
     "title": "The Body",

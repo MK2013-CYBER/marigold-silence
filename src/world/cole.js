@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { loadGLTF } from '../engine/assets.js';
 import { Character } from './character.js';
+import { findPath } from '../engine/pathfind.js';
 
 /**
  * Agent Danny Cole (addendum v2, section D). Mixamo "Remy" with Idle / Walk / Talk /
@@ -160,14 +161,32 @@ export class Cole {
   }
 
   /** HQ door outside -> inside -> his spot, worked out from the door's collision box. */
-  _routeHome() {
+  _doorPoints() {
     const box = this.world.byName.get(this.cfg.door ?? 'COL_Door_HQ');
-    if (!box) return [this.home.clone()];
+    if (!box) return [this.home.clone(), this.home.clone(), this.home.clone()];
     const c = new THREE.Vector3((box.minX + box.maxX) / 2, 0, (box.minZ + box.maxZ) / 2);
     // the door's thin side tells which way it faces
     const alongX = box.maxX - box.minX < box.maxZ - box.minZ;
     const n = alongX ? new THREE.Vector3(Math.sign(this.home.x - c.x), 0, 0) : new THREE.Vector3(0, 0, Math.sign(this.home.z - c.z));
     return [c.clone().addScaledVector(n, -1.3), c.clone().addScaledVector(n, 0.9), this.home.clone()];
+  }
+
+  /**
+   * The whole walk home: a route around walls and through doorways to the HQ door (A*, see
+   * src/engine/pathfind.js), then in through the door to his spot. The last two points are
+   * always "just inside the door" and "his spot".
+   */
+  _routeHome() {
+    const [out, inside, home] = this._doorPoints();
+    this._doorOut = out;
+    if (this._insideHQ()) return [inside, home];
+    // only through doors that actually open (and aren't locked): those he can open as he walks
+    const canOpen = (box) => {
+      const def = this.interaction?.doorForCollider(box.name);
+      return !!def && !this.interaction._locked(def);
+    };
+    const path = findPath(this.world, this.pos, out, { radius: RADIUS, canOpen }) ?? [{ x: out.x, z: out.z }];
+    return [...path.map((p) => new THREE.Vector3(p.x, 0, p.z)), inside, home];
   }
 
   /** Is he inside the HQ shed (between its door and his spot)? */
@@ -318,18 +337,26 @@ export class Cole {
   _returnHome(dt, player) {
     if (!this.route.length) this.route = this._routeHome();
     // nobody watching and still far from HQ: he's already made his way to the HQ door
-    if (!this._seen(player) && this.route.length === 3 && this.pos.distanceTo(this.route[0]) > 6) {
-      const doorOut = this.route[0];
-      if (!this._seenAt(doorOut)) { this.pos.set(doorOut.x, 0, doorOut.z); this.speed = 0; }
+    const out = this._doorOut;
+    if (out && this.route.length > 2 && !this._seen(player) && this.pos.distanceTo(out) > 6 && !this._seenAt(out)) {
+      this.pos.set(out.x, 0, out.z);
+      this.speed = 0;
+      this.route = this.route.slice(-2);
     }
-    if (this.route.length === 3 && this._insideHQ()) this.route.shift(); // already indoors
+    if (this.route.length > 2 && this._insideHQ()) this.route = this.route.slice(-2); // already indoors
     if (this.route.length === 1) this._closeDoorBehind();
     const goal = this.route[0];
     const last = this.route.length === 1;
     const d = this._locomote(goal, dt, WALK, last ? 0.15 : 0.35);
-    if (d < (last ? 0.2 : 0.45)) this.route.shift();
-    // walked into something for a while (dust devil of furniture): try the next point
-    if (this._stuck > 1.5 && this.route.length > 1) { this.route.shift(); this._stuck = 0; }
+    if (d < (last ? 0.2 : 0.45)) { this.route.shift(); this._replans = 0; }
+    // pushed back by something for a while (a door that swung shut, a building that just loaded
+    // its walls): plan the route again from where he stands
+    if (this._stuck > 1.2) {
+      this._stuck = 0;
+      this._replans = (this._replans ?? 0) + 1;
+      if (this._replans <= 3) this.route = this._routeHome();
+      else if (this.route.length > 1) { this.route.shift(); this._replans = 0; } // still stuck: next point
+    }
     if (!this.route.length) {
       this.mode = 'home';
       this.speed = 0;
