@@ -53,6 +53,11 @@ BACK = (1.2, 2.4)                       # back door in the north wall (x range)
 OFFICE = dict(x0=13.0, x1=20.0, z0=-12.5, z1=-6.5, h=3.2, door=(15.0, 16.0), window=(17.2, 18.8))
 
 
+# the trapdoor opening in Pryce's office floor (0.8 m square, in front of the desk, under the rug)
+TRAP_X = (16.45, 17.25)
+TRAP_Z = (-9.4, -8.6)
+
+
 def roof_y(x):
     return CY + math.sqrt(max(R * R - x * x, 0.0))
 
@@ -173,6 +178,7 @@ def build():
     print('Building shell...')
 
     floor = tbox('Hangar_Floor', -HX - TH, HX + TH, -0.2, 0.0, -HZ - TH, HZ + TH, M['floor'], 'Shell')
+    apply_boolean(floor, [cut('cut_trap_c', *TRAP_X, -1, 1, *TRAP_Z)])  # the Undercroft shaft (game: crimeScene.js)
     world_uv(floor)
 
     # ---- walls (with window and door openings) and arched gables
@@ -373,6 +379,7 @@ def rooms(M):
     west = tbox('office_west', o['x0'] - t / 2, o['x0'] + t / 2, 0, o['h'], o['z0'], zf + t / 2, P, 'Shell')
     ceil = tbox('office_ceiling', o['x0'] - t / 2, o['x1'], o['h'], o['h'] + 0.14, o['z0'], zf + t / 2, P, 'Shell')
     flo = tbox('office_floor', o['x0'] + t / 2, o['x1'], 0, 0.015, o['z0'], zf - t / 2, FB, 'Shell')
+    apply_boolean(flo, [cut('cut_trap_f', *TRAP_X, -1, 1, *TRAP_Z)])  # trapdoor opening under the rug
     for ob in (front, west, ceil, flo):
         world_uv(ob, 1, 1, 1)
     trim = []

@@ -1,91 +1,46 @@
 {
-  "_note": "Stage E: the people of Sable Flat (addendum F + v4). Schedule from the addendum's table. Topics unlock with 'requires' (a finding id the player has any source for, 'solved:S5', or 'flag:name') and 'minTrust'. 'gives' adds sources to findings. Trust starts at 50: kind approaches raise it, pressing lowers it.",
+  "_note": "Stage E: the people of Sable Flat (addendum F + v4). Everyone stays in their own room all day (spots, schedule). Topics unlock with 'requires' (a finding id the player has any source for, 'solved:S5', or 'flag:name') and 'minTrust'. 'gives' adds sources to findings. Trust starts at 50: kind approaches raise it, pressing lowers it.",
   "spots": {
-    "hangar_door": [
+    "room_vivienne": [
       [
-        14.6,
-        -5.0,
-        3.1416
-      ],
-      [
-        16.6,
-        -5.2,
-        3.1416
-      ]
-    ],
-    "hangar": [
-      [
-        6,
-        -3,
-        -0.6
-      ],
-      [
-        -3,
-        4,
-        0.8
-      ],
-      [
-        -8,
-        -6,
-        1.2
-      ],
-      [
-        9,
-        3,
-        -1.0
-      ]
-    ],
-    "office": [
-      [
-        14.3,
-        -8.2,
-        1.5708
-      ]
-    ],
-    "quarters": [
-      [
-        -84.4,
-        -26.3,
-        3.1416
-      ],
-      [
-        -81.6,
-        -26.3,
-        3.1416
-      ],
-      [
-        -79.0,
-        -26.3,
-        3.1416
-      ],
-      [
-        -84.4,
-        -29.7,
-        0
-      ],
-      [
-        -81.6,
-        -29.7,
-        0
-      ],
-      [
-        -79.0,
-        -29.7,
+        -74.92,
+        -31.4,
         0
       ]
     ],
-    "maint_shed": [
+    "room_billie": [
       [
-        -57.6,
-        21.6,
-        1.5708
+        -70.25,
+        -31.4,
+        0
       ]
     ],
-    "storage": [
+    "room_lindqvist": [
       [
-        -57.8,
-        35.8,
-        1.5708
+        -65.58,
+        -31.4,
+        0
+      ]
+    ],
+    "room_julian": [
+      [
+        -74.92,
+        -24.6,
+        3.1416
+      ]
+    ],
+    "room_ox": [
+      [
+        -70.25,
+        -24.6,
+        3.1416
+      ]
+    ],
+    "room_tamsin": [
+      [
+        -65.58,
+        -24.6,
+        3.1416
       ]
     ],
     "radio": [
@@ -95,104 +50,19 @@
         0
       ]
     ],
-    "apron_plane": [
-      [
-        10.5,
-        40.5,
-        0.7
-      ]
-    ],
-    "apron_waco": [
-      [
-        -5.5,
-        43.0,
-        -1.2
-      ]
-    ],
-    "operations": [
-      [
-        43,
-        -21,
-        0
-      ],
-      [
-        47,
-        -23,
-        1.2
-      ]
-    ],
-    "fuel_farm": [
-      [
-        79.5,
-        29.5,
-        1.5708
-      ]
-    ],
     "gone": []
   },
   "schedule": [
     {
-      "from": "06:10",
-      "to": "09:00",
+      "from": "00:00",
+      "to": "23:59",
       "at": {
-        "vivienne": "hangar_door",
-        "billie": "hangar",
-        "lindqvist": "office",
-        "julian": "quarters",
-        "ox": "maint_shed",
-        "tamsin": "hangar",
-        "hobbs": "radio"
-      }
-    },
-    {
-      "from": "09:00",
-      "to": "12:00",
-      "at": {
-        "vivienne": "quarters",
-        "billie": "apron_plane",
-        "lindqvist": "quarters",
-        "julian": "quarters",
-        "ox": "maint_shed",
-        "tamsin": "operations",
-        "hobbs": "radio"
-      }
-    },
-    {
-      "from": "12:00",
-      "to": "13:30",
-      "at": {
-        "vivienne": "quarters",
-        "billie": "hangar",
-        "lindqvist": "quarters",
-        "julian": "fuel_farm",
-        "ox": "gone",
-        "tamsin": "quarters",
-        "hobbs": "radio"
-      }
-    },
-    {
-      "from": "13:30",
-      "to": "15:30",
-      "at": {
-        "vivienne": "quarters",
-        "billie": "quarters",
-        "lindqvist": "hangar",
-        "julian": "apron_waco",
-        "ox": "storage",
-        "tamsin": "quarters",
-        "hobbs": "radio"
-      }
-    },
-    {
-      "from": "15:30",
-      "to": "17:30",
-      "at": {
-        "vivienne": "quarters",
-        "billie": "apron_plane",
-        "lindqvist": "quarters",
-        "julian": "apron_waco",
-        "ox": "gone",
-        "tamsin": "operations",
+        "vivienne": "room_vivienne",
+        "billie": "room_billie",
+        "lindqvist": "room_lindqvist",
+        "julian": "room_julian",
+        "ox": "room_ox",
+        "tamsin": "room_tamsin",
         "hobbs": "radio"
       }
     }
@@ -718,5 +588,13 @@
       },
       "presentDefault": "\"Eh? Speak up, Inspector. Oh, that. Can't say I know.\""
     }
+  },
+  "_spots": "Each person stays in their own room all day, alone, so you can talk to them privately: the six suspects in their bedrooms in the Quarters (the names on the doors), Hobbs in the radio shack. [x, z, facing].",
+  "roomLamp": {
+    "color": "#ffc27a",
+    "intensity": 9,
+    "distance": 7,
+    "near": 6.5,
+    "_about": "The bedrooms have no lamps of their own: one warm lamp lights the room of whoever you are near (within near metres), so each person can be seen. Lamp sits above them, a little towards the door."
   }
 }

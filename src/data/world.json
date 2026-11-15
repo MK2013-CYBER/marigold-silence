@@ -844,5 +844,12 @@
       ]
     }
   },
-  "metresPerMinute": 40
+  "metresPerMinute": 40,
+  "groundHole": [
+    16.43,
+    17.27,
+    -9.42,
+    -8.58
+  ],
+  "_groundHole": "The trapdoor shaft under Pryce's office: the desert ground is not drawn inside this x0, x1, z0, z1 column (src/world/terrain.js)."
 }

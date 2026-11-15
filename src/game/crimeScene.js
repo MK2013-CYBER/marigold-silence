@@ -112,17 +112,62 @@ export class CrimeScene {
     spot('CS_blotter', V(16.8, top + 0.01, -9.88), [0.9, 0.03, 0.55]);
     spot('CS_book', V(13.3, 1.35, -10.9), [0.3, 0.25, 0.3]);
 
-    // the trapdoor (hidden until S6 is solved)
+    // the trapdoor: a real 0.8 m opening in the office floor (cut into hangar_shell.glb), a shaft
+    // with plank walls and an iron ladder, a lamp glowing far below. Until S6 the hatch lies flush
+    // under the rug; S6 swings it open onto the floor beside the hole.
     this.trap = new THREE.Group();
-    const hatch = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.03, 0.8), m(0x2a1e14, 0.8));
-    const hole = new THREE.Mesh(new THREE.PlaneGeometry(0.75, 0.75), new THREE.MeshBasicMaterial({ color: 0x050403 }));
-    hole.rotation.x = -Math.PI / 2;
-    hole.position.y = 0.012;
-    hatch.position.set(0.45, 0.4, 0);
-    hatch.rotation.z = -1.3;
-    this.trap.add(hatch, hole);
-    this.trap.position.set(16.85, 0.0, -9.0);
-    this.trap.visible = false;
+    this.trap.position.set(16.85, 0, -9.0);
+    const S = 0.4, DEPTH = 3.2; // half-width of the opening, depth of the shaft
+    const plank = m(0x3b2c1e, 0.9);
+    const shaft = new THREE.Group();
+    for (const [x, z, w, d] of [[-S - 0.03, 0, 0.06, 2 * S + 0.12], [S + 0.03, 0, 0.06, 2 * S + 0.12], [0, -S - 0.03, 2 * S, 0.06], [0, S + 0.03, 2 * S, 0.06]]) {
+      const wall = new THREE.Mesh(new THREE.BoxGeometry(w, DEPTH, d), plank);
+      wall.position.set(x, -DEPTH / 2 - 0.005, z);
+      shaft.add(wall);
+    }
+    const glow = new THREE.Mesh(new THREE.PlaneGeometry(2 * S, 2 * S), new THREE.MeshBasicMaterial({ color: 0x6a4214 })); // her lamp, down below
+    glow.rotation.x = -Math.PI / 2;
+    glow.position.y = -DEPTH;
+    shaft.add(glow);
+    // the ladder against the north wall, its rails poking up above the floor as handholds
+    const iron = m(0x2b2622, 0.55, 0.8);
+    for (const x of [-0.2, 0.2]) {
+      const rail = new THREE.Mesh(new THREE.BoxGeometry(0.04, DEPTH + 0.45, 0.04), iron);
+      rail.position.set(x, -DEPTH / 2 + 0.22, -S + 0.05);
+      shaft.add(rail);
+    }
+    for (let y = -DEPTH + 0.25; y < 0; y += 0.3) {
+      const rung = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.4, 8), iron);
+      rung.rotation.z = Math.PI / 2;
+      rung.position.set(0, y, -S + 0.06);
+      shaft.add(rung);
+    }
+    // a dark timber frame around the opening so it reads as a hatchway, not a hole in a picture
+    const frameM = m(0x22180f, 0.8);
+    for (const [x, z, w, d] of [[-S - 0.04, 0, 0.08, 2 * S + 0.16], [S + 0.04, 0, 0.08, 2 * S + 0.16], [0, -S - 0.04, 2 * S, 0.08], [0, S + 0.04, 2 * S, 0.08]]) {
+      const f = new THREE.Mesh(new THREE.BoxGeometry(w, 0.02, d), frameM);
+      f.position.set(x, 0.008, z);
+      shaft.add(f);
+    }
+    shaft.visible = false; // drawn only once the hatch is open (closed, nothing shows through)
+    this.shaft = shaft;
+    // the hatch: planks with two iron straps and a ring; hinged on its east edge
+    this.hatch = new THREE.Group();
+    const boards = new THREE.Mesh(new THREE.BoxGeometry(2 * S, 0.03, 2 * S), m(0x4a3523, 0.85));
+    boards.position.set(-S, 0, 0);
+    this.hatch.add(boards);
+    for (const z of [-0.22, 0.22]) {
+      const strap = new THREE.Mesh(new THREE.BoxGeometry(2 * S - 0.04, 0.034, 0.05), iron);
+      strap.position.set(-S, 0, z);
+      this.hatch.add(strap);
+    }
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.045, 0.008, 6, 16), iron);
+    ring.rotation.x = Math.PI / 2;
+    ring.position.set(-2 * S + 0.12, 0.02, 0);
+    this.hatch.add(ring);
+    this.hatch.position.set(S, -0.003, 0); // closed: flush with the boards, under the rug
+    this.trap.add(shaft, this.hatch);
+    this.trap.traverse((o) => { o.userData.noRay = true; }); // aiming goes through to the trapdoor's own target box
     this.group.add(this.trap);
 
     // Pryce, slumped forward over the desk
@@ -228,7 +273,19 @@ export class CrimeScene {
   }
 
   openTrapdoor(instant = false) {
-    this.trap.visible = true;
+    this.shaft.visible = true;
+    // the hatch swings over on its hinge and lies open on the floor, east of the hole
+    // (it ends upside down, lifted onto the boards so the floor doesn't swallow it)
+    if (instant) { this.hatch.rotation.z = -Math.PI; this.hatch.position.y = 0.032; } else {
+      const t0 = performance.now();
+      const swing = () => {
+        const k = Math.min(1, (performance.now() - t0) / 1400);
+        this.hatch.rotation.z = -Math.PI * (k < 0.5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2);
+        this.hatch.position.y = -0.003 + 0.035 * k;
+        if (k < 1) requestAnimationFrame(swing);
+      };
+      swing();
+    }
     const rug = this.hangar.root.getObjectByName('Office_Rug');
     if (rug && !rug.userData.moved) { rug.position.x -= 0.9; rug.position.z += 0.4; rug.rotation.y += 0.15; rug.userData.moved = true; }
     if (!instant) this.hud.caption(this.data.S6.trapdoor, 8);

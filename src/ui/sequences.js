@@ -1,5 +1,4 @@
 import { parseTime } from '../engine/state.js';
-import { Voice } from '../engine/voice.js';
 
 /**
  * Screens for the office investigation sequences (v4 S1-S6). Each has its own mechanic:
@@ -868,7 +867,7 @@ export class SequenceScreen {
     sec.appendChild(this._btn('Listen here', () => {
       const seg = d.segments.find(([a, b]) => st.at >= a && st.at < b) ?? d.segments[d.segments.length - 1];
       this._hiss(2.5, seg[2] === 'VOICE' ? 0.04 : 0.1, st.at >= 60 && st.at < 158);
-      if (seg[2] === 'VOICE') { st.heard = `${d.voice.speaker}: "${d.voice.text}"`; Voice.speak(d.voice.text, { id: 'cylinder' }, { radio: true }); }
+      if (seg[2] === 'VOICE') { st.heard = `${d.voice.speaker}: "${d.voice.text}"`; }
       else st.heard = seg[2];
       this.spend(1);
       this.render();

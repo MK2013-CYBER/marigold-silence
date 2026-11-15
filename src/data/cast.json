@@ -1,48 +1,32 @@
 {
-  "_note": "The people of Sable Flat as 3D figures: model file (built by blender/build_characters.py), height in metres, props they carry, and the computer voice used for their spoken lines until real voice acting (Stage H).",
+  "_note": "The people of Sable Flat as 3D figures: model file (built by blender/build_characters.py), height in metres, props they carry.",
   "people": {
     "cole": {
       "file": "cast/cole.glb",
       "height": 1.78,
       "props": [
         "fedora"
-      ],
-      "voice": {
-        "id": "cole"
-      }
+      ]
     },
-    "hart": {
-      "voice": {
-        "id": "hart"
-      }
-    },
+    "hart": {},
     "pryce": {
       "file": "cast/pryce.glb",
       "height": 1.72,
       "props": [
         "glass"
-      ],
-      "voice": {
-        "id": "pryce"
-      }
+      ]
     },
     "vivienne": {
       "file": "cast/vivienne.glb",
       "height": 1.68,
       "props": [
         "pearls"
-      ],
-      "voice": {
-        "id": "vivienne"
-      }
+      ]
     },
     "billie": {
       "file": "cast/billie.glb",
       "height": 1.7,
-      "props": [],
-      "voice": {
-        "id": "billie"
-      }
+      "props": []
     },
     "lindqvist": {
       "file": "cast/lindqvist.glb",
@@ -50,54 +34,36 @@
       "props": [
         "spectacles",
         "glassL"
-      ],
-      "voice": {
-        "id": "lindqvist"
-      }
+      ]
     },
     "julian": {
       "file": "cast/julian.glb",
       "height": 1.82,
-      "props": [],
-      "voice": {
-        "id": "julian"
-      }
+      "props": []
     },
     "ox": {
       "file": "cast/ox.glb",
       "height": 1.96,
-      "props": [],
-      "voice": {
-        "id": "ox"
-      }
+      "props": []
     },
     "tamsin": {
       "file": "cast/tamsin.glb",
       "height": 1.64,
       "props": [
         "cigarette"
-      ],
-      "voice": {
-        "id": "tamsin"
-      }
+      ]
     },
     "hobbs": {
       "file": "cast/hobbs.glb",
       "height": 1.66,
       "props": [
         "lantern"
-      ],
-      "voice": {
-        "id": "hobbs"
-      }
+      ]
     },
     "clementine": {
       "file": "cast/clementine.glb",
       "height": 1.63,
-      "props": [],
-      "voice": {
-        "id": "clementine"
-      }
+      "props": []
     }
   }
 }

@@ -93,7 +93,7 @@ apron, windsock, sun, Raven Ridge, streamed models, indoor zones, planned buildi
   and six close-ups), dust on a window at night with a music box, the scream, "SATURDAY, 6:10 A.M.".
 - Code: `src/game/intro.js` (shots and camera), `src/world/plane.js` (the plane, built in code),
   `src/world/silhouettes.js` (placeholder figures), `src/engine/introAudio.js` (sounds made in code).
-  Words: `src/data/scenes/intro.json`. Voices come in Stage H; for now the lines are subtitles.
+  Words: `src/data/scenes/intro.json`. The lines are subtitles.
 - Danny now walks like a person: follows your footsteps through doors, opens and closes doors,
   turns before walking, eases in and out of his stride, looks at you, nods and points. He can
   wait where you leave him or walk back to HQ. **J** opens the case file anywhere.
@@ -140,25 +140,21 @@ With enough (usually 3) a finding is Established and goes on the HQ board. Tab s
 the things you noticed. Data: `src/data/findings.json`, `src/data/sequences.json`.
 Code: `src/game/evidence.js`, `src/game/crimeScene.js`, `src/ui/sequences.js`.
 
-## Stage H: voices, music, realism
+## Stage H: music, realism
 
-- **Voices**: every spoken line is acted by Google's Gemini text-to-speech, rendered ahead of time
-  with `npm run voices:gemini`: a custom-designed voice per character and an acting direction per
-  line, all in `tools/voice-direction.json` (edit a line's `style` and run it again: only changed
-  lines are re-rendered). Files go to `public/audio/vo/<who>/g_*.m4a`, listed in `gemini.json`. Lines
-  play through the room's echo; Danny's radio calls go through a walkie-talkie filter. A line with no
-  file yet is a silent subtitle. The game itself never calls Google, it only plays the files.
-  The key lives in `.env.local` (ignored by git; save it with `zsh tools/set-gemini-key-dialog.sh`).
-  Free tier: 10 lines a day on the best model; the tool stops cleanly and carries on next run.
-  `--test` renders one line per character, `--only=ox` one character, `--lite` the cheaper model.
+- **No voices**: all dialogue is on-screen text (subtitles and dialogue boxes); nothing is spoken.
 - **Music**: three original tracks composed in code from the music-box tune (`npm run music`,
   `tools/music.py`): the theme (title, intro, endings), the investigation (quiet, all day) and the
-  Undercroft. It dips under dialogue. Music volume and voices on/off are on the pause screen.
+  Undercroft. Music volume is on the pause screen.
 - **Realism**: ambient occlusion on High, a gentle glow on lamps and flames on Medium/High, people
   far away are not drawn. Measured on this M1 at 1440x900: Low ~4-6 ms, Medium ~4-6 ms, High
   ~5-12 ms per frame (60 fps needs under 16.6 ms).
 
 ## Tier 6: the finale
+
+The trapdoor in Pryce's office is a real opening in the floor (cut into `hangar_shell.glb`), hidden
+under the rug by a flush hatch until S6. Then the hatch swings open onto the boards and you see the
+shaft, the iron ladder and a lamp glowing far below: aim at it and press E to go down.
 
 - **S26 The Theory** (HQ typewriter): pick WHO, HOW, WHERE and WHY. A new name appears under WHO
   once you know enough. Filing it against an innocent person ends the game (The Wrong Person).
@@ -174,8 +170,10 @@ Code: `src/game/evidence.js`, `src/game/crimeScene.js`, `src/ui/sequences.js`.
 
 ## Stage E: the people (addendum F)
 
-Vivienne, Billie, Lindqvist, Julian, Ox, Tamsin and Hobbs stand where the schedule puts them for the
-time of day, fidget, and turn to face you. E to talk: ask about topics (some unlock as you find things
+Each person stays in their own room all day, alone, so you can talk to them privately: the six
+suspects in their bedrooms in the Quarters (the name on each door; Vivienne, Billie and Lindqvist on
+the north side, Julian, Ox and Tamsin on the south), Hobbs in the radio shack. A warm lamp lights the
+room of whoever you are near. They fidget and turn to face you. E to talk: ask about topics (some unlock as you find things
 or need trust), show them something you found, or watch them for a tell. Trust starts at 50: kind
 questions raise it, pressing lowers it. Data: `src/data/npcs.json`. Code: `src/game/npcs.js`.
 

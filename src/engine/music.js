@@ -1,11 +1,9 @@
-import { Voice } from './voice.js';
-
 /**
  * The score (Stage H): three tracks rendered by tools/music.py, crossfaded by situation.
  *   theme          the title, the intro and the endings
  *   investigation  the day: quiet, looping
  *   undercroft     under the hangar
- * The music dips while someone is speaking. Volume and on/off are on the pause screen.
+ * Volume and on/off are on the pause screen.
  */
 const KEY = 'marigold-silence.music.v1';
 
@@ -65,11 +63,10 @@ export class Music {
     this._want = null;
   }
 
-  /** Every frame: follow the level, the player's volume, and duck under speech. */
+  /** Every frame: follow the level and the player's volume. */
   update() {
     const c = this.current;
     if (!c) return;
-    const duck = Voice.speaking ? 0.4 : 1;
-    c.gain.gain.setTargetAtTime(this.level * this.volume * duck * 0.55, this.audio.ctx.currentTime, 0.6);
+    c.gain.gain.setTargetAtTime(this.level * this.volume * 0.55, this.audio.ctx.currentTime, 0.6);
   }
 }

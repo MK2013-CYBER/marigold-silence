@@ -33,7 +33,6 @@ import { SequenceScreen } from './ui/sequences.js';
 import { Walks } from './game/walks.js';
 import { Finale } from './game/finale.js';
 import finaleData from './data/finale.json';
-import { Voice } from './engine/voice.js';
 import { Music } from './engine/music.js';
 import config from './data/game.json';
 import interactables from './data/interactables.json';
@@ -98,7 +97,6 @@ const hasSave = state.load();
 
 const hud = new Hud({ clues, items, config });
 const audio = new AmbientAudio();
-Voice.attach(audio); // spoken lines play through the game's audio (room echo, radio filter)
 const music = new Music(audio);
 
 const interaction = new InteractionSystem({
@@ -242,25 +240,6 @@ hq.onFreezeChange = (rest) => { if (rest !== undefined) resting = rest; syncFree
 // ---------- quality presets (Low / Medium / High / Auto) ----------
 const quality = new Quality({ renderer, post, atmosphere, scene });
 quality.mount(document.getElementById('settings'));
-// spoken lines on or off (the computer's built-in voices; proper voice acting comes in Stage H)
-{
-  const el = document.getElementById('voice-setting');
-  const draw = () => {
-    el.replaceChildren();
-    const label = document.createElement('span');
-    label.textContent = 'Voices: ';
-    el.appendChild(label);
-    for (const on of [true, false]) {
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.textContent = on ? 'On' : 'Off';
-      b.classList.toggle('on', Voice.enabled === on);
-      b.addEventListener('click', (e) => { e.stopPropagation(); Voice.setEnabled(on); draw(); });
-      el.appendChild(b);
-    }
-  };
-  draw();
-}
 {
   const el = document.getElementById('music-setting');
   const draw = () => {
@@ -583,4 +562,4 @@ function introFrame(dt, t) {
 }
 
 // Test hook for automated checks in dev builds only.
-if (import.meta.env.DEV) window.__game = { intro, post, crime, people, walks, finale, Voice, music, evidence, seqScreen, trust, THREE, scene, camera, controller, world, flashlight, renderer, state, interaction, hud, atmosphere, ground, streamer, hangar, cole, hq, quality };
+if (import.meta.env.DEV) window.__game = { intro, post, crime, people, walks, finale, music, evidence, seqScreen, trust, THREE, scene, camera, controller, world, flashlight, renderer, state, interaction, hud, atmosphere, ground, streamer, hangar, cole, hq, quality };

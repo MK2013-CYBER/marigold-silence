@@ -2,13 +2,12 @@ import * as THREE from 'three';
 import { loadGLTF } from '../engine/assets.js';
 import { Character } from '../world/character.js';
 import { IntroAudio } from '../engine/introAudio.js';
-import { Voice } from '../engine/voice.js';
 
 /**
  * The cinematic intro (addendum v2, section E), about 2 minutes 20 seconds, rendered in
  * the game engine with the real cast and the real mail plane (the one parked on the apron
  * afterwards). Letterbox bars, film grain and colour grading, depth of field on faces,
- * a small score, wind and engine, spoken lines (computer voices until Stage H) with subtitles.
+ * a small score, wind and engine, dialogue as subtitles.
  * No gameplay input. Skip button, Esc, or hold Space to skip.
  *
  *   1 telegram            2 title over the dust       3 the plane out of the dust
@@ -17,7 +16,7 @@ import { Voice } from '../engine/voice.js';
  *   8 Friday dinner: Pryce's toast, six faces          9 night: dust, a music box stops
  *  10 a scream; "SATURDAY, 6:10 A.M."  -> gameplay
  *
- * All words: src/data/scenes/intro.json. People and voices: src/data/cast.json.
+ * All words: src/data/scenes/intro.json. People: src/data/cast.json.
  */
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
 const smooth = (k) => k * k * (3 - 2 * k);
@@ -78,7 +77,7 @@ export class Intro {
     this.dom.black.classList.toggle('on', on);
   }
 
-  /** A spoken line: subtitle on screen and the character's voice. */
+  /** A line of dialogue: a subtitle on screen. */
   say(line, secs) {
     const { sub, subWho, subText } = this.dom;
     subWho.textContent = line.speaker ? `${line.speaker}:` : '';
@@ -87,7 +86,6 @@ export class Intro {
     clearTimeout(this._subT);
     const dur = secs ?? Math.max(2.5, line.text.length / 13);
     this._subT = setTimeout(() => sub.classList.remove('on'), dur * 1000);
-    if (line.who) Voice.speak(line.text, this.cast[line.who]?.voice);
     if (!this.music) this.sfx.setScore(0.2, 0.6); // the music dips under dialogue (the score ducks itself)
     clearTimeout(this._duckT);
     if (!this.music) this._duckT = setTimeout(() => this.sfx.setScore(this._scoreLevel ?? 0.5, 2), dur * 1000);
@@ -201,7 +199,6 @@ export class Intro {
     if (this._ending) return;
     this._ending = true;
     this.black(true, 0.5);
-    Voice.stop();
     setTimeout(() => {
       this.sfx.staticOff(0.2);
       this.sfx.engineOff(0.3);

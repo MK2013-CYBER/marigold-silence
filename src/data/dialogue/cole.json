@@ -1,8 +1,5 @@
 {
   "speaker": "Danny Cole",
-  "voice": {
-    "id": "cole"
-  },
   "greetingFirst": "Morning, Chief. Well, I wouldn't call it morning, exactly. You can't see the sun for all this dust.",
   "greetings": [
     "Chief. The coffee's terrible, but at least it's hot.",

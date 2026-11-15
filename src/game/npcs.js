@@ -1,14 +1,14 @@
 import * as THREE from 'three';
 import { Character } from '../world/character.js';
 import { parseTime } from '../engine/state.js';
-import { Voice } from '../engine/voice.js';
 import { pagedChoices } from '../ui/dialogue.js';
 
 /**
  * Stage E (addendum F): the suspects and Hobbs as people in the world.
- *  - Each stands where the schedule says for the time of day (src/data/npcs.json), idles with
- *    their own fidgets, and turns to face you when you come close. They change place only when
- *    you can't see them.
+ *  - Each stays in their own room all day (src/data/npcs.json: the suspects in their bedrooms in
+ *    the Quarters, Hobbs in the radio shack), so you can talk to anyone alone. They idle with their
+ *    own fidgets and turn to face you when you come close. (The schedule can still move people;
+ *    if it does, they change place only when you can't see them.)
  *  - E to talk: topics (some unlock as you find things, some need trust), show them evidence,
  *    or watch them for a tell. Testimony adds sources to findings.
  *  - Trust (0-100, starts at 50): kind questions raise it, pressing lowers it; low trust locks topics.
@@ -34,6 +34,12 @@ export class People {
     this.npc = {};
     this.talking = null;
     this._acc = 10;
+    // one warm lamp for the bedroom of whoever you're near (the rooms have no light of their own)
+    const L = this.data.roomLamp ?? {};
+    this.lamp = new THREE.PointLight(L.color ?? '#ffc27a', 0, L.distance ?? 7, 2);
+    this.lamp.castShadow = false;
+    this.lamp.visible = true; // stays in the scene at 0 when unused: changing the light count would recompile shaders
+    this.scene.add(this.lamp);
   }
 
   async load() {
@@ -97,6 +103,7 @@ export class People {
   update(dt, player) {
     this._acc += dt;
     if (this._acc > 2) { this._acc = 0; this._place(); }
+    this._lamp(dt, player);
     for (const n of Object.values(this.npc)) {
       if (!n.present) continue;
       const d = Math.hypot(player.x - n.root.position.x, player.z - n.root.position.z);
@@ -119,14 +126,30 @@ export class People {
     }
   }
 
+  /** Light the room of the person nearest you, if they're in a bedroom and you're close. */
+  _lamp(dt, player) {
+    const L = this.data.roomLamp ?? {};
+    let best = null, bd = L.near ?? 6.5;
+    for (const n of Object.values(this.npc)) {
+      if (!n.present || !n.at?.startsWith('room_')) continue;
+      const d = Math.hypot(player.x - n.root.position.x, player.z - n.root.position.z);
+      if (d < bd) { bd = d; best = n; }
+    }
+    const want = best ? (L.intensity ?? 9) : 0;
+    if (best) {
+      const p = best.root.position;
+      const fx = Math.sin(best.yaw), fz = Math.cos(best.yaw); // towards the door
+      this.lamp.position.set(p.x + fx * 0.9, 2.1, p.z + fz * 0.9);
+    }
+    this.lamp.intensity += (want - this.lamp.intensity) * Math.min(1, dt * 3);
+  }
+
   // ------------------------------------------------------------------ conversation
   _label(id) { return `${this.names.get(id) ?? id} · ${this.data.ui.trust} ${this.trust.get(id)}`; }
 
-  _say(id, text, choices, silent = false) {
+  _say(id, text, choices) {
     this.talking = id;
     this.dialogue.show(this._label(id), text, choices);
-    // the whole line goes to the voice: it speaks only the quoted words and skips the narration
-    if (silent) Voice.stop(); else Voice.speak(text, this.cast[id]?.voice);
     this.onFreezeChange?.();
   }
 
@@ -201,7 +224,7 @@ export class People {
     const p = this.data.people[id];
     const U = this.data.ui;
     const known = this.evidence.known();
-    if (!known.length) return this._say(id, U.nothingToPresent, [{ label: U.back, onPick: () => this.menu(id, 'Anything else?') }], true);
+    if (!known.length) return this._say(id, U.nothingToPresent, [{ label: U.back, onPick: () => this.menu(id, 'Anything else?') }]);
     const shown = (this.state.data.shown ??= {});
     const toChoice = (f) => ({
       label: f.name,
@@ -221,7 +244,7 @@ export class People {
     const extra = [{ label: U.back, onPick: () => this.menu(id, 'Anything else?') }];
     const show = (pg) => this.dialogue.show(this._label(id), U.presentIntro, pagedChoices(known, toChoice, show, extra, pg));
     const choices = pagedChoices(known, toChoice, show, extra, 0);
-    this._say(id, U.presentIntro, choices, true); // a question to you, not something they say
+    this._say(id, U.presentIntro, choices);
   }
 
   observe(id) {

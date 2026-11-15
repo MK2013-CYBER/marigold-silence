@@ -1,7 +1,5 @@
 import * as THREE from 'three';
 import { Character } from '../world/character.js';
-import { Voice } from '../engine/voice.js';
-import { isNarration } from '../engine/speech-text.js';
 import { parseTime } from '../engine/state.js';
 import { pagedChoices } from '../ui/dialogue.js';
 
@@ -32,10 +30,10 @@ export class Finale {
     ];
     for (const d of defs) if (!this.interaction.byId.has(d.id)) { this.interaction.defs.push(d); this.interaction.byId.set(d.id, d); }
     // the trapdoor itself, in the office (appears with S6)
-    const hit = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.3, 0.9), new THREE.MeshBasicMaterial({ visible: false }));
+    const hit = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.6, 1.0), new THREE.MeshBasicMaterial({ visible: false }));
     hit.userData.hitProxy = true;
     hit.name = 'CS_trap_hit';
-    hit.position.set(16.85, 0.15, -9.0);
+    hit.position.set(16.85, 0.3, -9.0); // the opening plus the ladder top: easy to aim at
     this.crime.group.add(hit);
     const trap = { id: 'cs_trapdoor', type: 'ui', ui: 'trapdown', location: 'office', object: 'CS_trap_hit', prompt: this.data.trapPrompt, timeCost: 0, requires: ['flag:trapOpen'] };
     if (!this.interaction.byId.has(trap.id)) { this.interaction.defs.push(trap); this.interaction.byId.set(trap.id, trap); }
@@ -74,10 +72,7 @@ export class Finale {
   descend() {
     if (this.state.flag('oxPassed')) return this._go(true);
     const S = this.data.standoff;
-    const say = (who, text, choices) => {
-      this.dialogue.show(who, text, choices);
-      if (who === 'Ox') { if (isNarration(text)) Voice.stop(); else Voice.speak(text, this.cast.ox?.voice); }
-    };
+    const say = (who, text, choices) => this.dialogue.show(who, text, choices);
     const opts = S.options.filter((o) => !o.requires || this._req(o.requires)).map((o) => ({
       label: o.label,
       onPick: () => {
@@ -87,7 +82,6 @@ export class Finale {
         const pass = o.id === 'ledger' || (o.trust && this.trust.get('ox') >= o.trust);
         if (!pass) return say('Ox', o.no, [{ label: 'Try something else', onPick: () => this.descend() }, { label: 'Back away', onPick: () => this.dialogue.close() }]);
         say('Ox', o.ok, [{ label: '...', onPick: () => {
-          Voice.speak(S.voice, this.cast.clementine?.voice);
           say(S.voiceWho, `"${S.voice}"`, [{ label: 'Climb down', onPick: () => { this.state.setFlag('oxPassed'); this.dialogue.close(); this._go(true); } }]);
         } }]);
       },
@@ -170,8 +164,7 @@ export class Finale {
     if (this.state.data.ending) return;
     const C = this.data.clementine;
     const name = C.name;
-    const speak = (t) => (isNarration(t) ? Voice.stop() : Voice.speak(t, this.cast.clementine?.voice));
-    const say = (t, choices) => { this.dialogue.show(name, t, choices); speak(t); this.onFreezeChange?.(); };
+    const say = (t, choices) => { this.dialogue.show(name, t, choices); this.onFreezeChange?.(); };
     const known = () => this.evidence.known();
     let right = 0;
     const prompt = (k) => {
@@ -240,7 +233,6 @@ export class Finale {
       p.textContent = e.lines[i];
       box.appendChild(p);
       requestAnimationFrame(() => p.classList.add('on'));
-      Voice.speak(e.lines[i], this.cast.hart?.voice);
       i++;
       this._endT = setTimeout(next, Math.max(4500, e.lines[i - 1].length * 70));
     };
@@ -259,7 +251,7 @@ export class Finale {
     again.onclick = (ev) => { ev.stopPropagation(); this.state.erase(); this.state.save = () => {}; location.reload(); };
     const keep = document.createElement('button');
     keep.textContent = E.keep;
-    keep.onclick = (ev) => { ev.stopPropagation(); this.ui.classList.remove('on'); this.ui.classList.add('hidden'); Voice.stop(); };
+    keep.onclick = (ev) => { ev.stopPropagation(); this.ui.classList.remove('on'); this.ui.classList.add('hidden'); };
     btns.append(again, keep);
     this.ui.onclick = null;
   }

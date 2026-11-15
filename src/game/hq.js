@@ -2,7 +2,6 @@ import { parseTime } from '../engine/state.js';
 import { DialogueBox } from '../ui/dialogue.js';
 import { InvestigationBoard } from '../ui/board.js';
 import { CaseFileScreen, ReportsScreen, TimelineScreen } from '../ui/screens.js';
-import { Voice } from '../engine/voice.js';
 
 const pick = (list) => list[Math.floor(Math.random() * list.length)];
 
@@ -26,7 +25,7 @@ export class HQ {
     for (const s of [this.board, this.reportsScreen, this.caseFile, this.timeline]) {
       s.onClose = () => { this.screen = null; this.onScreenClosed?.(); };
     }
-    this.dialogue.onClose = () => { this.cole.talking = false; Voice.stop(); this.onFreezeChange?.(); };
+    this.dialogue.onClose = () => { this.cole.talking = false; this.onFreezeChange?.(); };
     this.fade = document.createElement('div');
     this.fade.className = 'fade';
     document.body.appendChild(this.fade);
@@ -59,7 +58,7 @@ export class HQ {
 
   closeScreen() { this.screen?.close(); }
 
-  danny(text, seconds = 7) { this.hud.caption(`Danny: ${text}`, seconds); Voice.speak(text, this.lines.voice); }
+  danny(text, seconds = 7) { this.hud.caption(`Danny: ${text}`, seconds); }
 
   /** The cot: Danny says he'll wake you, THEN the screen fades and half an hour passes. */
   rest() {
@@ -82,12 +81,11 @@ export class HQ {
   }
 
   // ------------------------------------------------------------------ Danny's conversation
-  /** Danny says a line: typed out in the box and spoken aloud with his voice. */
+  /** Danny says a line: typed out in the box. */
   say(line, choices) {
     const L = this.lines;
     this.cole.talking = !this.remote;
     this.dialogue.show(L.speaker + (this.remote ? ' (radio)' : ''), line, choices);
-    Voice.speak(line, L.voice, { radio: this.remote });
     if (!this.remote && Math.random() < 0.35) this.cole.gesture(Math.random() < 0.5 ? 'Nod' : 'Talk', 2.2);
     this.onFreezeChange?.();
   }
@@ -132,7 +130,7 @@ export class HQ {
     if (mode !== 'follow') c.push({ label: M.follow, onPick: () => { this._mode('follow'); this.say(this.remote ? L.radioFollow : L.follow, this.menuChoices()); } });
     if (mode === 'follow' && !this.remote) c.push({ label: M.stay, onPick: () => { this._mode('wait'); this.say(L.stay, this.menuChoices()); } });
     if (mode === 'follow' || mode === 'wait') c.push({ label: M.home, onPick: () => { this._mode('home'); this.say(L.home, this.menuChoices()); } });
-    c.push({ label: M.bye, onPick: () => { this.dialogue.close(); Voice.speak(L.bye, L.voice); } });
+    c.push({ label: M.bye, onPick: () => this.dialogue.close() });
     return c;
   }
 
@@ -248,7 +246,6 @@ export class HQ {
         this.state.save();
         this.audio.click();
         this.hud.caption(`Danny (radio): ${text}`, 9);
-        Voice.speak(text, this.lines.voice, { radio: true });
       }
     }
   }

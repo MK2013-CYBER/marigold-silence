@@ -62,12 +62,15 @@ export function createTerrain(scene, cfg, textures) {
   // Large-scale tint (salt_macro, 1 tile = 300 m) and sandier dunes, to hide tiling.
   mat.onBeforeCompile = (shader) => {
     shader.uniforms.macroMap = { value: textures.salt_macro };
+    // no ground inside the trapdoor shaft under Pryce's office (world.json groundHole: x0, x1, z0, z1)
+    shader.uniforms.groundHole = { value: new THREE.Vector4(...(cfg.groundHole ?? [0, 0, 0, 0])) };
     shader.vertexShader = shader.vertexShader
       .replace('#include <common>', '#include <common>\nvarying vec3 vWorldP;')
       .replace('#include <begin_vertex>', '#include <begin_vertex>\nvWorldP = (modelMatrix * vec4(transformed, 1.0)).xyz;');
     shader.fragmentShader = shader.fragmentShader
-      .replace('#include <common>', '#include <common>\nvarying vec3 vWorldP;\nuniform sampler2D macroMap;')
-      .replace('#include <map_fragment>', `#include <map_fragment>
+      .replace('#include <common>', '#include <common>\nvarying vec3 vWorldP;\nuniform sampler2D macroMap;\nuniform vec4 groundHole;')
+      .replace('#include <map_fragment>', `if (vWorldP.x > groundHole.x && vWorldP.x < groundHole.y && vWorldP.z > groundHole.z && vWorldP.z < groundHole.w) discard;
+        #include <map_fragment>
         float mv = texture2D(macroMap, vWorldP.xz / 300.0).r;
         float mv2 = texture2D(macroMap, vWorldP.xz / 47.0 + 0.37).r;
         diffuseColor.rgb *= 0.74 + 0.5 * mv + 0.12 * (mv2 - 0.5);
