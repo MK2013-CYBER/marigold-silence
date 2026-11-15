@@ -37,7 +37,7 @@ const pickVoice = (prefer = []) => {
 };
 const SPEAKERS = {};
 for (const [id, p] of Object.entries(cast)) if (p.voice) SPEAKERS[id] = { voice: pickVoice(p.voice.prefer), rate: p.voice.rate ?? 1 };
-SPEAKERS.cylinder = { voice: pickVoice(['Zoe', 'Ava', 'Shelley (English (United States))', 'Samantha']), rate: 1.05 };
+SPEAKERS.cylinder = { voice: pickVoice(['Ava', 'Zoe', 'Shelley (English (United States))', 'Samantha']), rate: 1.05 };
 
 // ------------------------------------------------------------------ every line, per speaker
 const lines = {};

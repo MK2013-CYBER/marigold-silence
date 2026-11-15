@@ -24,8 +24,8 @@
     "hart": {
       "voice": {
         "prefer": [
-          "Oliver",
           "Jamie",
+          "Oliver",
           "Arthur",
           "Daniel"
         ],
@@ -124,6 +124,7 @@
       "props": [],
       "voice": {
         "prefer": [
+          "Nathan",
           "Ralph",
           "Rocko (English (United States))",
           "Fred"
@@ -141,6 +142,7 @@
       ],
       "voice": {
         "prefer": [
+          "Ava",
           "Allison",
           "Susan",
           "Tessa",
