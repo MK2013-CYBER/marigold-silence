@@ -9,7 +9,7 @@ const FLASH = new THREE.Color('#d9d6e8');
 
 /**
  * The dust storm: fog, overcast brown-yellow light with a low sun, distant Raven Ridge,
- * blowing dust (near particles, low sand drift, big drifting dust sheets), gusting wind,
+ * blowing dust (near particles, low sand drift), gusting wind,
  * lightning. "indoor" (0..1) blends everything towards interior conditions, like eyes
  * adjusting when you step inside.
  */
@@ -137,34 +137,14 @@ export class Atmosphere {
     this.driftPoints.frustumCulled = false;
     this.scene.add(this.driftPoints);
 
-    // 3) big soft sheets of dust rolling across the flat
-    const sheetTex = sheetTexture();
-    this.sheets = [];
-    for (let i = 0; i < 20; i++) {
-      const s = new THREE.Sprite(new THREE.SpriteMaterial({
-        map: sheetTex, color: 0xc9ab7e, transparent: true, opacity: 0, depthWrite: false, fog: true,
-      }));
-      s.userData = { base: 0.16 + r() * 0.16, speed: 0.7 + r() * 0.6, phase: r() * 10 };
-      s.scale.set(60 + r() * 50, 18 + r() * 16, 1);
-      this.sheets.push(s);
-      this.scene.add(s);
-    }
-    this._sheetsPlaced = false;
+    // (There used to be big drifting "dust sheets" here: huge flat sprites that showed up as brown walls
+    // appearing from nowhere. Removed; the fog and the particles carry the storm.)
   }
 
   /** Quality presets: draw only part of the dust (0..1). */
   setDustScale(k) {
     this.dustPoints.geometry.setDrawRange(0, Math.round(this.dust.N * k));
     this.driftPoints.geometry.setDrawRange(0, Math.round(this.drift.M * k));
-    const n = Math.round(this.sheets.length * k);
-    this.sheets.forEach((s, i) => { s.userData.off = i >= n; });
-  }
-
-  _placeSheet(s, p, anywhere) {
-    const w = this.wind;
-    const d = anywhere ? 20 + Math.random() * 120 : 120 + Math.random() * 40;
-    const ang = anywhere ? Math.random() * Math.PI * 2 : Math.atan2(-w.dirZ, -w.dirX) + (Math.random() - 0.5) * 1.6;
-    s.position.set(p.x + Math.cos(ang) * d, s.scale.y * 0.35, p.z + Math.sin(ang) * d);
   }
 
   /** inside: is the player in an interior zone (true/false). */
@@ -223,7 +203,6 @@ export class Atmosphere {
     const out = 1 - ind;
     const showDust = out > 0.05;
     this.dustPoints.visible = this.driftPoints.visible = showDust;
-    for (const s of this.sheets) s.visible = showDust && !s.userData.off;
     if (!showDust) return;
     this.dustPoints.material.opacity = 0.55 * out;
     this.driftPoints.material.opacity = 0.6 * out;
@@ -258,18 +237,6 @@ export class Atmosphere {
       S.pos[j] = x + p.x; S.pos[j + 2] = z + p.z;
     }
     this.driftPoints.geometry.attributes.position.needsUpdate = true;
-
-    if (!this._sheetsPlaced) { for (const s of this.sheets) this._placeSheet(s, p, true); this._sheetsPlaced = true; }
-    for (const s of this.sheets) {
-      const u = s.userData;
-      s.position.x += vx * u.speed * dt;
-      s.position.z += vz * u.speed * dt;
-      const dx = s.position.x - p.x, dz = s.position.z - p.z;
-      const d = Math.hypot(dx, dz);
-      if (d > 170 || (dx * w.dirX + dz * w.dirZ > 140)) this._placeSheet(s, p, false);
-      const near = THREE.MathUtils.smoothstep(d, 8, 30); // fade out when it is about to pass through you
-      s.material.opacity = u.base * near * out * (0.7 + 0.3 * Math.sin(t * 0.4 + u.phase)) * (0.8 + w.gust * 0.5);
-    }
   }
 }
 
@@ -289,20 +256,4 @@ function dotTexture() {
   g.fillStyle = grd;
   g.fillRect(0, 0, 32, 32);
   return new THREE.CanvasTexture(c);
-}
-
-function sheetTexture() {
-  const W = 256, H = 128, r = rng(55);
-  const [c, g] = makeCanvas(W, H);
-  for (let i = 0; i < 90; i++) {
-    const x = W * 0.1 + r() * W * 0.8, y = H * 0.25 + r() * H * 0.55, rad = 14 + r() * 40;
-    const grd = g.createRadialGradient(x, y, 0, x, y, rad);
-    grd.addColorStop(0, `rgba(255,255,255,${0.08 + r() * 0.12})`);
-    grd.addColorStop(1, 'rgba(255,255,255,0)');
-    g.fillStyle = grd;
-    g.fillRect(x - rad, y - rad, rad * 2, rad * 2);
-  }
-  const t = new THREE.CanvasTexture(c);
-  t.colorSpace = THREE.SRGBColorSpace;
-  return t;
 }
