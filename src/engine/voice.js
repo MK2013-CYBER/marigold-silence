@@ -21,7 +21,9 @@ class VoiceEngine {
     this.synth?.addEventListener?.('voiceschanged', load);
     this.manifest = null;
     this.cache = new Map(); // file -> Promise<AudioBuffer>
+    this.gemini = null; // whole lines acted by Gemini voices (tools/voices-gemini.mjs), preferred
     fetch('/audio/vo/manifest.json').then((r) => (r.ok ? r.json() : null)).then((m) => { this.manifest = m; }).catch(() => {});
+    fetch('/audio/vo/gemini.json').then((r) => (r.ok ? r.json() : null)).then((m) => { this.gemini = m; }).catch(() => {});
     this._token = 0;
   }
 
@@ -60,7 +62,7 @@ class VoiceEngine {
     const token = ++this._token;
     const who = profile.id;
     // a whole line acted by its Gemini voice (tools/voices-gemini.mjs), if there is one
-    const whole = this.manifest?.gemini?.[who]?.[spokenText(text)];
+    const whole = this.gemini?.lines?.[who]?.[spokenText(text)];
     if (this.audio?.ctx && whole) {
       try {
         const buf = await this._buffer(whole);

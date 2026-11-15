@@ -50,9 +50,8 @@ for (const { who, text } of collectLines()) {
 // ------------------------------------------------------------------ render
 fs.mkdirSync(OUT, { recursive: true });
 const MAN = path.join(OUT, 'manifest.json');
-const old = fs.existsSync(MAN) ? JSON.parse(fs.readFileSync(MAN, 'utf8')) : {};
-// keep the Gemini voices (tools/voices-gemini.mjs) untouched: the game prefers them where they exist
-const manifest = { _note: 'lines: speaker -> sentence -> file (Mac voices, tools/voices.mjs). gemini: speaker -> whole line -> file (tools/voices-gemini.mjs).', voices: {}, lines: {}, gemini: old.gemini, geminiVoices: old.geminiVoices };
+// Gemini takes (tools/voices-gemini.mjs) have their own list, gemini.json, and g_ files: never touched here
+const manifest = { _note: 'speaker -> sentence -> file (Mac voices). Built by tools/voices.mjs. Gemini takes are in gemini.json.', voices: {}, lines: {} };
 let made = 0, kept = 0;
 const tmp = path.join(OUT, '_tmp.aiff');
 for (const [who, set] of Object.entries(lines)) {

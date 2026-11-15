@@ -19,8 +19,8 @@
  *     'style', and optional vocal tags (<sigh>, <chuckle>) in the transcript.
  *  3. The WAV that comes back is trimmed, levelled, checked (not silent, not clipped, not
  *     suspiciously long) and saved as public/audio/vo/<who>/g_<hash>.m4a.
- *  4. public/audio/vo/manifest.json gets a 'gemini' section: who -> spoken words -> file.
- *     The game prefers these over the Mac voices whenever a line has one.
+ *  4. public/audio/vo/gemini.json lists them: who -> spoken words -> file. The game prefers
+ *     these over the Mac voices (manifest.json) whenever a line has one.
  * If Google says "too many requests" it waits and carries on; if the daily allowance is used up
  * it saves everything done so far and tells you to run it again later.
  */
@@ -33,7 +33,7 @@ import { spokenText, narrationOf } from '../src/engine/speech-text.js';
 
 const API = 'https://generativelanguage.googleapis.com/v1beta';
 const OUT = path.join(ROOT, 'public/audio/vo');
-const MANIFEST = path.join(OUT, 'manifest.json');
+const MANIFEST = path.join(OUT, 'gemini.json'); // its own list: the Mac-voice tool never touches it
 const VOICE_IDS = path.join(ROOT, 'tools/gemini-voices.json');
 const SAMPLES = path.join(ROOT, 'tools/voice-samples');
 const TMP = path.join(OUT, '_tmp');
@@ -227,8 +227,8 @@ const allJobs = jobs;
 if (ONLY) jobs = jobs.filter((j) => ONLY.includes(j.who));
 if (TEST) jobs = TEST_LINES.map(([who, start]) => jobs.find((j) => j.who === who && j.text.startsWith(start))).filter(Boolean);
 
-const manifest = fs.existsSync(MANIFEST) ? JSON.parse(fs.readFileSync(MANIFEST, 'utf8')) : { voices: {}, lines: {} };
-manifest.gemini ??= {};
+const manifest = fs.existsSync(MANIFEST) ? JSON.parse(fs.readFileSync(MANIFEST, 'utf8')) : { _note: 'speaker -> whole spoken line -> file. Built by tools/voices-gemini.mjs only.' };
+manifest.lines ??= {};
 const saveManifest = () => fs.writeFileSync(MANIFEST, JSON.stringify(manifest));
 
 const voiceOf = (who) => D.sameVoice[who] ?? who;
@@ -243,7 +243,7 @@ try {
     const vid = ids[voiceOf(j.who)].id;
     const file = `${j.who}/g_${hash(`${MODEL}|${vid}|${j.style}|${j.say}`)}.m4a`;
     const dest = path.join(OUT, file);
-    if (fs.existsSync(dest) && !REDO) { (manifest.gemini[j.who] ??= {})[j.spoken] = file; kept++; continue; }
+    if (fs.existsSync(dest) && !REDO) { (manifest.lines[j.who] ??= {})[j.spoken] = file; kept++; continue; }
     fs.mkdirSync(path.dirname(dest), { recursive: true });
     let best = null;
     for (let attempt = 0; attempt < 3; attempt++) { // a take that is silent, clipped or rambling gets another go
@@ -258,7 +258,7 @@ try {
     const wav = path.join(TMP, 'line.wav');
     writeWav(wav, best);
     execFileSync('afconvert', ['-f', 'm4af', '-d', 'aac', '-b', '64000', '-c', '1', wav, dest]);
-    (manifest.gemini[j.who] ??= {})[j.spoken] = file;
+    (manifest.lines[j.who] ??= {})[j.spoken] = file;
     made++;
     saveManifest(); // after every line, so stopping loses nothing
     console.log(`  [${i + 1}/${jobs.length}] ${j.who} (${best.secs.toFixed(1)}s) ${j.style ? `[${j.style}] ` : ''}${j.spoken.slice(0, 70)}`);
@@ -278,15 +278,15 @@ try {
 // drop Gemini files and entries that no current line uses (only on a full run)
 if (!ONLY && !TEST) {
   const live = new Set(allJobs.map((j) => `${j.who}|${j.spoken}`));
-  for (const [who, o] of Object.entries(manifest.gemini)) for (const s of Object.keys(o)) if (!live.has(`${who}|${s}`)) delete o[s];
-  const used = new Set(Object.values(manifest.gemini).flatMap((o) => Object.values(o)));
+  for (const [who, o] of Object.entries(manifest.lines)) for (const s of Object.keys(o)) if (!live.has(`${who}|${s}`)) delete o[s];
+  const used = new Set(Object.values(manifest.lines).flatMap((o) => Object.values(o)));
   for (const who of fs.readdirSync(OUT)) {
     const dir = path.join(OUT, who);
     if (!fs.statSync(dir).isDirectory()) continue;
     for (const f of fs.readdirSync(dir)) if (f.startsWith('g_') && !used.has(`${who}/${f}`)) fs.rmSync(path.join(dir, f));
   }
 }
-manifest.geminiVoices = Object.fromEntries(Object.keys(manifest.gemini).map((w) => [w, `designed: ${voiceOf(w)}`]));
+manifest.linesVoices = Object.fromEntries(Object.keys(manifest.lines).map((w) => [w, `designed: ${voiceOf(w)}`]));
 saveManifest();
 console.log(`\nDone: ${made} rendered, ${kept} already there.`);
 if (flagged.length) console.log(`Check these by ear:\n  ${flagged.join('\n  ')}`);
