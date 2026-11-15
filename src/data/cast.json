@@ -8,30 +8,11 @@
         "fedora"
       ],
       "voice": {
-        "prefer": [
-          "Evan",
-          "Nathan",
-          "Tom",
-          "Aaron",
-          "Reed (English (United States))",
-          "Eddy (English (United States))"
-        ],
-        "pitch": 1.08,
-        "rate": 1.05,
         "id": "cole"
       }
     },
     "hart": {
       "voice": {
-        "prefer": [
-          "Jamie",
-          "Oliver",
-          "Arthur",
-          "Daniel"
-        ],
-        "pitch": 0.88,
-        "rate": 0.94,
-        "lang": "en-GB",
         "id": "hart"
       }
     },
@@ -42,13 +23,6 @@
         "glass"
       ],
       "voice": {
-        "prefer": [
-          "Tom",
-          "Ralph",
-          "Albert"
-        ],
-        "pitch": 0.8,
-        "rate": 0.9,
         "id": "pryce"
       }
     },
@@ -59,14 +33,6 @@
         "pearls"
       ],
       "voice": {
-        "prefer": [
-          "Serena",
-          "Kate",
-          "Moira",
-          "Shelley (English (United Kingdom))"
-        ],
-        "pitch": 1.0,
-        "rate": 0.95,
         "id": "vivienne"
       }
     },
@@ -75,14 +41,6 @@
       "height": 1.7,
       "props": [],
       "voice": {
-        "prefer": [
-          "Zoe",
-          "Ava",
-          "Karen",
-          "Sandy (English (United States))"
-        ],
-        "pitch": 0.95,
-        "rate": 1.05,
         "id": "billie"
       }
     },
@@ -94,12 +52,6 @@
         "glassL"
       ],
       "voice": {
-        "prefer": [
-          "Daniel",
-          "Albert"
-        ],
-        "pitch": 0.9,
-        "rate": 0.9,
         "id": "lindqvist"
       }
     },
@@ -108,13 +60,6 @@
       "height": 1.82,
       "props": [],
       "voice": {
-        "prefer": [
-          "Oliver",
-          "Reed (English (United Kingdom))",
-          "Rocko (English (United Kingdom))"
-        ],
-        "pitch": 0.95,
-        "rate": 0.95,
         "id": "julian"
       }
     },
@@ -123,14 +68,6 @@
       "height": 1.96,
       "props": [],
       "voice": {
-        "prefer": [
-          "Nathan",
-          "Ralph",
-          "Rocko (English (United States))",
-          "Fred"
-        ],
-        "pitch": 0.7,
-        "rate": 0.85,
         "id": "ox"
       }
     },
@@ -141,15 +78,6 @@
         "cigarette"
       ],
       "voice": {
-        "prefer": [
-          "Ava",
-          "Allison",
-          "Susan",
-          "Tessa",
-          "Samantha"
-        ],
-        "pitch": 0.95,
-        "rate": 1.0,
         "id": "tamsin"
       }
     },
@@ -160,12 +88,6 @@
         "lantern"
       ],
       "voice": {
-        "prefer": [
-          "Grandpa (English (United States))",
-          "Albert"
-        ],
-        "pitch": 0.85,
-        "rate": 0.88,
         "id": "hobbs"
       }
     },
@@ -174,14 +96,6 @@
       "height": 1.63,
       "props": [],
       "voice": {
-        "prefer": [
-          "Kate",
-          "Shelley (English (United Kingdom))",
-          "Flo (English (United Kingdom))",
-          "Moira"
-        ],
-        "pitch": 1.05,
-        "rate": 0.86,
         "id": "clementine"
       }
     }

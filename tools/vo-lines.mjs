@@ -1,7 +1,6 @@
 /**
  * Every spoken line in the game, read from the JSON data, with who says it and in what situation.
- * Shared by tools/voices.mjs (the Mac's own voices) and tools/voices-gemini.mjs (Gemini voices),
- * so both always voice exactly the same script.
+ * Used by tools/voices-gemini.mjs to voice exactly the script the game shows.
  *
  *   collectLines() -> [{ who, text, ctx }]
  *     who   speaker id (cole, hart, hobbs, vivienne, ...)

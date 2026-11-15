@@ -1,6 +1,6 @@
 /**
  * What part of a line is actually spoken, split into sentences. Shared by the game
- * (src/engine/voice.js) and the voice renderer (tools/voices.mjs) so the two always agree.
+ * (src/engine/voice.js) and the voice renderer (tools/voices-gemini.mjs) so the two always agree.
  *  - If a line mixes narration and speech ('He closes his eyes. "Cyanide. Yes."'), only the
  *    words inside quotation marks are spoken.
  *  - *stage directions* and [sound notes] are never spoken.

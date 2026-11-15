@@ -19,8 +19,8 @@
  *     'style', and optional vocal tags (<sigh>, <chuckle>) in the transcript.
  *  3. The WAV that comes back is trimmed, levelled, checked (not silent, not clipped, not
  *     suspiciously long) and saved as public/audio/vo/<who>/g_<hash>.m4a.
- *  4. public/audio/vo/gemini.json lists them: who -> spoken words -> file. The game prefers
- *     these over the Mac voices (manifest.json) whenever a line has one.
+ *  4. public/audio/vo/gemini.json lists them: who -> spoken words -> file. The game plays these;
+ *     a line without one is shown as a silent subtitle.
  * If Google says "too many requests" it waits and carries on; if the daily allowance is used up
  * it saves everything done so far and tells you to run it again later.
  */
@@ -33,7 +33,7 @@ import { spokenText, narrationOf } from '../src/engine/speech-text.js';
 
 const API = 'https://generativelanguage.googleapis.com/v1beta';
 const OUT = path.join(ROOT, 'public/audio/vo');
-const MANIFEST = path.join(OUT, 'gemini.json'); // its own list: the Mac-voice tool never touches it
+const MANIFEST = path.join(OUT, 'gemini.json');
 const VOICE_IDS = path.join(ROOT, 'tools/gemini-voices.json');
 const SAMPLES = path.join(ROOT, 'tools/voice-samples');
 const TMP = path.join(OUT, '_tmp');
