@@ -5,8 +5,8 @@ import { pagedChoices } from '../ui/dialogue.js';
 
 /**
  * Stage E (addendum F): the suspects and Hobbs as people in the world.
- *  - Each stays in their own room all day (src/data/npcs.json: the suspects in their bedrooms in
- *    the Quarters, Hobbs in the radio shack), so you can talk to anyone alone. They idle with their
+ *  - Each stays in one place all day (src/data/npcs.json: five suspects in their bedrooms in the
+ *    Quarters, Dr. Lindqvist in Pryce's office, Hobbs in the radio shack), so you can talk to anyone alone. They idle with their
  *    own fidgets and turn to face you when you come close. (The schedule can still move people;
  *    if it does, they change place only when you can't see them.)
  *  - E to talk: topics (some unlock as you find things, some need trust), show them evidence,
