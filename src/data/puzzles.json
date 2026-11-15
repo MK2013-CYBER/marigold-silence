@@ -193,7 +193,7 @@
       "mechanic": "Dye-penetrant reading",
       "built": true,
       "hints": [
-        "Ox's old engine mounts are in the maintenance shed. Test them for cracks.",
+        "Ox's old engine mounts are on his bench in the maintenance shed. Test them for cracks.",
         "Dye, wait, wipe, developer: in that order. Straight parallel lines are machining marks.",
         "Mount 2, the Marigold's: the jagged branching line is a real crack."
       ],
@@ -246,7 +246,7 @@
       "built": true,
       "hints": [
         "If there's a tunnel under the field, smoke will find it. There's a rusty vent pipe in the fuel farm yard, and smoke pots in the maintenance shed.",
-        "Take a smoke pot from the maintenance shed, light it in the vent pipe at the fuel farm, then go look in the hangar office, the storage shed and the darkroom. You have about forty minutes.",
+        "Take a smoke pot from the crate by the flare pots in the maintenance shed, light it in the vent pipe at the fuel farm, then go look in the hangar office, the storage shed and the darkroom. You have about forty minutes.",
         "The smoke comes up through the office floor vent, the storage shed floor and the darkroom storeroom. Visit all three while it lasts."
       ],
       "clues": []
@@ -310,7 +310,7 @@
       "mechanic": "Lock picking",
       "built": true,
       "hints": [
-        "Doctor Lindqvist's case is in his room in the Quarters. He'll open it if he trusts you; otherwise I can get a warrant.",
+        "Doctor Lindqvist's leather case is on the office floor, next to his bag. He'll open it if he trusts you; otherwise I can get a warrant.",
         "If you pick it: light tension only, and try each pin until one clicks. Heavy tension breaks picks.",
         "The pins set in the order three, one, four, two, with light tension."
       ],
@@ -336,7 +336,7 @@
       "mechanic": "Cryptogram",
       "built": true,
       "hints": [
-        "Tamsin's ledger is in a cipher, Chief. Every letter stands for another.",
+        "I fished Tamsin's ledger pages out of the kitchen stove, Chief. They're on my desk. It's a cipher: every letter stands for another.",
         "It's a keyword alphabet. The keyword is a name everyone keeps saying.",
         "The keyword is MARIGOLD."
       ],

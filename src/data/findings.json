@@ -123,12 +123,12 @@
       "text": "A small, narrow, burn-scarred hand touched the decanter and music box.",
       "sources": [
         "S23",
-        "S6"
+        "boxkey"
       ],
       "need": 2,
       "leads": {
         "S23": "The prints on the decanter and the music box match nobody at dinner",
-        "S6": "A small print on the music box key, too small for Pryce"
+        "boxkey": "A small, narrow print on the music box key: not Pryce's"
       }
     },
     {
@@ -199,13 +199,13 @@
       "text": "The telegraph line was tapped; the tap runs to the hangar.",
       "sources": [
         "S18",
-        "S6",
+        "shaftcable",
         "spoonkey"
       ],
       "need": 3,
       "leads": {
         "S18": "A new wire is spliced into the telegraph cable and runs toward the hangar",
-        "S6": "A spliced telegraph cable runs down the shaft under the office",
+        "shaftcable": "The telegraph cable in the trapdoor shaft has a new wire spliced on",
         "spoonkey": "The spoon key is wired into the telegraph cable"
       }
     },

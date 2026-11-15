@@ -19,6 +19,12 @@ export class Evidence {
     this.onEstablished = onEstablished;
     this.state.data.found ??= {};
     this.state.data.notes ??= [];
+    // older saves: the cable and the small print used to be handed out by S6 itself; they now come
+    // from looking at the cable in the shaft and at the music box key
+    for (const [fid, from, to] of [['F13', 'S6', 'shaftcable'], ['F08', 'S6', 'boxkey']]) {
+      const l = this.state.data.found[fid];
+      if (l?.includes(from)) l[l.indexOf(from)] = to;
+    }
   }
 
   sources(fid) { return this.state.data.found[fid] ?? []; }

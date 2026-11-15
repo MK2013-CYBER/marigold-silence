@@ -125,7 +125,7 @@ the door, the doctor's bag and Hart's camera case. Press E on anything to examin
 | S9 The Darkroom | Operations darkroom | expose on the needle, stop the developer at ~60 s; then spot what the official photo hides |
 | S10 The Manifests | Operations records room | sort six passenger cards, match five certificates, read the payout |
 | S20 The Last Call | Radio & weather | scrub through the wax cylinder to the voice at the end |
-| S22 The Locked Case | Lindqvist's room, Quarters | persuade him, get a warrant (45 min), or pick it (light tension, find the binding pin) |
+| S22 The Locked Case | Pryce's office, beside Lindqvist's bag | persuade him, get a warrant (45 min), or pick it (light tension, find the binding pin) |
 | S7 Readied for Flight | the Trimotor 'Marigold II' in the hangar (cabin door, left side) | look at everything in the cabin, then say what it was readied for |
 | S11 Raking Light | Operations lounge grate | move the lamp angle until each charred line shows |
 | S12 The Blackout | maintenance shed fuse panel | balance five circuits on two generators (the hangar goes dark at 12:00 until this is done) |

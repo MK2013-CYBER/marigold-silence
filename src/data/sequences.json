@@ -16,8 +16,14 @@
     "musicbox": {
       "name": "Music box",
       "prompt": "Open the music box",
-      "text": "A little walnut music box. Its comb teeth are numbered 1 to 8 in pencil. The key has been wound recently: there is still tension in the spring.",
-      "note": "The music box was wound recently, and its comb teeth are numbered 1 to 8."
+      "text": "A little walnut music box. Its comb teeth are numbered 1 to 8 in pencil. The key has been wound recently: there is still tension in the spring. On the brass winding key, under your lens, a smudged fingerprint: small and narrow, far too small for Pryce's big hands.",
+      "note": "The music box was wound recently. A small, narrow fingerprint on its key: not Pryce's.",
+      "sources": [
+        [
+          "F08",
+          "boxkey"
+        ]
+      ]
     },
     "calendar": {
       "name": "Desk calendar",
@@ -116,7 +122,25 @@
       "text": "You kneel and knock across the boards. Solid... solid... and then, under the rug, a hollow knock.",
       "exit": "floor",
       "note": "The floor sounds hollow under the rug.",
-      "sound": "hollow"
+      "sound": "hollow",
+      "requires": [
+        "!flag:trapOpen"
+      ]
+    },
+    "cable": {
+      "name": "A cable in the shaft",
+      "prompt": "Look at the cable in the shaft",
+      "requires": [
+        "flag:trapOpen"
+      ],
+      "text": "A thick black telegraph cable comes out of the joists and runs down the corner of the shaft. A third of the way down, someone has cut into it and spliced on a thinner, newer wire, wrapped with small, careful twists of tape. The new wire runs on down into the dark.",
+      "note": "The telegraph cable in the trapdoor shaft has a newer wire spliced onto it, running down.",
+      "sources": [
+        [
+          "F13",
+          "shaftcable"
+        ]
+      ]
     }
   },
   "S1": {
@@ -477,8 +501,8 @@
       "label": "Crowbar the floorboards (15 min, very loud)",
       "minutes": 15
     },
-    "done": "A latch clicks under the floor. The rug sags: there is a trapdoor beneath it, and a breath of cold air comes up from the dark. Down the side of the shaft runs a black telegraph cable with a fresh splice in it. And on the music box's brass key, under your lens: a small, narrow print, far too small for Pryce's hands.",
-    "trapdoor": "A trapdoor, and iron rungs going down into darkness. You'll need a proper light and a reason to go down there. Later.",
+    "done": "A latch clicks under the floor. The rug sags: there is a trapdoor beneath it, and a breath of cold air comes up from the dark. A black cable runs down one corner of the shaft.",
+    "trapdoor": "A trapdoor, and iron rungs going down into the dark. Far below, somebody has left a lamp burning.",
     "sources": [
       [
         "F02",
@@ -486,14 +510,6 @@
       ],
       [
         "F07",
-        "S6"
-      ],
-      [
-        "F13",
-        "S6"
-      ],
-      [
-        "F08",
         "S6"
       ],
       [
@@ -977,14 +993,14 @@
     {
       "seq": "S8",
       "pos": [
-        56.8,
-        1.0,
-        -22.3
+        56.6,
+        1.25,
+        -22.6
       ],
       "size": [
-        1.6,
-        1.6,
-        0.5
+        2.1,
+        1.0,
+        0.7
       ],
       "prompt": "The chemical shelf and the balance (S8)"
     },
@@ -1019,30 +1035,30 @@
     {
       "seq": "S20",
       "pos": [
-        38.9,
-        1.0,
+        37.85,
+        1.35,
         111.2
       ],
       "size": [
-        0.6,
-        0.6,
-        0.6
+        0.55,
+        0.4,
+        0.85
       ],
       "prompt": "Hobbs's wax cylinders (S20)"
     },
     {
       "seq": "S22",
       "pos": [
-        -65.4,
-        0.5,
-        -32.6
+        13.75,
+        0.2,
+        -8.5
       ],
       "size": [
-        0.7,
         0.5,
-        0.5
+        0.45,
+        0.6
       ],
-      "prompt": "Dr. Lindqvist's locked case (S22)"
+      "prompt": "Dr. Lindqvist's locked leather case (S22)"
     }
   ],
   "S8": {
@@ -1276,7 +1292,7 @@
   },
   "S22": {
     "title": "The Locked Case",
-    "intro": "Doctor Lindqvist's leather case, locked. You can ask him, get a warrant through Danny, or pick it.",
+    "intro": "Doctor Lindqvist's leather case, locked, on the office floor beside his bag. You can ask him, get a warrant through Danny, or pick it.",
     "routes": [
       {
         "id": "ask",
@@ -1383,14 +1399,14 @@
     {
       "seq": "S13",
       "pos": [
-        -59.2,
-        0.85,
-        19.0
+        -60.5,
+        1.12,
+        23.85
       ],
       "size": [
-        1.2,
-        0.8,
-        0.8
+        0.6,
+        0.4,
+        1.6
       ],
       "prompt": "The old engine mounts (S13)",
       "find": null
@@ -1413,14 +1429,14 @@
     {
       "seq": "S19",
       "pos": [
-        41.6,
-        1.0,
-        110.8
+        41.75,
+        0.95,
+        110.65
       ],
       "size": [
         0.6,
-        0.6,
-        0.6
+        0.4,
+        0.5
       ],
       "prompt": "Hobbs's barograph charts (S19)",
       "find": null
@@ -1443,13 +1459,13 @@
     {
       "seq": "S24",
       "pos": [
-        28.2,
-        0.9,
-        -147.5
+        27.78,
+        0.84,
+        -148.75
       ],
       "size": [
-        0.6,
-        0.5,
+        0.55,
+        0.15,
         0.5
       ],
       "prompt": "Tamsin's ledger fragments (S24)",
@@ -1792,7 +1808,7 @@
   },
   "S24": {
     "title": "Tamsin's Shorthand",
-    "intro": "Fragments of Tamsin's private ledger, in her own cipher: every letter stands for another. The first words are probably 'PAID'. The cipher uses a keyword alphabet.",
+    "intro": "Danny fished these out of the kitchen stove in the Quarters this morning, half burnt: pages of Tamsin's private ledger, in her own cipher. Every letter stands for another. The first words are probably 'PAID'. The cipher uses a keyword alphabet.",
     "cipher": "NMBI 200 HKJTDFY W/Q 31 STKQH OMFSG",
     "plain": "PAID 200 MONTHLY W/R 31 STORM FALSE",
     "keyword": "MARIGOLD",

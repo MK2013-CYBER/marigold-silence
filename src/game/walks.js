@@ -16,16 +16,16 @@ const V = (x, y, z) => new THREE.Vector3(x, y, z);
 
 // where things are (world coordinates)
 const P = {
-  smokepot: V(-57.4, 0.6, 24.6),
+  smokepot: V(-59.9, 0.4, 20.4), // the flare pots and the crate of smoke pots in the maintenance shed
   ventstack: V(79.5, 0, 36.2),
   radio: V(40.2, 1.0, 112.4),
   splice: V(-53.2, 0, 19.2),
   cableend: V(-21.0, 0, 4.0),
-  rack: V(-81.5, 1.0, -33.1),
-  ledger: V(-56.4, 1.0, 34.2),
+  rack: V(-86.5, 1.12, -32.9), // on the Quarters kitchen counter
+  ledger: V(-56.9, 1.0, 33.8), // lying open on a drum in the storage shed
   crates: V(-59.4, 0.6, 37.6),
   hatch: V(-59.6, 0.02, 38.3),
-  smoke: { hangar: V(18.6, 0.05, -7.4), storage: V(-58.0, 0.05, 37.2), darkroom: V(55.8, 0.05, -21.5) },
+  smoke: { hangar: V(18.6, 0.05, -7.4), storage: V(-58.0, 0.05, 37.2), darkroom: V(56.6, 0.05, -22.3) },
 };
 // the conduit: from the radio shelter across the runway, along the apron to the splice, then to the hangar
 const ROUTE = [V(40, 0, 108), V(36, 0, 92), V(33, 0, 76), V(30, 0, 62), V(12, 0, 58), V(-14, 0, 54), V(-32, 0, 44), V(-46, 0, 30), V(-53.2, 0, 19.2), V(-44, 0, 14), V(-33, 0, 8), V(-21, 0, 4)];
@@ -99,11 +99,11 @@ export class Walks {
       b.name = name;
       this.group.add(b);
     };
-    spot('WK_smokepot', P.smokepot, [0.8, 0.8, 0.6]);
+    spot('WK_smokepot', P.smokepot, [1.6, 0.8, 2.6]);
     spot('WK_ventstack_hit', at(P.ventstack, 0.7), [0.6, 1.4, 0.6]);
     spot('WK_radio', P.radio, [1.4, 0.9, 0.8]);
-    spot('WK_rack', P.rack, [0.8, 0.8, 0.4]);
-    spot('WK_ledger', P.ledger, [0.6, 0.5, 0.5]);
+    spot('WK_rack', P.rack, [0.45, 0.4, 0.7]);
+    spot('WK_ledger', P.ledger, [0.6, 0.3, 0.6]);
     spot('WK_crates', P.crates, [1.4, 1.2, 1.2]);
     spot('WK_post_hit', at(ROUTE[1], 0.4), [0.5, 0.9, 0.5]);
     // Tier 4 places: the darkroom, records room, Hobbs's cylinders, Lindqvist's case
@@ -120,11 +120,126 @@ export class Walks {
     this.group.add(grate);
     // the Waco's fuel cap (S16): a spot on the parked biplane's top wing
     spot('WK_wacocap', V(-3, 2.6, 46), [0.5, 0.4, 0.5]);
-    spot('WK_newspaper', V(32.4, 1.5, -151.0), [0.12, 0.5, 0.5]); // pinned up at the HQ
+    spot('WK_newspaper', V(32.5, 1.0, -151.0), [0.1, 0.5, 0.42]); // pinned up on the HQ board
+    this._props(m);
     // smoke plumes
     this.plumes = {};
     for (const [k, p] of Object.entries({ ...P.smoke, stack: at(P.ventstack, 1.3) })) this.plumes[k] = this._plume(p, k === 'stack' ? 0.9 : 0.5);
     this._register();
+  }
+
+  /**
+   * The things the clue texts talk about, so every "look here" spot has something real in it:
+   * Ox's drying rack, the ration ledger, the darkroom's chemical shelf and balance, the engine mounts,
+   * the smoke pots, Hobbs's barograph and wax cylinders, Lindqvist's locked case, Tamsin's scorched
+   * ledger pages on Danny's desk, and the 1931 newspaper cutting. Simple shapes, world coordinates.
+   */
+  _props(m) {
+    const put = (o, x, y, z, ry = 0) => {
+      o.position.set(x, y, z);
+      o.rotation.y = ry;
+      o.traverse((c) => { if (c.isMesh) { c.castShadow = true; c.receiveShadow = true; c.userData.noRay = true; } });
+      this.group.add(o);
+      return o;
+    };
+    const box = (w, h, d, mat, x = 0, y = 0, z = 0) => { const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat); b.position.set(x, y, z); return b; };
+    const cyl = (r0, r1, h, mat, x = 0, y = 0, z = 0, seg = 14) => { const c = new THREE.Mesh(new THREE.CylinderGeometry(r0, r1, h, seg), mat); c.position.set(x, y, z); return c; };
+    const G = (...kids) => { const g = new THREE.Group(); g.add(...kids); return g; };
+    const wood = m(0x6a4a2c, 0.8, 0), dark = m(0x2e2016, 0.8, 0), china = m(0xece6d8, 0.3, 0), brass = m(0xb08a3c, 0.35, 0.85);
+    const iron = m(0x2b2622, 0.6, 0.7), paper = m(0xe6dcc0, 0.9, 0), leather = m(0x3e2416, 0.55, 0), steel = m(0x6a6862, 0.45, 0.8);
+    const brownGlass = new THREE.MeshStandardMaterial({ color: 0x4a2208, roughness: 0.15, metalness: 0, transparent: true, opacity: 0.88 });
+    const clearGlass = new THREE.MeshStandardMaterial({ color: 0xd8e0e0, roughness: 0.05, metalness: 0, transparent: true, opacity: 0.25, depthWrite: false });
+
+    // Ox's drying rack on the Quarters kitchen counter: two plates standing, two cups upside down
+    const rack = G(box(0.3, 0.02, 0.5, wood, 0, 0.01, 0));
+    for (const z of [-0.2, 0.2]) rack.add(box(0.02, 0.22, 0.02, wood, -0.12, 0.12, z), box(0.02, 0.22, 0.02, wood, 0.0, 0.12, z));
+    rack.add(box(0.02, 0.02, 0.44, wood, -0.12, 0.23, 0), box(0.02, 0.02, 0.44, wood, 0.0, 0.23, 0));
+    for (const z of [-0.1, -0.02]) { const p = cyl(0.11, 0.11, 0.012, china, -0.06, 0.13, z, 24); p.rotation.x = Math.PI / 2; rack.add(p); }
+    for (const z of [0.1, 0.18]) rack.add(cyl(0.04, 0.032, 0.075, china, 0.07, 0.058, z));
+    put(rack, -86.5, 0.955, -32.9);
+
+    // the ration ledger, lying open on a drum in the storage shed
+    const book = G(box(0.2, 0.025, 0.28, paper, -0.1, 0.0125, 0), box(0.2, 0.025, 0.28, paper, 0.1, 0.0125, 0), box(0.42, 0.012, 0.3, m(0x3a2214, 0.7, 0), 0, -0.004, 0));
+    book.children[0].rotation.z = 0.05; book.children[1].rotation.z = -0.05;
+    put(book, -56.9, 0.915, 33.8, 0.3);
+
+    // the darkroom storeroom: a chemical cabinet with the brass balance and stock ledger, jars on shelves above
+    const chem = G(box(2.0, 0.9, 0.45, wood, 0, 0.45, 0), box(2.04, 0.03, 0.48, dark, 0, 0.915, 0));
+    for (const y of [1.35, 1.75]) chem.add(box(2.0, 0.03, 0.26, wood, 0, y, -0.1));
+    const jarX = [-0.8, -0.45, -0.1, 0.25, 0.6];
+    jarX.forEach((x, i) => {
+      const y = i < 3 ? 1.365 : 1.765;
+      chem.add(cyl(0.065, 0.065, 0.17, brownGlass, x, y + 0.085, -0.08), cyl(0.04, 0.04, 0.03, dark, x, y + 0.185, -0.08), box(0.08, 0.06, 0.005, paper, x, y + 0.08, -0.014));
+    });
+    const balance = G(box(0.34, 0.03, 0.14, dark, 0, 0.015, 0), cyl(0.012, 0.012, 0.26, brass, 0, 0.16, 0), box(0.36, 0.012, 0.012, brass, 0, 0.29, 0));
+    for (const x of [-0.16, 0.16]) balance.add(cyl(0.002, 0.002, 0.14, brass, x, 0.22, 0, 4), cyl(0.06, 0.06, 0.008, brass, x, 0.15, 0, 18));
+    for (const [x, h] of [[0.08, 0.03], [0.11, 0.022], [0.13, 0.016]]) balance.add(cyl(0.012, 0.012, h, brass, x, 0.03 + h / 2, 0.05, 8));
+    balance.position.set(-0.45, 0.93, 0.02);
+    const stock = G(box(0.22, 0.03, 0.3, m(0x2a3a52, 0.7, 0), 0, 0.015, 0));
+    stock.position.set(0.5, 0.93, 0.02);
+    chem.add(balance, stock);
+    put(chem, 56.6, 0, -22.675);
+
+    // four old engine mounts on Ox's bench in the maintenance shed; No. 2 carries a red tag
+    [23.25, 23.65, 24.05, 24.45].forEach((z, i) => {
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.12, 0.016, 8, 20), steel);
+      ring.rotation.y = Math.PI / 2;
+      ring.position.y = 0.16;
+      const mount = G(ring);
+      for (const a of [0, 2.1, 4.2]) {
+        const strut = cyl(0.012, 0.012, 0.2, steel, 0, 0, 0, 6);
+        strut.position.set(Math.cos(a) * 0.07 - 0.04, 0.16 + Math.sin(a) * 0.07, 0);
+        strut.rotation.z = Math.PI / 2;
+        mount.add(strut);
+      }
+      mount.add(box(0.2, 0.02, 0.06, steel, -0.04, 0.01, 0));
+      if (i === 1) mount.add(box(0.005, 0.05, 0.035, m(0x9a2a1a, 0.6, 0), 0.02, 0.27, 0.06));
+      put(mount, -60.5, 0.945, z);
+    });
+
+    // a crate of smoke pots beside the flare pots
+    const crate = G(box(0.5, 0.32, 0.4, wood, 0, 0.16, 0));
+    for (const [x, z] of [[-0.15, -0.1], [0, -0.1], [0.15, -0.1], [-0.15, 0.1], [0, 0.1], [0.15, 0.1]]) crate.add(cyl(0.05, 0.05, 0.16, m(0x7a7a70, 0.6, 0.5), x, 0.36, z), cyl(0.02, 0.02, 0.03, m(0xa03a1a, 0.6, 0), x, 0.455, z));
+    put(crate, -59.9, 0, 21.55);
+
+    // Hobbs's barograph under its glass case, on a little table in the radio shelter, with tracings
+    const baro = G(box(0.55, 0.03, 0.45, wood, 0, 0.765, 0));
+    for (const [x, z] of [[-0.24, -0.19], [0.24, -0.19], [-0.24, 0.19], [0.24, 0.19]]) baro.add(box(0.035, 0.75, 0.035, wood, x, 0.375, z));
+    baro.add(box(0.32, 0.06, 0.17, dark, -0.03, 0.81, 0), cyl(0.05, 0.05, 0.11, paper, -0.12, 0.895, 0, 18), box(0.12, 0.004, 0.006, brass, -0.02, 0.9, 0.02), box(0.33, 0.14, 0.18, clearGlass, -0.03, 0.91, 0));
+    baro.add(box(0.2, 0.002, 0.14, m(0xf0ead8, 0.9, 0), 0.17, 0.782, 0.08));
+    put(baro, 41.75, 0, 110.65);
+
+    // the cylinder phonograph and a row of wax cylinders on Hobbs's call-log cabinet
+    const phono = G(box(0.26, 0.1, 0.18, dark, 0, 0.05, -0.15), cyl(0.03, 0.03, 0.12, m(0x3a2a14, 0.4, 0), 0, 0.13, -0.15));
+    phono.children[1].rotation.z = Math.PI / 2;
+    const horn = new THREE.Mesh(new THREE.ConeGeometry(0.1, 0.3, 18, 1, true), brass);
+    horn.rotation.z = -Math.PI / 2 - 0.4;
+    horn.position.set(0.1, 0.24, -0.15);
+    phono.add(horn);
+    for (let k = 0; k < 4; k++) phono.add(cyl(0.028, 0.028, 0.1, m(0x2a1a10, 0.3, 0), -0.08 + k * 0.055, 0.05, 0.2));
+    put(phono, 37.85, 1.2, 111.2, Math.PI / 2);
+
+    // Dr. Lindqvist's locked leather case, on the office floor beside his bag
+    const lcase = G(box(0.46, 0.3, 0.18, leather, 0, 0.15, 0), box(0.47, 0.02, 0.19, dark, 0, 0.3, 0), cyl(0.012, 0.012, 0.12, leather, 0, 0.34, 0, 6));
+    lcase.children[2].rotation.z = Math.PI / 2;
+    for (const x of [-0.14, 0.14]) lcase.add(box(0.04, 0.05, 0.01, brass, x, 0.27, 0.095));
+    put(lcase, 13.75, 0, -8.5, Math.PI / 2);
+
+    // Tamsin's ledger pages, scorched, laid out on Danny's desk at the HQ
+    const scraps = new THREE.Group();
+    for (const [x, z, r, w, d] of [[-0.08, -0.06, 0.3, 0.16, 0.2], [0.1, 0.04, -0.4, 0.14, 0.17], [-0.02, 0.14, 0.9, 0.12, 0.12]]) {
+      const s = G(box(w, 0.002, d, paper, 0, 0.001, 0), box(w * 0.4, 0.003, d * 0.3, m(0x2a1a0e, 0.95, 0), w * 0.3, 0.0015, d * 0.35));
+      s.position.set(x, 0, z);
+      s.rotation.y = r;
+      scraps.add(s);
+    }
+    scraps.scale.setScalar(1.5);
+    put(scraps, 27.78, 0.782, -148.75);
+
+    // the 1931 newspaper cutting, pinned to the HQ board
+    const cut = G(box(0.004, 0.42, 0.32, m(0xd9cfa8, 0.95, 0)), box(0.006, 0.05, 0.28, m(0x3a3530, 0.9, 0), 0, 0.15, 0), cyl(0.008, 0.008, 0.012, m(0xb02020, 0.5, 0), -0.004, 0.19, 0, 8));
+    cut.children[2].rotation.z = Math.PI / 2;
+    put(cut, 32.55, 1.0, -151.0);
   }
 
   _register() {

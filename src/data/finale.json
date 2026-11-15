@@ -12,7 +12,8 @@
       { "id": "back", "label": "Back away for now", "back": true }
     ],
     "voice": "Let him through, Ox.",
-    "voiceWho": "A woman's voice, from somewhere beyond the lantern"
+    "voiceWho": "A woman's voice, from somewhere beyond the lantern",
+    "oxLeaves": "Ox lets out a long breath, squeezes past you up the rungs without a word, and goes back to his shed. The lantern stays lit below."
   },
   "examine": {
     "UC_Tray": { "name": "A tray on the shelf", "text": "A tin tray with two cups and a plate, still warm. Somebody brought supper down here not long ago." },

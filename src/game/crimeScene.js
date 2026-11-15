@@ -57,7 +57,14 @@ export class CrimeScene {
     lid.rotation.x = -1.2;
     const comb = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.004, 0.03), m(0xc8a050, 0.3, 0.9));
     comb.position.set(0, 0.072, 0.01);
-    box.add(base, lid, comb);
+    // the brass winding key on its side: where the small print is (see sequences.json examine.musicbox)
+    const brass = m(0xc8a050, 0.3, 0.9);
+    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 0.025, 6), brass);
+    stem.rotation.z = Math.PI / 2;
+    stem.position.set(0.092, 0.035, 0);
+    const wing = new THREE.Mesh(new THREE.BoxGeometry(0.004, 0.026, 0.034), brass);
+    wing.position.set(0.106, 0.035, 0);
+    box.add(base, lid, comb, stem, wing);
     add('CS_musicbox', box, V(17.35, top, -9.7));
 
     // calendar block, pocket watch, the note under the door
@@ -101,7 +108,14 @@ export class CrimeScene {
     };
     spot('CS_body_hit', V(16.8, 0.95, -10.55), [0.7, 0.9, 0.7]);
     spot('CS_bolt', V(15.15, 1.1, -6.6), [0.25, 0.25, 0.12]);
-    spot('CS_window', V(19.92, 1.7, -9.5), [0.12, 1.0, 1.2]);
+    spot('CS_window', V(18.0, 1.67, -6.6), [1.7, 1.1, 0.14]); // the window in the front wall, onto the hangar
+    // its iron bars, on the office side of the glass
+    const bars = new THREE.Group();
+    const barM = m(0x26221f, 0.6, 0.75);
+    for (let x = 17.32; x <= 18.7; x += 0.23) { const r = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 1.1, 6), barM); r.position.set(x, 1.67, -6.56); bars.add(r); }
+    for (const y of [1.3, 2.05]) { const f = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.03, 0.012), barM); f.position.set(18.0, y, -6.56); bars.add(f); }
+    bars.traverse((o) => { o.userData.noRay = true; });
+    add('CS_bars', bars, V(0, 0, 0));
     spot('CS_stove', V(19.3, 0.8, -7.7), [0.7, 1.4, 0.6]);
     spot('CS_ceiling', V(16.5, 3.1, -9.5), [3, 0.12, 3]);
     spot('CS_floor', V(16.85, 0.05, -9.1), [2.4, 0.08, 1.8]);
@@ -111,6 +125,8 @@ export class CrimeScene {
     spot('CS_drawer', V(16.2, 0.45, -9.42), [0.6, 0.7, 0.1]);
     spot('CS_blotter', V(16.8, top + 0.01, -9.88), [0.9, 0.03, 0.55]);
     spot('CS_book', V(13.3, 1.35, -10.9), [0.3, 0.25, 0.3]);
+    // the east half of the open shaft, where the cable runs (the trapdoor's own box covers the west half)
+    spot('CS_cable', V(17.05, -0.74, -9.0), [0.4, 1.72, 0.8]);
 
     // the trapdoor: a real 0.8 m opening in the office floor (cut into hangar_shell.glb), a shaft
     // with plank walls and an iron ladder, a lamp glowing far below. Until S6 the hatch lies flush
@@ -149,6 +165,27 @@ export class CrimeScene {
       f.position.set(x, 0.008, z);
       shaft.add(f);
     }
+    // the telegraph cable: comes out of the joists and runs down the middle of the east wall (the wall
+    // you face from the door and from the rug).
+    // A third of the way down someone has cut into it and spliced on a thinner, newer wire that goes on
+    // down into the dark (S18 / F13: the tap; the spoon key at the other end is in the Undercroft).
+    const cableM = m(0x111111, 0.7);
+    const cx = S - 0.05, cz = 0.1;
+    const cable = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, DEPTH, 8), cableM);
+    cable.position.set(cx, -DEPTH / 2, cz);
+    const sleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.12, 10), m(0xb08a3c, 0.35, 0.85));
+    sleeve.position.set(cx, -1.0, cz);
+    const tape = new THREE.Mesh(new THREE.CylinderGeometry(0.026, 0.026, 0.07, 10), m(0x2a2a26, 0.95));
+    tape.position.set(cx, -1.12, cz);
+    // the new wire: from the splice it slants along the east wall, then runs down its north corner
+    const wireM = m(0x9a7444, 0.8); // cloth-covered bell wire, newer and lighter
+    const a = new THREE.Vector3(cx - 0.01, -1.08, cz - 0.02), b = new THREE.Vector3(cx - 0.01, -1.7, -S + 0.1);
+    const slant = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.006, a.distanceTo(b), 6), wireM);
+    slant.position.copy(a).add(b).multiplyScalar(0.5);
+    slant.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize());
+    const drop = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.006, DEPTH - 1.7, 6), wireM);
+    drop.position.set(cx - 0.01, -1.7 - (DEPTH - 1.7) / 2, -S + 0.1);
+    shaft.add(cable, sleeve, tape, slant, drop);
     shaft.visible = false; // drawn only once the hatch is open (closed, nothing shows through)
     this.shaft = shaft;
     // the hatch: planks with two iron straps and a ring; hinged on its east edge
@@ -166,7 +203,11 @@ export class CrimeScene {
     ring.position.set(-2 * S + 0.12, 0.02, 0);
     this.hatch.add(ring);
     this.hatch.position.set(S, -0.003, 0); // closed: flush with the boards, under the rug
-    this.trap.add(shaft, this.hatch);
+    // her lamp, far below: lights the shaft (and the cable) once the hatch is open. It always exists,
+    // at 0 until then, so opening the hatch doesn't change the number of lights (no shader rebuild).
+    this.shaftLight = new THREE.PointLight(0xffb060, 0, 4.5, 1.6);
+    this.shaftLight.position.set(0, -2.7, 0);
+    this.trap.add(shaft, this.hatch, this.shaftLight);
     this.trap.traverse((o) => { o.userData.noRay = true; }); // aiming goes through to the trapdoor's own target box
     this.group.add(this.trap);
 
@@ -203,7 +244,8 @@ export class CrimeScene {
       ['body', 'CS_body_hit'], ['decanter', 'CS_decanter'], ['decanter', 'CS_glass', 'glassdef'], ['musicbox', 'CS_musicbox'], ['calendar', 'CS_calendar'],
       ['blotter', 'CS_blotter'], ['note', 'CS_note'], ['revolver', 'CS_drawer'], ['watch', 'CS_watch'], ['photo', 'CS_photo'],
       ['stove', 'CS_stove'], ['window', 'CS_window'], ['bolt', 'CS_bolt'], ['ceiling', 'CS_ceiling'], ['vent', 'CS_vent'], ['floor', 'CS_floor'],
-    ].map(([key, obj, id]) => ({ id: id ?? `cs_${key}`, type: 'ui', ui: 'examine', key, location: 'office', object: obj, prompt: E[key].prompt, timeCost: 2 }));
+      ['cable', 'CS_cable'],
+    ].map(([key, obj, id]) => ({ id: id ?? `cs_${key}`, type: 'ui', ui: 'examine', key, location: 'office', object: obj, prompt: E[key].prompt, timeCost: 2, requires: E[key].requires }));
     defs.push(
       { id: 'cs_kit', type: 'ui', ui: 'seq', seq: 'S1', location: 'office', object: 'CS_kit', prompt: 'Camera and markers: walk the room (S1)', timeCost: 0 },
       { id: 'cs_bag', type: 'ui', ui: 'bag', location: 'office', object: 'CS_bag', prompt: "Doctor Lindqvist's bag", timeCost: 0 },
@@ -274,6 +316,7 @@ export class CrimeScene {
 
   openTrapdoor(instant = false) {
     this.shaft.visible = true;
+    this.shaftLight.intensity = 2.2;
     // the hatch swings over on its hinge and lies open on the floor, east of the hole
     // (it ends upside down, lifted onto the boards so the floor doesn't swallow it)
     if (instant) { this.hatch.rotation.z = -Math.PI; this.hatch.position.y = 0.032; } else {
@@ -286,8 +329,18 @@ export class CrimeScene {
       };
       swing();
     }
-    const rug = this.hangar.root.getObjectByName('Office_Rug');
-    if (rug && !rug.userData.moved) { rug.position.x -= 0.9; rug.position.z += 0.4; rug.rotation.y += 0.15; rug.userData.moved = true; }
+    this._moveRug();
     if (!instant) this.hud.caption(this.data.S6.trapdoor, 8);
+  }
+
+  /** Drag the rug clear of the hatch (x 16.45..17.25), toward the bookshelf wall. The rug is its own
+   *  object in the scene (not part of the hangar model) and may load after this, so keep trying. */
+  _moveRug(tries = 30) {
+    const scene = this.hangar.root.parent ?? this.hangar.root;
+    const rug = scene.getObjectByName('Office_Rug');
+    if (!rug) { if (tries > 0) setTimeout(() => this._moveRug(tries - 1), 1000); return; }
+    if (rug.userData.moved) return;
+    rug.position.x -= 1.8; // rug spans x 15.6..18.1 before, 13.8..16.3 after
+    rug.userData.moved = true;
   }
 }

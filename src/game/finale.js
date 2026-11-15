@@ -30,10 +30,10 @@ export class Finale {
     ];
     for (const d of defs) if (!this.interaction.byId.has(d.id)) { this.interaction.defs.push(d); this.interaction.byId.set(d.id, d); }
     // the trapdoor itself, in the office (appears with S6)
-    const hit = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.6, 1.0), new THREE.MeshBasicMaterial({ visible: false }));
+    const hit = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.6, 1.0), new THREE.MeshBasicMaterial({ visible: false }));
     hit.userData.hitProxy = true;
     hit.name = 'CS_trap_hit';
-    hit.position.set(16.85, 0.3, -9.0); // the opening plus the ladder top: easy to aim at
+    hit.position.set(16.6, 0.3, -9.0); // the west half of the opening (the east half, with the cable, is CS_cable)
     this.crime.group.add(hit);
     const trap = { id: 'cs_trapdoor', type: 'ui', ui: 'trapdown', location: 'office', object: 'CS_trap_hit', prompt: this.data.trapPrompt, timeCost: 0, requires: ['flag:trapOpen'] };
     if (!this.interaction.byId.has(trap.id)) { this.interaction.defs.push(trap); this.interaction.byId.set(trap.id, trap); }
@@ -82,7 +82,10 @@ export class Finale {
         const pass = o.id === 'ledger' || (o.trust && this.trust.get('ox') >= o.trust);
         if (!pass) return say('Ox', o.no, [{ label: 'Try something else', onPick: () => this.descend() }, { label: 'Back away', onPick: () => this.dialogue.close() }]);
         say('Ox', o.ok, [{ label: '...', onPick: () => {
-          say(S.voiceWho, `"${S.voice}"`, [{ label: 'Climb down', onPick: () => { this.state.setFlag('oxPassed'); this.dialogue.close(); this._go(true); } }]);
+          say(S.voiceWho, `"${S.voice}"`, [{ label: '...', onPick: () => {
+            // he goes back up to his shed (where he is all day): there is only ever one Ox
+            say('', S.oxLeaves, [{ label: 'Climb down', onPick: () => { this.state.setFlag('oxPassed'); this.dialogue.close(); this._go(true); } }]);
+          } }]);
         } }]);
       },
     }));
@@ -117,7 +120,7 @@ export class Finale {
 
   async _people() {
     if (this.clem) return;
-    const [c, ox] = await Promise.all([Character.load('clementine', this.cast.clementine), Character.load('ox', this.cast.ox)]);
+    const c = await Character.load('clementine', this.cast.clementine);
     const g = new THREE.Group();
     g.name = 'UC_Clem';
     c.root.position.set(UC.x + 26.9, UC.y + 0.12, UC.z - 1.75);
@@ -129,12 +132,7 @@ export class Finale {
     g.add(hit);
     this.scene.add(g);
     this.interaction.addLocation('clem', g);
-    ox.root.position.set(UC.x + 10.4, UC.y, UC.z + 0.6);
-    ox.root.rotation.y = -Math.PI / 2;
-    ox.play('Idle', 0.01);
-    this.scene.add(ox.root);
-    this.clem = c;
-    this.ox = ox;
+    this.clem = c; // (Ox is not down here: after the standoff he goes back up to his shed)
   }
 
   _req(r) {
