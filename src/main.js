@@ -34,6 +34,7 @@ import { Walks } from './game/walks.js';
 import { Finale } from './game/finale.js';
 import finaleData from './data/finale.json';
 import { Voice } from './engine/voice.js';
+import { Music } from './engine/music.js';
 import config from './data/game.json';
 import interactables from './data/interactables.json';
 import placeholderInteractables from './data/interactables_placeholder.json';
@@ -97,6 +98,8 @@ const hasSave = state.load();
 
 const hud = new Hud({ clues, items, config });
 const audio = new AmbientAudio();
+Voice.attach(audio); // spoken lines play through the game's audio (room echo, radio filter)
+const music = new Music(audio);
 
 const interaction = new InteractionSystem({
   scene, camera, world, state, hud, audio,
@@ -199,7 +202,7 @@ const finale = new Finale({
   scene, world, controller, streamer, interaction, state, evidence, hud, audio, dialogue: hq.dialogue, cast: castData.people,
   data: finaleData, crime, spend, trust, fade: hq.fade, characters, onFreezeChange: (r) => { if (r !== undefined) resting = r; syncFreeze(); },
 });
-finale.onEnding = () => { hq.closeScreen(); hq.dialogue.close(); };
+finale.onEnding = () => { hq.closeScreen(); hq.dialogue.close(); music.play('theme', { level: 1 }); };
 seqScreen.finale = finaleData;
 seqScreen.characters = characters;
 seqScreen.onWrongTheory = () => finale.ending('E4');
@@ -258,10 +261,28 @@ quality.mount(document.getElementById('settings'));
   };
   draw();
 }
+{
+  const el = document.getElementById('music-setting');
+  const draw = () => {
+    el.replaceChildren();
+    const label = document.createElement('span');
+    label.textContent = 'Music: ';
+    el.appendChild(label);
+    for (const [name, v] of [['Off', 0], ['Low', 0.35], ['Medium', 0.6], ['High', 1]]) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = name;
+      b.classList.toggle('on', Math.abs(music.volume - v) < 0.01);
+      b.addEventListener('click', (e) => { e.stopPropagation(); music.setVolume(v); draw(); });
+      el.appendChild(b);
+    }
+  };
+  draw();
+}
 const minimap = new Minimap(worldCfg, placesData.places);
 
 // ---------- the cinematic intro (addendum v2, section E) ----------
-const intro = new Intro({ scene, camera, post, atmosphere, streamer, ground, cole, audio, hangar, quality, data: introData, characters, cast: castData.people });
+const intro = new Intro({ scene, camera, post, atmosphere, streamer, ground, cole, audio, music, hangar, quality, data: introData, characters, cast: castData.people });
 controller.onFootstep = (amt) => audio.footstep(amt);
 atmosphere.onLightning = (delay) => audio.thunder(delay, 0.6 + Math.random() * 0.5);
 
@@ -504,6 +525,8 @@ renderer.setAnimationLoop(() => {
   people.update(dt, pos);
   walks.update(dt, pos);
   finale.update();
+  if (controller.active && !state.data.ending) music.play(finale.underground ? 'undercroft' : 'investigation', { level: finale.underground ? 0.8 : 0.45 });
+  music.update();
   hq.update();
   const qmsg = quality.update(dt, controller.active);
   if (qmsg) hud.toast(qmsg);
@@ -541,6 +564,7 @@ renderer.setAnimationLoop(() => {
 /** While the intro plays, the camera is the director's: stream, light and sound around it. */
 function introFrame(dt, t) {
   intro.update(dt);
+  music.update();
   const pos = intro.focus;
   atmosphere.update(dt, t, pos, intro.indoor);
   airfield.update(dt, t, atmosphere.wind);
@@ -559,4 +583,4 @@ function introFrame(dt, t) {
 }
 
 // Test hook for automated checks in dev builds only.
-if (import.meta.env.DEV) window.__game = { intro, post, crime, people, walks, finale, evidence, seqScreen, trust, THREE, scene, camera, controller, world, flashlight, renderer, state, interaction, hud, atmosphere, ground, streamer, hangar, cole, hq, quality };
+if (import.meta.env.DEV) window.__game = { intro, post, crime, people, walks, finale, Voice, music, evidence, seqScreen, trust, THREE, scene, camera, controller, world, flashlight, renderer, state, interaction, hud, atmosphere, ground, streamer, hangar, cole, hq, quality };

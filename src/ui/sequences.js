@@ -868,7 +868,7 @@ export class SequenceScreen {
     sec.appendChild(this._btn('Listen here', () => {
       const seg = d.segments.find(([a, b]) => st.at >= a && st.at < b) ?? d.segments[d.segments.length - 1];
       this._hiss(2.5, seg[2] === 'VOICE' ? 0.04 : 0.1, st.at >= 60 && st.at < 158);
-      if (seg[2] === 'VOICE') { st.heard = `${d.voice.speaker}: "${d.voice.text}"`; Voice.speak(d.voice.text, { prefer: ['Samantha', 'Flo (English (United States))', 'Shelley (English (United States))', 'Karen'], pitch: 1.35, rate: 1.05 }); }
+      if (seg[2] === 'VOICE') { st.heard = `${d.voice.speaker}: "${d.voice.text}"`; Voice.speak(d.voice.text, { id: 'cylinder', prefer: ['Samantha', 'Shelley (English (United States))'], pitch: 1.35, rate: 1.05 }, { radio: true }); }
       else st.heard = seg[2];
       this.spend(1);
       this.render();

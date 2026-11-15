@@ -10,29 +10,29 @@
       "voice": {
         "prefer": [
           "Evan",
-          "Aaron",
           "Nathan",
           "Tom",
-          "Alex",
+          "Aaron",
           "Reed (English (United States))",
           "Eddy (English (United States))"
         ],
         "pitch": 1.08,
-        "rate": 1.05
+        "rate": 1.05,
+        "id": "cole"
       }
     },
     "hart": {
       "voice": {
         "prefer": [
-          "Daniel",
           "Oliver",
+          "Jamie",
           "Arthur",
-          "Reed (English (United Kingdom))",
-          "Rocko (English (United Kingdom))"
+          "Daniel"
         ],
         "pitch": 0.88,
         "rate": 0.94,
-        "lang": "en-GB"
+        "lang": "en-GB",
+        "id": "hart"
       }
     },
     "pryce": {
@@ -43,13 +43,13 @@
       ],
       "voice": {
         "prefer": [
+          "Tom",
           "Ralph",
-          "Albert",
-          "Rocko (English (United States))",
-          "Fred"
+          "Albert"
         ],
         "pitch": 0.8,
-        "rate": 0.9
+        "rate": 0.9,
+        "id": "pryce"
       }
     },
     "vivienne": {
@@ -60,14 +60,14 @@
       ],
       "voice": {
         "prefer": [
-          "Moira",
-          "Kate",
           "Serena",
-          "Shelley (English (United Kingdom))",
-          "Flo (English (United Kingdom))"
+          "Kate",
+          "Moira",
+          "Shelley (English (United Kingdom))"
         ],
         "pitch": 1.0,
-        "rate": 0.95
+        "rate": 0.95,
+        "id": "vivienne"
       }
     },
     "billie": {
@@ -76,12 +76,14 @@
       "props": [],
       "voice": {
         "prefer": [
+          "Zoe",
+          "Ava",
           "Karen",
-          "Samantha",
           "Sandy (English (United States))"
         ],
         "pitch": 0.95,
-        "rate": 1.05
+        "rate": 1.05,
+        "id": "billie"
       }
     },
     "lindqvist": {
@@ -93,12 +95,12 @@
       ],
       "voice": {
         "prefer": [
-          "Albert",
-          "Reed (English (United Kingdom))",
-          "Daniel"
+          "Daniel",
+          "Albert"
         ],
         "pitch": 0.9,
-        "rate": 0.9
+        "rate": 0.9,
+        "id": "lindqvist"
       }
     },
     "julian": {
@@ -107,12 +109,13 @@
       "props": [],
       "voice": {
         "prefer": [
-          "Rishi",
+          "Oliver",
           "Reed (English (United Kingdom))",
-          "Daniel"
+          "Rocko (English (United Kingdom))"
         ],
         "pitch": 0.95,
-        "rate": 0.95
+        "rate": 0.95,
+        "id": "julian"
       }
     },
     "ox": {
@@ -126,7 +129,8 @@
           "Fred"
         ],
         "pitch": 0.7,
-        "rate": 0.85
+        "rate": 0.85,
+        "id": "ox"
       }
     },
     "tamsin": {
@@ -137,12 +141,14 @@
       ],
       "voice": {
         "prefer": [
+          "Allison",
+          "Susan",
           "Tessa",
-          "Samantha",
-          "Kathy"
+          "Samantha"
         ],
         "pitch": 0.95,
-        "rate": 1.0
+        "rate": 1.0,
+        "id": "tamsin"
       }
     },
     "hobbs": {
@@ -154,12 +160,11 @@
       "voice": {
         "prefer": [
           "Grandpa (English (United States))",
-          "Grandpa (English (United Kingdom))",
-          "Albert",
-          "Fred"
+          "Albert"
         ],
         "pitch": 0.85,
-        "rate": 0.88
+        "rate": 0.88,
+        "id": "hobbs"
       }
     },
     "clementine": {
@@ -168,13 +173,14 @@
       "props": [],
       "voice": {
         "prefer": [
+          "Kate",
           "Shelley (English (United Kingdom))",
           "Flo (English (United Kingdom))",
-          "Moira",
-          "Samantha"
+          "Moira"
         ],
         "pitch": 1.05,
-        "rate": 0.86
+        "rate": 0.86,
+        "id": "clementine"
       }
     }
   }

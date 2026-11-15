@@ -140,6 +140,21 @@ With enough (usually 3) a finding is Established and goes on the HQ board. Tab s
 the things you noticed. Data: `src/data/findings.json`, `src/data/sequences.json`.
 Code: `src/game/evidence.js`, `src/game/crimeScene.js`, `src/ui/sequences.js`.
 
+## Stage H: voices, music, realism
+
+- **Voices**: every spoken line (706 sentences, 12 voices) is pre-rendered to audio files with the
+  Mac's own voices: `npm run voices` (output in `public/audio/vo/`). Lines play through the room's
+  echo; Danny's radio calls go through a walkie-talkie filter. For much better voices, download free
+  Premium/Enhanced voices (System Settings > Accessibility > Spoken Content > System Voice > Manage
+  Voices: e.g. Evan, Zoe, Ava, Oliver, Jamie, Kate, Serena, Tom), then run `npm run voices -- --all`.
+  Real voice actors can later replace the files one by one.
+- **Music**: three original tracks composed in code from the music-box tune (`npm run music`,
+  `tools/music.py`): the theme (title, intro, endings), the investigation (quiet, all day) and the
+  Undercroft. It dips under dialogue. Music volume and voices on/off are on the pause screen.
+- **Realism**: ambient occlusion on High, a gentle glow on lamps and flames on Medium/High, people
+  far away are not drawn. Measured on this M1 at 1440x900: Low ~4-6 ms, Medium ~4-6 ms, High
+  ~5-12 ms per frame (60 fps needs under 16.6 ms).
+
 ## Tier 6: the finale
 
 - **S26 The Theory** (HQ typewriter): pick WHO, HOW, WHERE and WHY. A new name appears under WHO

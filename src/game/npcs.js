@@ -79,12 +79,13 @@ export class People {
       if (n.at === loc && !force) continue;
       const spots = this.data.spots[loc] ?? [];
       // never vanish or appear in front of you: wait until you look away
-      if (!force && n.root.visible && this._seen(n.root.position)) continue;
+      if (!force && n.present && n.root.visible && this._seen(n.root.position)) continue;
       const k = (used[loc] = (used[loc] ?? -1) + 1);
       const s = spots[k % Math.max(1, spots.length)];
       n.at = loc;
-      if (!s) { n.root.visible = false; continue; }
+      if (!s) { n.present = false; n.root.visible = false; continue; }
       if (!force && this._seen(new THREE.Vector3(s[0], 0, s[1]))) { n.at = null; continue; }
+      n.present = true;
       n.root.visible = true;
       n.root.position.set(s[0], this.ground.heightAt(s[0], s[1]), s[1]);
       n.yaw = s[2];
@@ -97,8 +98,9 @@ export class People {
     this._acc += dt;
     if (this._acc > 2) { this._acc = 0; this._place(); }
     for (const n of Object.values(this.npc)) {
-      if (!n.root.visible) continue;
+      if (!n.present) continue;
       const d = Math.hypot(player.x - n.root.position.x, player.z - n.root.position.z);
+      n.root.visible = d < 70; // people far away aren't drawn at all (skinned figures are expensive)
       if (d > 60) continue;
       // turn to face you when you're near (or talking); back to their own way otherwise
       const want = d < 4 || this.talking === n.id ? Math.atan2(player.x - n.root.position.x, player.z - n.root.position.z) : n.yaw;

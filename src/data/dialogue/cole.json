@@ -3,16 +3,15 @@
   "voice": {
     "prefer": [
       "Evan",
-      "Aaron",
       "Nathan",
       "Tom",
-      "Alex",
+      "Aaron",
       "Reed (English (United States))",
-      "Eddy (English (United States))",
-      "Daniel"
+      "Eddy (English (United States))"
     ],
     "pitch": 1.08,
-    "rate": 1.04
+    "rate": 1.04,
+    "id": "cole"
   },
   "greetingFirst": "Morning, Chief. Well, I wouldn't call it morning, exactly. You can't see the sun for all this dust.",
   "greetings": [

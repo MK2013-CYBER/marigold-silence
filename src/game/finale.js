@@ -73,7 +73,7 @@ export class Finale {
   descend() {
     if (this.state.flag('oxPassed')) return this._go(true);
     const S = this.data.standoff;
-    const say = (who, text, choices) => this.dialogue.show(who, text, choices);
+    const say = (who, text, choices) => { this.dialogue.show(who, text, choices); if (who === 'Ox') Voice.speak(text, this.cast.ox?.voice); };
     const opts = S.options.filter((o) => !o.requires || this._req(o.requires)).map((o) => ({
       label: o.label,
       onPick: () => {

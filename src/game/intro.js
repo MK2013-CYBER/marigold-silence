@@ -88,9 +88,9 @@ export class Intro {
     const dur = secs ?? Math.max(2.5, line.text.length / 13);
     this._subT = setTimeout(() => sub.classList.remove('on'), dur * 1000);
     if (line.who) Voice.speak(line.text, this.cast[line.who]?.voice);
-    this.sfx.setScore(0.2, 0.6); // the music dips under dialogue
+    if (!this.music) this.sfx.setScore(0.2, 0.6); // the music dips under dialogue (the score ducks itself)
     clearTimeout(this._duckT);
-    this._duckT = setTimeout(() => this.sfx.setScore(this._scoreLevel ?? 0.5, 2), dur * 1000);
+    if (!this.music) this._duckT = setTimeout(() => this.sfx.setScore(this._scoreLevel ?? 0.5, 2), dur * 1000);
   }
 
   caption(text, secs = 4) {
@@ -110,7 +110,12 @@ export class Intro {
     this._nameT = setTimeout(() => name.classList.remove('on'), secs * 1000);
   }
 
-  score(level) { this._scoreLevel = level; this.sfx.setScore(level, 2.5); }
+  /** Music level for this part of the intro: the rendered score ("The Marigold"), or the code score as a fallback. */
+  score(level) {
+    this._scoreLevel = level;
+    if (this.music) this.music.play('theme', { level: Math.min(1, level * 1.6), loop: true });
+    else this.sfx.setScore(level, 2.5);
+  }
 
   /** Colour grade: warm or cold tint and contrast, eased in. */
   grade(tint, contrast = 1.05) { this._gradeTo = { tint: new THREE.Vector3(...tint), contrast }; }
@@ -178,7 +183,7 @@ export class Intro {
       })),
     ]).catch((e) => console.error('intro assets', e));
 
-    this.sfx.scoreOn();
+    if (!this.music) this.sfx.scoreOn();
     this.score(0.0);
     this.grade([1, 1, 1], 1);
     this.shots = this._shots();
@@ -200,7 +205,7 @@ export class Intro {
     setTimeout(() => {
       this.sfx.staticOff(0.2);
       this.sfx.engineOff(0.3);
-      this.sfx.scoreOff(1.5);
+      if (!this.music) this.sfx.scoreOff(1.5);
       this.shot?.exit?.();
       for (const f of Object.values(this.fig)) f.dispose();
       this.group.removeFromParent();

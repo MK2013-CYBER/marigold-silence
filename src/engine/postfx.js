@@ -5,6 +5,8 @@ import { OutlinePass } from 'three/addons/postprocessing/OutlinePass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { BokehPass } from 'three/addons/postprocessing/BokehPass.js';
+import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
 /** Render pipeline: scene -> soft outline on the hovered object -> tone mapping. */
 export function createPostFX(renderer, scene, camera) {
@@ -15,6 +17,13 @@ export function createPostFX(renderer, scene, camera) {
   composer.setPixelRatio(pr);
   composer.setSize(w, h);
   composer.addPass(new RenderPass(scene, camera));
+
+  // ambient occlusion: soft contact shadows in corners and under things (High quality only)
+  const ao = new GTAOPass(scene, camera, w, h);
+  ao.enabled = false;
+  ao.blendIntensity = 0.85;
+  ao.updateGtaoMaterial({ radius: 0.45, distanceExponent: 1.6, thickness: 1.0, scale: 1.0 });
+  composer.addPass(ao);
 
   const outline = new OutlinePass(new THREE.Vector2(w, h), scene, camera);
   outline.edgeStrength = 2.6;
@@ -28,6 +37,11 @@ export function createPostFX(renderer, scene, camera) {
   const bokeh = new BokehPass(scene, camera, { focus: 3, aperture: 0.002, maxblur: 0.006 });
   bokeh.enabled = false;
   composer.addPass(bokeh);
+
+  // a gentle glow around bright things: bulbs, flames, the lantern (Medium and High)
+  const bloom = new UnrealBloomPass(new THREE.Vector2(w, h), 0.22, 0.4, 0.92);
+  bloom.enabled = false;
+  composer.addPass(bloom);
   composer.addPass(new OutputPass());
 
   // film grain + vignette (addendum section I), applied after tone mapping
@@ -51,5 +65,6 @@ export function createPostFX(renderer, scene, camera) {
 
   window.addEventListener('resize', () => composer.setSize(window.innerWidth, window.innerHeight));
   window.addEventListener('resize', () => bokeh.setSize(window.innerWidth, window.innerHeight));
-  return { composer, outline, grain, bokeh };
+  window.addEventListener('resize', () => { ao.setSize(window.innerWidth, window.innerHeight); bloom.setSize(window.innerWidth, window.innerHeight); });
+  return { composer, outline, grain, bokeh, ao, bloom };
 }

@@ -4,9 +4,9 @@
  * The choice is remembered in the browser (separately from the saved game).
  */
 export const PRESETS = {
-  low: { label: 'Low', pixelRatio: 1.0, msaa: 0, sunShadowSize: 1024, lampShadows: false, dust: 0.45, grain: false },
-  medium: { label: 'Medium', pixelRatio: 1.25, msaa: 2, sunShadowSize: 2048, lampShadows: true, dust: 0.75, grain: true },
-  high: { label: 'High', pixelRatio: 1.5, msaa: 4, sunShadowSize: 2048, lampShadows: true, dust: 1.0, grain: true },
+  low: { label: 'Low', pixelRatio: 1.0, msaa: 0, sunShadowSize: 1024, lampShadows: false, dust: 0.45, grain: false, ao: false, bloom: false },
+  medium: { label: 'Medium', pixelRatio: 1.25, msaa: 2, sunShadowSize: 2048, lampShadows: true, dust: 0.75, grain: true, ao: false, bloom: true },
+  high: { label: 'High', pixelRatio: 1.5, msaa: 4, sunShadowSize: 2048, lampShadows: true, dust: 1.0, grain: true, ao: true, bloom: true },
 };
 const ORDER = ['low', 'medium', 'high'];
 const KEY = 'marigold-silence.settings.v1';
@@ -58,6 +58,8 @@ export class Quality {
     this.scene.traverse((o) => { if (o.isLight && o.userData.wantsShadow) o.castShadow = p.lampShadows; });
     this.atmosphere.setDustScale(p.dust);
     this.post.grain.enabled = p.grain;
+    if (this.post.ao) this.post.ao.enabled = p.ao;
+    if (this.post.bloom) this.post.bloom.enabled = p.bloom;
     this.renderer.shadowMap.needsUpdate = true;
     this.onChange?.(this);
   }

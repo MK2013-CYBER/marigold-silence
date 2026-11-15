@@ -87,7 +87,7 @@ export class HQ {
     const L = this.lines;
     this.cole.talking = !this.remote;
     this.dialogue.show(L.speaker + (this.remote ? ' (radio)' : ''), line, choices);
-    Voice.speak(line, L.voice);
+    Voice.speak(line, L.voice, { radio: this.remote });
     if (!this.remote && Math.random() < 0.35) this.cole.gesture(Math.random() < 0.5 ? 'Nod' : 'Talk', 2.2);
     this.onFreezeChange?.();
   }
@@ -248,7 +248,7 @@ export class HQ {
         this.state.save();
         this.audio.click();
         this.hud.caption(`Danny (radio): ${text}`, 9);
-        Voice.speak(text, this.lines.voice);
+        Voice.speak(text, this.lines.voice, { radio: true });
       }
     }
   }
