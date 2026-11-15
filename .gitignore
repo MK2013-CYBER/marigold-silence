@@ -7,3 +7,4 @@ blender/textures/
 __pycache__/
 *.pyc
 blender/textures/cast/
+.env.local
