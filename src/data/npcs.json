@@ -22,13 +22,6 @@
         3.1416
       ]
     ],
-    "room_ox": [
-      [
-        -70.25,
-        -24.6,
-        3.1416
-      ]
-    ],
     "room_tamsin": [
       [
         -65.58,
@@ -50,6 +43,13 @@
         -9.6,
         1.5708
       ]
+    ],
+    "maint_shed": [
+      [
+        -58.6,
+        22.4,
+        1.5708
+      ]
     ]
   },
   "schedule": [
@@ -61,7 +61,7 @@
         "billie": "room_billie",
         "lindqvist": "office",
         "julian": "room_julian",
-        "ox": "room_ox",
+        "ox": "maint_shed",
         "tamsin": "room_tamsin",
         "hobbs": "radio"
       }
@@ -589,7 +589,7 @@
       "presentDefault": "\"Eh? Speak up, Inspector. Oh, that. Can't say I know.\""
     }
   },
-  "_spots": "Each person stays in one place all day, alone, so you can talk to them privately: five suspects in their bedrooms in the Quarters (the names on the doors), Dr. Lindqvist in Pryce's office with the body and his bag (west wall, facing the desk), Hobbs in the radio shack. [x, z, facing].",
+  "_spots": "Each person stays in one place all day, alone, so you can talk to them privately: Vivienne, Billie, Julian and Tamsin in their bedrooms in the Quarters (the names on the doors), Dr. Lindqvist in Pryce's office with the body and his bag, Ox at work in the maintenance shed (facing the doors), Hobbs in the radio shack. [x, z, facing].",
   "roomLamp": {
     "color": "#ffc27a",
     "intensity": 9,

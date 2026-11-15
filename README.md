@@ -170,10 +170,10 @@ shaft, the iron ladder and a lamp glowing far below: aim at it and press E to go
 
 ## Stage E: the people (addendum F)
 
-Each person stays in one place all day, alone, so you can talk to them privately: five suspects in
-their bedrooms in the Quarters (the name on each door; Vivienne and Billie on the north side, Julian,
-Ox and Tamsin on the south), Dr. Lindqvist in Pryce's office by the body and his bag, Hobbs in the
-radio shack. A warm lamp lights the
+Each person stays in one place all day, alone, so you can talk to them privately: four suspects in
+their bedrooms in the Quarters (the name on each door; Vivienne and Billie on the north side, Julian
+and Tamsin on the south), Dr. Lindqvist in Pryce's office by the body and his bag, Ox at work in the
+maintenance shed, Hobbs in the radio shack. A warm lamp lights the
 room of whoever you are near. They fidget and turn to face you. E to talk: ask about topics (some unlock as you find things
 or need trust), show them something you found, or watch them for a tell. Trust starts at 50: kind
 questions raise it, pressing lowers it. Data: `src/data/npcs.json`. Code: `src/game/npcs.js`.
