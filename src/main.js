@@ -93,7 +93,7 @@ if (params.get('hangar') === 'placeholder') {
 }
 
 const state = new GameState(config);
-const hasSave = state.load();
+const hasSave = await state.loadBest(); // the browser's save or saves/save.json, whichever is newer
 
 const hud = new Hud({ clues, items, config });
 const audio = new AmbientAudio();
@@ -362,7 +362,8 @@ function playIntro() {
 
 overlay.addEventListener('click', () => {
   if (intro.active) return;
-  if (!state.data.introSeen && !hasSave) playIntro(); // a brand-new game opens with the intro
+  const untouched = state.data.minutes <= state.start && !state.data.solved.length && !Object.keys(state.data.found).length;
+  if (!state.data.introSeen && untouched) playIntro(); // a brand-new game opens with the intro
   else enter();
 });
 const watchIntro = document.getElementById('watch-intro');
@@ -376,9 +377,8 @@ newGame.addEventListener('click', (e) => {
     setTimeout(() => { confirmArmed = false; newGame.textContent = 'Start a new game'; }, 4000);
     return;
   }
-  state.erase();
   window.removeEventListener('beforeunload', savePlayer);
-  location.reload();
+  state.erase().then(() => location.reload()); // wipes the browser's save and saves/save.json
 });
 
 controller.onLockChange = (locked) => {
@@ -443,6 +443,10 @@ window.addEventListener('keydown', (e) => {
   }
 });
 window.addEventListener('beforeunload', savePlayer);
+// closing the tab (even abruptly) or switching away: save now, to the browser and to disk
+const saveNow = () => { if (state.locked) return; savePlayer(); state.flush(); };
+window.addEventListener('pagehide', saveNow);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') saveNow(); });
 
 // ---------- loop ----------
 const clock = new THREE.Clock();

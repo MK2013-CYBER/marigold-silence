@@ -93,7 +93,7 @@
     },
     "window": {
       "name": "Barred window",
-      "prompt": "Check the window",
+      "prompt": "Check the barred window",
       "text": "Iron bars set deep in mortar, and the dust on the sill is unbroken. Nobody has been through here.",
       "exit": "window"
     },

@@ -246,7 +246,7 @@ export class Finale {
     const btns = this.ui.querySelector('.ending-btns');
     const again = document.createElement('button');
     again.textContent = E.again;
-    again.onclick = (ev) => { ev.stopPropagation(); this.state.erase(); this.state.save = () => {}; location.reload(); };
+    again.onclick = (ev) => { ev.stopPropagation(); this.state.erase().then(() => location.reload()); };
     const keep = document.createElement('button');
     keep.textContent = E.keep;
     keep.onclick = (ev) => { ev.stopPropagation(); this.ui.classList.remove('on'); this.ui.classList.add('hidden'); };

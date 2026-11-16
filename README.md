@@ -181,6 +181,16 @@ room of whoever you are near. They fidget and turn to face you. E to talk: ask a
 or need trust), show them something you found, or watch them for a tell. Trust starts at 50: kind
 questions raise it, pressing lowers it. Data: `src/data/npcs.json`. Code: `src/game/npcs.js`.
 
+## Saving
+
+The game saves itself after every action, every few seconds while you play, and when the tab is
+hidden or closed. There are two copies, so a cleared browser can't lose your game:
+- the browser's own storage (localStorage, key `marigold-silence.save.v1`)
+- `saves/save.json` in this folder, written by the dev server (`npm run dev`, see `vite.config.js`)
+
+When the game starts it loads whichever copy is newer. "Start a new game" erases both.
+To back up a game, copy `saves/save.json`.
+
 ## Clues, leads and findings
 
 Evidence lives in `src/data/findings.json` (32 findings). Each finding has a **name**, which is its

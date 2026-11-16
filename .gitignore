@@ -8,4 +8,5 @@ __pycache__/
 *.pyc
 blender/textures/cast/
 .env.local
-
+# the player's save (written by the dev server)
+saves/

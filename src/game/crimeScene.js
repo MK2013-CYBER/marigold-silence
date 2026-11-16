@@ -108,12 +108,12 @@ export class CrimeScene {
     };
     spot('CS_body_hit', V(16.8, 0.95, -10.55), [0.7, 0.9, 0.7]);
     spot('CS_bolt', V(15.15, 1.1, -6.6), [0.25, 0.25, 0.12]);
-    spot('CS_window', V(18.0, 1.67, -6.6), [1.7, 1.1, 0.14]); // the window in the front wall, onto the hangar
-    // its iron bars, on the office side of the glass
+    spot('CS_window', V(18.0, 1.67, -6.64), [1.7, 1.1, 0.2]); // the window in the front wall, onto the hangar
+    // its iron bars, on the office side of the glass AND of the blinds (behind the blinds they can't be seen)
     const bars = new THREE.Group();
-    const barM = m(0x26221f, 0.6, 0.75);
-    for (let x = 17.32; x <= 18.7; x += 0.23) { const r = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 1.1, 6), barM); r.position.set(x, 1.67, -6.56); bars.add(r); }
-    for (const y of [1.3, 2.05]) { const f = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.03, 0.012), barM); f.position.set(18.0, y, -6.56); bars.add(f); }
+    const barM = m(0x55504a, 0.45, 0.85);
+    for (let x = 17.3; x <= 18.72; x += 0.2) { const r = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 1.12, 8), barM); r.position.set(x, 1.67, -6.69); bars.add(r); }
+    for (const y of [1.25, 2.09]) { const f = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.045, 0.03), barM); f.position.set(18.0, y, -6.69); bars.add(f); }
     bars.traverse((o) => { o.userData.noRay = true; });
     add('CS_bars', bars, V(0, 0, 0));
     spot('CS_stove', V(19.3, 0.8, -7.7), [0.7, 1.4, 0.6]);
