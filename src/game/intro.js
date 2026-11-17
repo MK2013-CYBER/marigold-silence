@@ -32,6 +32,7 @@ export class Intro {
     this.exposure = 1;
     this.sfx = new IntroAudio(this.audio);
     this.names = new Map(this.characters.map((c) => [c.id, c.name]));
+    this.castIds = ['cole', 'hobbs', 'pryce', 'vivienne', 'billie', 'lindqvist', 'julian', 'ox', 'tamsin']; // who appears
     this._buildDom();
   }
 
@@ -62,7 +63,7 @@ export class Intro {
     this.dom.skip.addEventListener('click', (e) => { e.stopPropagation(); this.skip(); });
     this.dom.title.querySelector('h1').textContent = this.data.title;
     this.dom.title.querySelector('p').textContent = this.data.titleSub;
-    this.dom.tgHead.textContent = this.data.telegram.header;
+    this.dom.tgHead.textContent = this.data.telegram?.header ?? '';
     this._hold = 0;
     window.addEventListener('keydown', (e) => {
       if (!this.active) return;
@@ -161,7 +162,7 @@ export class Intro {
 
     // the people and the plane load while the telegram is on screen
     this.fig = {};
-    const ids = ['cole', 'hobbs', 'pryce', 'vivienne', 'billie', 'lindqvist', 'julian', 'ox', 'tamsin'];
+    const ids = this.castIds;
     this.ready = Promise.all([
       loadGLTF('mail_plane.glb').then((gl) => {
         this.plane = gl.scene.clone(true);
@@ -208,6 +209,7 @@ export class Intro {
       this.group.removeFromParent();
       this.atmosphere.night = 0;
       this.atmosphere.extraFog = 0;
+      this.atmosphere.clear = 0;
       this.streamer.lampsOff = false;
       if (this.parked) this.parked.hidden = false;
       for (const gl of this._glass ?? []) { gl.m.emissiveIntensity = gl.e; gl.m.opacity = gl.op; gl.m.transparent = gl.tr; gl.m.needsUpdate = true; }

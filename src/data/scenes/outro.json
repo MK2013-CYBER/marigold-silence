@@ -1,0 +1,43 @@
+{
+  "_note": "The ending montage (src/game/outro.js): plays after the endings where Clementine is brought up out of the Undercroft (endings), then the ending's own card follows. All words here.",
+  "endings": ["E1", "E1short", "E3"],
+  "skipLabel": "Skip ending",
+  "skipHold": "Hold Space to skip",
+  "title": "THE MARIGOLD SILENCE",
+  "titleSub": "Case closed · Thank you for playing",
+  "open": "THE STORM HAS PASSED.",
+  "captions": {
+    "out": "Sable Flat. For the first time in two days, the sky is clear.",
+    "apron": "That evening, Sable Flat empties out. Everyone is going home.",
+    "takeoff": "Mail plane NC-11427, bound for home."
+  },
+  "out": {
+    "E1": [
+      { "speaker": "Danny Cole", "text": "Easy now, miss. Mind your step." },
+      { "speaker": "Clementine Pryce", "text": "I'd forgotten how big the sky is." }
+    ],
+    "E3": [
+      { "speaker": "Clementine Pryce", "text": "Is it always this bright?" },
+      { "speaker": "Danny Cole", "text": "Every day, miss. Every single day." }
+    ],
+    "E1short": [
+      { "speaker": "Clementine Pryce", "text": "Is it always this bright?" },
+      { "speaker": "Danny Cole", "text": "Every day, miss. Every single day." }
+    ]
+  },
+  "clementine": { "id": "clementine", "note": "under the open sky, after seven hundred and thirty-three days" },
+  "farewells": [
+    { "id": "hobbs", "note": "the radio operator, signing off", "text": "The wires are quiet tonight, Inspector. No more ghosts. I reckon I'll sleep. Thank you." },
+    { "id": "vivienne", "note": "his widow, going home", "text": "Inspector, darling. I came here for a weekend and I'm leaving with the truth. I never expected to be grateful for that. Thank you." },
+    { "id": "billie", "note": "the pilot, flying home", "text": "Two years I flew over that hangar and never once looked down. Thank you for looking, Inspector." },
+    { "id": "lindqvist", "note": "the doctor, ready to tell it all at last", "text": "I have been afraid for two years. Tonight I am only tired. Thank you, Inspector. Truly." },
+    { "id": "julian", "note": "Meridian Air, catching the night train", "text": "Bravo, Inspector. I have sat through a great many last acts. That was the finest of them." },
+    { "id": "tamsin", "note": "the secretary, out of a job and glad of it", "text": "Not bad, Inspector. Not bad at all. ...Thanks. I mean it." },
+    { "id": "ox", "note": "the mechanic, letting his pigeons go", "text": "I'll let the birds out tonight, sir. All of them. Thank you for being kind to her." }
+  ],
+  "cabin": [
+    { "speaker": "Danny Cole", "text": "Chief? I'll write it all up tonight. Every word of it, in my neatest hand." },
+    { "speaker": "Hart", "text": "Best report the Bureau will ever read, Danny." },
+    { "speaker": "Danny Cole", "text": "...Thank you, Chief. For bringing me." }
+  ]
+}

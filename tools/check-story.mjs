@@ -140,6 +140,12 @@ for (const l of seq.S23.lifted) {
   const pilots = new Set([...all.matchAll(/Capt\. (\w\. \w+)|(Tom Reeve|R\. Hale)/g)].map((m) => m[0]));
   if ([...pilots].some((p) => /Hale/.test(p))) bad(`Pilot names disagree: ${[...pilots].join(', ')}`);
 }
+// the investigations go in number order; the dusk-only ones open at the stakeout's own time
+{
+  const P = J('puzzles.json');
+  if (`${P.order}` !== `${puzzles.map((p) => p.id).sort((a, b) => a.slice(1) - b.slice(1))}`) bad(`Order: puzzles.json order is not S1..S${puzzles.length} in number order`);
+  for (const id of P.sequential.afterDusk) if (seq[id]?.from !== P.sequential.duskAt) bad(`Order: ${id} opens at ${seq[id]?.from}, but puzzles.json says dusk is ${P.sequential.duskAt}`);
+}
 // Danny's hints about walking places don't point at things that give nothing
 for (const p of puzzles) for (const h of p.hints ?? []) if (/Waco's fuel cap/.test(h)) bad(`${p.id}: Danny sends you to the Waco's fuel cap, which proves nothing`);
 

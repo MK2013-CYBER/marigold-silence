@@ -1,6 +1,7 @@
 {
   "_note": "Stage G / v4 Tier 6: the trapdoor, the Undercroft, Clementine, S26 and the endings (first bible section 11; addendum K: Clementine mentions Cole). SPOILERS.",
   "trapPrompt": "Go down through the trapdoor",
+  "trapLocked": { "title": "The trapdoor", "text": "A cold draught comes up the shaft, and far below a lamp is burning. Danny's voice crackles on your radio. \"Not yet, Chief. Whoever lit that lamp, we go down there with the whole case in our hands. Every investigation solved, and the theory filed at the typewriter (S26).\"", "left": "Investigations still to solve: {n}." },
   "climbPrompt": "Climb back up to the office",
   "standoff": {
     "intro": "The trapdoor swings up. Iron rungs go down into the dark, and at the bottom, in the light of a lantern, stands Ox with a wrench in his fist.",

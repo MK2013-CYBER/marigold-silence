@@ -106,6 +106,15 @@ apron, windsock, sun, Raven Ridge, streamed models, indoor zones, planned buildi
 Pryce's office in the hangar (north-east corner), as found at 06:10: the body slumped at the desk,
 the brandy decanter and glass, the music box, calendar, blotter, pocket watch, the demand note under
 the door, the doctor's bag and Hart's camera case. Press E on anything to examine it.
+The barred window is the one in the east wall, looking out onto the desert (its iron bars are in
+`hangar_shell.glb`); the window in the front wall, onto the hangar floor, is an ordinary one with blinds.
+
+**Investigations go in number order.** Each one opens only when every one before it is solved
+(`src/data/puzzles.json` "sequential"); open one too early and Danny lists what's still left. The
+one exception is S21 The Stakeout, which can only be done at dusk (16:30): S22-S25 don't wait for it,
+but the theory (S26) does. Danny's hints follow the same order. Nobody goes down the trapdoor until
+S26 is filed. The story check (`node tools/check-story.mjs`) makes sure the order and the dusk time
+stay in step.
 
 | Sequence | Where | How |
 |---|---|---|
@@ -161,7 +170,7 @@ shaft, the iron ladder and a lamp glowing far below: aim at it and press E to go
 
 - **S26 The Theory** (HQ typewriter): pick WHO, HOW, WHERE and WHY. A new name appears under WHO
   once you know enough. Filing it against an innocent person ends the game (The Wrong Person).
-- **The trapdoor** (after S6): Ox waits at the bottom. Win him over with trust, or with what the ration
+- **The trapdoor** (opens with S6, but you can only go down once the theory, S26, is filed): Ox waits at the bottom. Win him over with trust, or with what the ration
   ledger told you (S14). Then a voice from the dark: "Let him through, Ox."
 - **The Undercroft** (`blender/build_undercroft.py`): the shaft, the storeroom, the sky room, her
   bedroom and the radio nook. Her diary (14 pages), the spoon key, the scratched calendar, the mural.
@@ -169,6 +178,12 @@ shaft, the iron ladder and a lamp glowing far below: aim at it and press E to go
   confession, then choose: the law, the silence, or the daylight.
 - **Endings**: The Law, The Silence, The Daylight (needs the safe papers S5, the 1931 photographs S9
   and her diary; otherwise The Daylight, Too Soon), The Wrong Person, and Cold Case (17:30 passes).
+- **The ending montage** (`src/game/outro.js`, words in `src/data/scenes/outro.json`): after The Law,
+  The Daylight, and The Daylight, Too Soon, about two minutes in the intro's style. The storm has
+  passed; Danny brings Clementine out of the hangar into the light; that evening everyone gathers in
+  front of the hangar and, one by one, thanks the Inspector; they watch the mail plane take off; in
+  the cabin Danny says thank you too; the plane climbs away under "THE MARIGOLD SILENCE · Case closed".
+  Then the ending's own card. Skip button, Esc, or hold Space to skip.
 - Words: `src/data/finale.json`. Code: `src/game/finale.js`.
 
 ## Stage E: the people (addendum F)

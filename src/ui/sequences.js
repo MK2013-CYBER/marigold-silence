@@ -14,8 +14,8 @@ const fmt = (m) => { m = ((m % 1440) + 1440) % 1440; return `${String(Math.floor
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 export class SequenceScreen {
-  constructor({ data, state, evidence, hud, audio, spend, onSolved, trust, cole }) {
-    Object.assign(this, { data, state, evidence, hud, audio, spend, onSolved, trust, cole });
+  constructor({ data, puzzles, state, evidence, hud, audio, spend, onSolved, trust, cole }) {
+    Object.assign(this, { data, puzzles, state, evidence, hud, audio, spend, onSolved, trust, cole });
     this.state.data.seq ??= {};
     this.state.data.examined ??= [];
     this.el = document.createElement('div');
@@ -64,7 +64,45 @@ export class SequenceScreen {
     this.onSolved?.(id);
   }
 
+  /**
+   * Investigations go in number order (src/data/puzzles.json "sequential"): the ones before `id`
+   * that are still unsolved. A dusk-only one (S21) holds up nothing but the theory, S26.
+   */
+  blockers(id) {
+    const P = this.puzzles;
+    const i = P?.order.indexOf(id) ?? -1;
+    if (i < 0 || this.solved(id)) return [];
+    const dusk = P.sequential?.afterDusk ?? [];
+    return P.order.slice(0, i).filter((x) => !this.solved(x) && (id === 'S26' || !dusk.includes(x)));
+  }
+
+  title(id) { return this.data[id]?.title ?? (id === 'S26' ? this.finale?.S26.title : id); }
+
+  /** Danny's "not yet" for an investigation opened out of order, as plain text. */
+  lockedText(id, wait = this.blockers(id)) {
+    const L = this.puzzles.sequential;
+    return `${L.locked.replace('{this}', `${id} (${this.title(id)})`)}\n\n${wait.map((x) => `• ${x} · ${this.title(x)}`).join('\n')}\n\n${L.lockedEnd}`;
+  }
+
+  _renderLocked(wait) {
+    const L = this.puzzles.sequential;
+    this.el.querySelector('.seq-title').textContent = `${this.id} · ${this.title(this.id)}`;
+    this.body.replaceChildren();
+    const p = document.createElement('p');
+    p.className = 'seq-intro';
+    p.textContent = L.locked.replace('{this}', `${this.id} (${this.title(this.id)})`);
+    const ul = document.createElement('ul');
+    ul.className = 'seq-facts';
+    for (const x of wait) { const li = document.createElement('li'); li.textContent = `${x} · ${this.title(x)}`; ul.appendChild(li); }
+    const end = document.createElement('p');
+    end.className = 'seq-dim';
+    end.textContent = L.lockedEnd;
+    this.body.append(p, ul, end);
+  }
+
   render() {
+    const wait = this.blockers(this.id);
+    if (wait.length) return this._renderLocked(wait);
     if (this.id === 'S26') { this.body.replaceChildren(); const p0 = document.createElement('p'); p0.className = 'seq-intro'; this.body.appendChild(p0); return this.renderS26(); }
     const d = this.data[this.id];
     this.el.querySelector('.seq-title').textContent = `${this.id} · ${d.title}`;

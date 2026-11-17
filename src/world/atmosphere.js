@@ -5,6 +5,7 @@ import { valueNoise } from './noise.js';
 const OUT_FOG = new THREE.Color('#8c7150');   // brown-yellow storm haze
 const IN_FOG = new THREE.Color('#3a2d1e');    // dim, dusty interior air (lets daylight read through open doors)
 const NIGHT_FOG = new THREE.Color('#14110e'); // the storm after dark (intro)
+const CLEAR_SKY = new THREE.Color('#d8b48a'); // the storm has passed (ending montage): a clear golden evening
 const FLASH = new THREE.Color('#d9d6e8');
 
 /**
@@ -33,6 +34,7 @@ export class Atmosphere {
 
     this.night = 0;
     this.extraFog = 0;
+    this.clear = 0; // 0 = the dust storm, 1 = it has blown itself out (only the ending montage sets this)
     this.hemi = new THREE.HemisphereLight('#cfae80', '#4d3c29', 1.4);
     scene.add(this.hemi);
 
@@ -161,6 +163,7 @@ export class Atmosphere {
 
     // lightning
     this._nextFlash -= dt;
+    if (this.clear > 0) this._nextFlash = Math.max(this._nextFlash, 3); // no lightning once the storm has passed
     if (this._nextFlash <= 0 && this._flashT < 0) { this._flashT = 0; this.onLightning?.(0.8 + Math.random() * 2.5); }
     let f = 0;
     if (this._flashT >= 0) {
@@ -192,6 +195,17 @@ export class Atmosphere {
       this.renderer.toneMappingExposure *= 1 + n * 0.25;
     }
 
+    // after the storm: clean air, a golden sky, a bright sun
+    const c = this.clear;
+    if (c > 0) {
+      fogC.lerp(CLEAR_SKY, c);
+      this.scene.background.copy(fogC);
+      this.scene.fog.density *= 1 - 0.85 * c;
+      this.sun.intensity *= 1 + 0.5 * c;
+      this.hemi.intensity *= 1 + 0.15 * c;
+    }
+    this.sunDisc.material.opacity = 0.22 + 0.55 * c;
+
     // sun + shadow box follow the player (snapped to texels to stop shimmering)
     const snap = 140 / 2048;
     const cx = Math.round(p.x / snap) * snap, cz = Math.round(p.z / snap) * snap;
@@ -204,8 +218,8 @@ export class Atmosphere {
     const showDust = out > 0.05;
     this.dustPoints.visible = this.driftPoints.visible = showDust;
     if (!showDust) return;
-    this.dustPoints.material.opacity = 0.55 * out;
-    this.driftPoints.material.opacity = 0.6 * out;
+    this.dustPoints.material.opacity = 0.55 * out * (1 - c);
+    this.driftPoints.material.opacity = 0.6 * out * (1 - c);
 
     const vx = w.dirX * gustSpeed, vz = w.dirZ * gustSpeed;
     const D = this.dust, B = D.box;

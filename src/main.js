@@ -22,6 +22,8 @@ import { HQ } from './game/hq.js';
 import { Quality } from './engine/quality.js';
 import { Intro } from './game/intro.js';
 import introData from './data/scenes/intro.json';
+import { Outro } from './game/outro.js';
+import outroData from './data/scenes/outro.json';
 import castData from './data/cast.json';
 import findingsData from './data/findings.json';
 import sequencesData from './data/sequences.json';
@@ -172,7 +174,7 @@ interaction.onUI = (def) => {
 
 // ---------- Stage D: the crime scene and its sequences (v4 S1-S6) ----------
 const seqScreen = new SequenceScreen({
-  data: sequencesData, state, evidence, hud, audio, spend, trust, cole,
+  data: sequencesData, puzzles: puzzlesData, state, evidence, hud, audio, spend, trust, cole,
   onSolved: (id) => {
     hud.toast(`Solved: ${sequencesData[id]?.title ?? finaleData.S26.title}`);
     hq.danny(coleLines.solved?.[id] ?? coleLines.reactions.default, 6);
@@ -198,7 +200,7 @@ seqScreen.walks = walks;
 // ---------- v4 Tier 6: the Undercroft, Clementine and the endings ----------
 const finale = new Finale({
   scene, world, controller, streamer, interaction, state, evidence, hud, audio, dialogue: hq.dialogue, cast: castData.people,
-  data: finaleData, crime, spend, trust, fade: hq.fade, characters, onFreezeChange: (r) => { if (r !== undefined) resting = r; syncFreeze(); },
+  data: finaleData, puzzles: puzzlesData, crime, spend, trust, fade: hq.fade, characters, onFreezeChange: (r) => { if (r !== undefined) resting = r; syncFreeze(); },
 });
 finale.onEnding = () => { hq.closeScreen(); hq.dialogue.close(); music.play('theme', { level: 1 }); };
 seqScreen.finale = finaleData;
@@ -262,6 +264,26 @@ const minimap = new Minimap(worldCfg, placesData.places);
 
 // ---------- the cinematic intro (addendum v2, section E) ----------
 const intro = new Intro({ scene, camera, post, atmosphere, streamer, ground, cole, audio, music, hangar, quality, data: introData, characters, cast: castData.people });
+// ---------- the ending montage (after the endings where Clementine is brought up) ----------
+const outro = new Outro({ scene, camera, post, atmosphere, streamer, ground, cole, audio, music, hangar, quality, data: outroData, characters, cast: castData.people });
+finale.playMontage = (id, done) => {
+  if (!outroData.endings.includes(id)) return false;
+  hud.closeAll();
+  controller.setActive(false);
+  hud.showClock(false);
+  minimap.show(false);
+  hint.classList.add('hidden');
+  document.getElementById('crosshair').classList.add('hidden');
+  outro.play(id, () => {
+    hint.classList.remove('hidden');
+    document.getElementById('crosshair').classList.remove('hidden');
+    hud.showClock(true);
+    minimap.show(true);
+    controller.setActive(true);
+    done();
+  });
+  return true;
+};
 controller.onFootstep = (amt) => audio.footstep(amt);
 atmosphere.onLightning = (delay) => audio.thunder(delay, 0.6 + Math.random() * 0.5);
 
@@ -469,7 +491,8 @@ let walked = 0;
 renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.05);
   const t = clock.elapsedTime;
-  if (intro.active) { introFrame(dt, t); return; }
+  const cine = intro.active ? intro : outro.active ? outro : null;
+  if (cine) { introFrame(dt, t, cine); return; }
   const pos = controller.position;
   boundaryCool = Math.max(0, boundaryCool - dt);
 
@@ -547,7 +570,7 @@ renderer.setAnimationLoop(() => {
 });
 
 /** While the intro plays, the camera is the director's: stream, light and sound around it. */
-function introFrame(dt, t) {
+function introFrame(dt, t, intro) {
   intro.update(dt);
   music.update();
   const pos = intro.focus;
@@ -568,4 +591,4 @@ function introFrame(dt, t) {
 }
 
 // Test hook for automated checks in dev builds only.
-if (import.meta.env.DEV) window.__game = { intro, post, crime, people, walks, finale, music, evidence, seqScreen, trust, THREE, scene, camera, controller, world, flashlight, renderer, state, interaction, hud, atmosphere, ground, streamer, hangar, cole, hq, quality };
+if (import.meta.env.DEV) window.__game = { intro, outro, post, crime, people, walks, finale, music, evidence, seqScreen, trust, THREE, scene, camera, controller, world, flashlight, renderer, state, interaction, hud, atmosphere, ground, streamer, hangar, cole, hq, quality };

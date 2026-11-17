@@ -170,9 +170,15 @@ export class HQ {
     this.state.save();
   }
 
-  /** The first puzzle (in Danny's suggested order) that is in the game and not solved yet. */
+  /**
+   * The first puzzle (in order) that is in the game and not solved yet. A dusk-only one (S21)
+   * waits until dusk while there is something else to do before the theory.
+   */
   currentPuzzle() {
-    return this.puzzles.order.map((id) => this.puzzleById.get(id)).find((p) => p && p.built && !this.state.isSolved(p.id)) ?? null;
+    const S = this.puzzles.sequential ?? {};
+    const open = this.puzzles.order.map((id) => this.puzzleById.get(id)).filter((p) => p && p.built && !this.state.isSolved(p.id));
+    const early = (p) => S.afterDusk?.includes(p.id) && this.state.data.minutes < parseTime(S.duskAt);
+    return open.find((p) => !early(p) && p.id !== 'S26') ?? open[0] ?? null;
   }
 
   hint(p = this.currentPuzzle()) {

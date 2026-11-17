@@ -276,7 +276,9 @@ export class Walks {
         show(W.smokepot);
         break;
       case 'ventstack':
-        if (st.hasItem('smokepot') && !this.smokeOn && !st.data.solved.includes('S17')) {
+        if (st.hasItem('smokepot') && this.seq.blockers('S17').length) {
+          this.hud.openReader(W.ventstack.name, this.seq.lockedText('S17')); // the smoke test waits its turn
+        } else if (st.hasItem('smokepot') && !this.smokeOn && !st.data.solved.includes('S17')) {
           st.data.items = st.data.items.filter((i) => i !== 'smokepot');
           this.spend(5);
           st.data.smoke = { until: st.data.minutes + this.data.S17.minutes, seen: [] };

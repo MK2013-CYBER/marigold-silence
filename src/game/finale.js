@@ -70,6 +70,12 @@ export class Finale {
 
   // ------------------------------------------------------------------ down and up
   descend() {
+    // nobody goes down there until the whole case is solved and the theory is filed (S26)
+    if (!this.state.data.solved.includes('S26')) {
+      const left = (this.puzzles?.order ?? []).filter((x) => !this.state.data.solved.includes(x));
+      this.hud.openReader(this.data.trapLocked.title, `${this.data.trapLocked.text}\n\n${this.data.trapLocked.left.replace('{n}', left.length)}`);
+      return;
+    }
     if (this.state.flag('oxPassed')) return this._go(true);
     const S = this.data.standoff;
     const say = (who, text, choices) => this.dialogue.show(who, text, choices);
@@ -211,11 +217,17 @@ export class Finale {
 
   ending(id) {
     if (this.state.data.ending && id === 'E5') return;
-    const E = this.data.endings;
-    const e = E[id];
     this.state.data.ending = id;
     this.state.save();
     this.onEnding?.(id);
+    // the endings where she is brought up out of the dark get the montage first (src/game/outro.js)
+    if (this.playMontage?.(id, () => this._card(id))) return;
+    this._card(id);
+  }
+
+  /** The ending's own card: its title and lines, one by one, then the score. */
+  _card(id) {
+    const e = this.data.endings[id];
     const el = this.ui;
     el.querySelector('h1').textContent = e.title;
     const box = el.querySelector('.ending-lines');
