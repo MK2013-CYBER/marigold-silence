@@ -4,7 +4,7 @@ import { parseTime } from '../engine/state.js';
  * Screens for the office investigation sequences (v4 S1-S6). Each has its own mechanic:
  *   S1 Walk the Room      mark every exit possible / impossible, photograph with 12 plates
  *   S2 The Body           direct the doctor's examination; spot what doesn't fit heart failure
- *   S3 Time of Death      cooling arithmetic; set a time window with two sliders
+ *   S3 Time of Death      cooling arithmetic; set the time he died on a slider
  *   S4 The Bench Test     find the chart, then 6 drops x 5 samples x 3 chemicals
  *   S5 The Safe           three-number dial (or drill it)
  *   S6 The Box and Latch  listen to the music box, pull the books in the same order
@@ -212,37 +212,29 @@ export class SequenceScreen {
   renderS3(d) {
     const st = this.s();
     const lo = parseTime(d.range[0]), hi = parseTime(d.range[1]) + 1440;
-    st.from ??= lo + 120;
-    st.to ??= lo + 360;
+    st.at ??= lo + 120; // one time: "he died at about..."
     const sec = document.createElement('div');
     sec.className = 'seq-section';
     sec.innerHTML = `<ul class="seq-facts">${d.facts.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>
-      <label class="seq-slider">Earliest: <b class="f"></b><input type="range" class="from" min="${lo}" max="${hi}" step="15"></label>
-      <label class="seq-slider">Latest: <b class="t"></b><input type="range" class="to" min="${lo}" max="${hi}" step="15"></label>
-      <div class="seq-bar"><i></i></div>`;
-    const from = sec.querySelector('.from'), to = sec.querySelector('.to');
-    from.value = st.from;
-    to.value = st.to;
-    const draw = () => {
-      st.from = +from.value;
-      st.to = Math.max(+to.value, st.from);
-      sec.querySelector('.f').textContent = fmt(st.from);
-      sec.querySelector('.t').textContent = fmt(st.to);
-      const bar = sec.querySelector('.seq-bar i');
-      bar.style.left = `${((st.from - lo) / (hi - lo)) * 100}%`;
-      bar.style.width = `${((st.to - st.from) / (hi - lo)) * 100}%`;
-    };
-    from.addEventListener('input', draw);
-    to.addEventListener('input', draw);
-    for (const el of [from, to]) el.addEventListener('keydown', (e) => e.stopPropagation());
+      <div class="seq-slider"><span>${esc(d.label)}</span> <b class="seq-time"></b>
+        <button type="button" class="seq-btn less">− 5 min</button>
+        <input type="range" class="at" min="${lo}" max="${hi}" step="5">
+        <button type="button" class="seq-btn more">+ 5 min</button></div>`;
+    const at = sec.querySelector('.at');
+    at.value = st.at;
+    const draw = () => { st.at = +at.value; sec.querySelector('.seq-time').textContent = fmt(st.at); };
+    at.addEventListener('input', draw);
+    at.addEventListener('keydown', (e) => e.stopPropagation());
+    for (const [cls, by] of [['less', -5], ['more', 5]]) {
+      sec.querySelector(`.${cls}`).addEventListener('click', (e) => { e.stopPropagation(); at.value = +at.value + by; draw(); });
+    }
+    if (this.solved('S3')) at.disabled = true;
     draw();
     this.body.appendChild(sec);
     if (this.solved('S3')) return;
     this.body.appendChild(this._btn('This is my answer', () => {
       const c = d.check;
-      const death = parseTime(c.mustInclude);
-      if (!(st.from <= death && st.to >= death) || st.from < parseTime(c.earliest) || st.to > parseTime(c.latest)) { this.spend(2); return this.msg(d.wrong); }
-      if (st.to - st.from > c.maxWidth) return this.msg(d.tooWide);
+      if (Math.abs(st.at - parseTime(c.answer)) > c.within) { this.spend(2); return this.msg(d.wrong); }
       this.spend(10); // the arithmetic and the checks take a while
       this.solve('S3');
       this.render();
@@ -320,10 +312,21 @@ export class SequenceScreen {
     const sec = document.createElement('div');
     sec.className = 'seq-section';
     if (!st.open) {
-      sec.innerHTML = '<div class="seq-dial"><label>Left <input type="number" min="0" max="39" class="n0"></label><label>Right <input type="number" min="0" max="39" class="n1"></label><label>Left <input type="number" min="0" max="39" class="n2"></label></div>';
-      for (const i of [0, 1, 2]) sec.querySelector(`.n${i}`).addEventListener('keydown', (e) => e.stopPropagation());
+      // three dial numbers, 0 to 39 only: anything else is refused as you type it
+      sec.innerHTML = `<div class="seq-dial">${d.turns.map((turn, i) => `<label>${esc(turn)} <input type="text" inputmode="numeric" maxlength="2" autocomplete="off" class="n${i}"></label>`).join('')}</div>`;
+      const boxes = d.turns.map((_, i) => sec.querySelector(`.n${i}`));
+      for (const el of boxes) {
+        el.addEventListener('keydown', (e) => e.stopPropagation());
+        el.addEventListener('input', () => {
+          const digits = el.value.replace(/\D/g, '').slice(0, 2);
+          if (digits !== '' && +digits > d.dialMax) { el.value = el.dataset.ok ?? ''; this.msg(d.dialRange); return; }
+          el.value = el.dataset.ok = digits;
+        });
+      }
       sec.appendChild(this._btn('Try the combination', () => {
-        const v = [0, 1, 2].map((i) => Number(sec.querySelector(`.n${i}`).value));
+        if (boxes.some((el) => el.value === '')) return this.msg(d.dialEmpty);
+        const v = boxes.map((el) => Number(el.value));
+        if (v.some((n) => !Number.isInteger(n) || n < 0 || n > d.dialMax)) return this.msg(d.dialRange);
         this.spend(d.tryMinutes);
         this.audio?.click();
         if (v.every((n, i) => n === d.combo[i])) { st.open = 'dial'; this.render(); this.msg('Click. The handle turns.', true); }

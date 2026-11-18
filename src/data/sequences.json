@@ -283,7 +283,8 @@
   },
   "S3": {
     "title": "Time of Death",
-    "intro": "Work out when he died. A body cools about 1.5°F an hour from the normal 98.6°F. Stiffness and settled blood must agree with your answer. Set the earliest and latest possible times.",
+    "intro": "Work out about what time he died. A body cools about 1.5°F an hour from the normal 98.6°F. Stiffness and settled blood must agree with your answer. Set the time on the slider.",
+    "label": "He died at about",
     "reading": {
       "temp": 84.6,
       "time": "07:00",
@@ -300,13 +301,11 @@
       "02:00"
     ],
     "check": {
-      "mustInclude": "21:40",
-      "earliest": "21:00",
-      "latest": "22:00",
-      "maxWidth": 60
+      "_note": "Any answer within 'within' minutes of 'answer' is right (the cooling rate is only 'about' 1.5 degrees an hour).",
+      "answer": "21:40",
+      "within": 15
     },
-    "wrong": "Danny runs the numbers on his pad. \"Chief, that window doesn't fit the thermometer. Try again.\"",
-    "tooWide": "\"That's true, but it's too wide to be any use, Chief. Narrow it down.\"",
+    "wrong": "Danny runs the numbers on his pad. \"Chief, that time doesn't fit the thermometer. Try again.\"",
     "done": "He died around twenty to ten last night, before ten o'clock. So who was playing the music box at ten?",
     "sources": [
       [
@@ -414,6 +413,10 @@
       17
     ],
     "tryMinutes": 2,
+    "turns": ["Left", "Right", "Left"],
+    "dialMax": 39,
+    "dialRange": "The dial only goes from 0 to 39.",
+    "dialEmpty": "Set all three numbers first.",
     "drill": {
       "label": "Drill it open (60 min, loud, may damage papers)",
       "minutes": 60,

@@ -73,10 +73,10 @@ for (const [id, p] of Object.entries(npcs.people)) {
   const d = seq.S3, t = (s) => { const [h, m] = s.split(':').map(Number); return h * 60 + m; };
   const hours = (98.6 - d.reading.temp) / 1.5;
   let death = t(d.reading.time) - hours * 60; if (death < 0) death += 1440;
-  if (Math.abs(death - t(d.check.mustInclude)) > 10) bad(`S3: ${d.reading.temp}°F at ${d.reading.time} means death at ${Math.floor(death / 60)}:${String(Math.round(death % 60)).padStart(2, '0')}, but the answer is ${d.check.mustInclude}`);
-  if (t(d.check.latest) > t('22:00')) bad('S3: the accepted window runs past ten, so it cannot prove the music box played after his death');
+  if (Math.abs(death - t(d.check.answer)) > 10) bad(`S3: ${d.reading.temp}°F at ${d.reading.time} means death at ${Math.floor(death / 60)}:${String(Math.round(death % 60)).padStart(2, '0')}, but the answer is ${d.check.answer}`);
+  if (t(d.check.answer) + d.check.within >= t('22:00')) bad('S3: an accepted answer reaches ten o\'clock, so it cannot prove the music box played after his death');
   const card = seq.S25.cards.find((c) => c.id === 'death');
-  if (Math.abs(card.t - t(d.check.mustInclude)) > 15) bad(`S25: the death card (${card.text}) disagrees with S3 (${d.check.mustInclude})`);
+  if (Math.abs(card.t - t(d.check.answer)) > 15) bad(`S25: the death card (${card.text}) disagrees with S3 (${d.check.answer})`);
 }
 // S5: the riddle's three numbers are on the walls
 {
@@ -84,6 +84,7 @@ for (const [id, p] of Object.entries(npcs.people)) {
   const engines = /three-engined/.test(seq.examine.photo.text) ? 3 : NaN;
   const minute = +/past three|(\d+) past/.test(seq.examine.watch.text) && +/seventeen/.test(seq.examine.watch.text) ? 17 : NaN;
   if (`${seq.S5.combo}` !== `${[age, engines, minute]}`) bad(`S5: the safe combination ${seq.S5.combo} doesn't follow from the photo and watch (${age}, ${engines}, ${minute})`);
+  if (seq.S5.combo.some((n) => n > seq.S5.dialMax) || !seq.S5.intro.includes(`0 to ${seq.S5.dialMax}`)) bad(`S5: the dial goes to ${seq.S5.dialMax}, but the combination is ${seq.S5.combo} or the intro says otherwise`);
   const tamsin = npcs.people.tamsin.topics.find((x) => x.id === 'safe').text;
   if (!/nineteen, three, seventeen/i.test(tamsin)) bad("S5: Tamsin's combination doesn't match the safe");
 }

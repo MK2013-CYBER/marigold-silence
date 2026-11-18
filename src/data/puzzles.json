@@ -69,12 +69,12 @@
       "id": "S3",
       "name": "Time of Death",
       "place": "hangar",
-      "mechanic": "Cooling calculation with a sliding window",
+      "mechanic": "Cooling calculation; set the time of death on a slider",
       "built": true,
       "hints": [
         "Bodies cool at roughly one and a half degrees an hour, Chief. Work backwards from the thermometer reading.",
         "Normal is 98.6. Take away the reading, divide by 1.5, and count back from the time you took it. Then check the stiffness and the settled blood agree.",
-        "He was 84.6 at seven o'clock: that's fourteen degrees, about nine hours and twenty minutes of cooling. So around twenty to ten last night. Set a window like quarter past nine to ten."
+        "He was 84.6 at seven o'clock: that's fourteen degrees, about nine hours and twenty minutes of cooling. So around twenty to ten last night: set the slider to about 21:40."
       ],
       "clues": []
     },

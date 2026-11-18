@@ -120,7 +120,7 @@ stay in step.
 |---|---|---|
 | S1 Walk the Room | camera case by the door | mark each way out possible/impossible; photograph (12 plates) |
 | S2 The Body | doctor's bag | direct Lindqvist's examination; find what doesn't fit heart failure |
-| S3 Time of Death | doctor's bag | cooling arithmetic; set a time window with two sliders |
+| S3 Time of Death | doctor's bag | cooling arithmetic; set the time he died on a slider (within 15 minutes counts) |
 | S4 The Bench Test | doctor's bag | get the chart (persuade / book / force), 6 drops, 5 samples, 3 chemicals |
 | S5 The Safe | the safe | three-number dial (clues on the walls and the watch), or drill it |
 | S6 Box and Latch | bookshelf | knock the floor, play the music box, pull the books in tune order |
