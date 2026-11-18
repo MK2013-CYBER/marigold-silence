@@ -3,6 +3,11 @@ const SAVE_KEY = 'marigold-silence.save.v1';
 // The browser's own storage can be wiped (private windows, cleared site data, the in-app browser
 // being restarted), so on start the game loads whichever copy is newer.
 const SAVE_URL = '/__save';
+// Several copies of the game can be open at once (two browser tabs, the app's browser pane).
+// Each one is a "tab" with its own id. A tab only writes once you actually play in it, and it never
+// overwrites progress another tab saved after the save it started from: it reloads that instead.
+const TAB = Math.random().toString(36).slice(2, 10);
+const content = (d) => JSON.stringify({ ...d, savedAt: undefined, writer: undefined });
 
 export function parseTime(s) {
   const [h, m] = s.split(':').map(Number);
@@ -25,6 +30,12 @@ export class GameState {
     this.start = parseTime(config.clock.start);
     this.end = parseTime(config.clock.end);
     this.data = this._fresh();
+    this.tab = TAB;
+    this.idle = true; // true until you play in this tab (main.js enter()): an idle tab never writes
+    this.startBase = 0; // savedAt of the save this tab loaded
+    this.base = 0;      // savedAt of the save this tab is built on (the one it loaded, then its own)
+    this.stale = false;
+    this.onStale = null; // another tab has newer progress: main.js reloads the page
   }
 
   _fresh() {
@@ -83,13 +94,52 @@ export class GameState {
     const best = !disk ? local : !local ? disk : ((disk.savedAt ?? 0) > (local.savedAt ?? 0) ? disk : local);
     if (!best) return false;
     this._apply(best);
+    this.base = this.startBase = best.savedAt ?? 0;
+    this._content = content(this.data);
     if (best === disk) { try { localStorage.setItem(SAVE_KEY, JSON.stringify(best)); } catch { /* storage unavailable */ } }
     return true;
   }
 
+  /** Is there a save from another tab, newer than the one this tab is built on? */
+  _newerElsewhere(d) { return !!d && d.writer !== this.tab && (d.savedAt ?? 0) > this.base; }
+
+  /**
+   * This tab is out of date. If the disk refused it, the disk has the real game: put that in this
+   * browser's storage too, so the old copy this tab just wrote there can't win when it reloads.
+   */
+  async _goStale(fromDisk = false) {
+    if (this.stale) return;
+    this.stale = true;
+    clearTimeout(this._diskTimer);
+    if (fromDisk) {
+      try {
+        const r = await fetch(SAVE_URL, { cache: 'no-store' });
+        if (r.ok) localStorage.setItem(SAVE_KEY, await r.text());
+      } catch { /* storage or server unavailable */ }
+    }
+    this.onStale?.();
+  }
+
+  /** Called when this tab comes back into view: has another tab moved the game on meanwhile? */
+  async checkNewer() {
+    if (this.locked || this.stale) return;
+    if (this._newerElsewhere(this._readLocal())) return this._goStale();
+    try {
+      const r = await fetch(SAVE_URL, { cache: 'no-store' });
+      if (r.ok && this._newerElsewhere(await r.json())) this._goStale(true);
+    } catch { /* no dev server */ }
+  }
+
   save() {
-    if (this.locked) return; // erased: nothing may write the old game back
-    this.data.savedAt = Date.now();
+    if (this.locked || this.stale) return; // erased, or out of date: nothing may write an old game back
+    if (this.idle) return; // you haven't played in this tab: it has nothing new to save
+    const c = content(this.data);
+    if (c === this._content) return; // nothing changed since the last save
+    if (this._newerElsewhere(this._readLocal())) return this._goStale(); // another tab in this browser saved since
+    this._content = c;
+    this.data.savedAt = Math.max(Date.now(), this.base + 1);
+    this.data.writer = this.tab;
+    this.base = this.data.savedAt;
     this._json = JSON.stringify(this.data);
     try { localStorage.setItem(SAVE_KEY, this._json); } catch { /* storage unavailable */ }
     // to disk straight away, but at most once a second (a tab closed without warning loses ~1 s at most)
@@ -112,8 +162,12 @@ export class GameState {
     this._diskAt = Date.now();
     try {
       // while the page is closing only sendBeacon is sure to get through
-      if (closing && navigator.sendBeacon?.(SAVE_URL, new Blob([json], { type: 'application/json' }))) return;
-      fetch(SAVE_URL, { method: 'POST', body: json, headers: { 'Content-Type': 'application/json' }, keepalive: json.length < 60000 }).catch(() => { this._diskSent = null; });
+      // the server refuses (409) if another tab saved newer progress after the save this one is built on
+      const url = `${SAVE_URL}?base=${this.startBase}`;
+      if (closing && navigator.sendBeacon?.(url, new Blob([json], { type: 'application/json' }))) return;
+      fetch(url, { method: 'POST', body: json, headers: { 'Content-Type': 'application/json' }, keepalive: json.length < 60000 })
+        .then((r) => { if (r.status === 409) this._goStale(true); })
+        .catch(() => { this._diskSent = null; });
     } catch { this._diskSent = null; }
   }
 

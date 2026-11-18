@@ -206,6 +206,15 @@ hidden or closed. There are two copies, so a cleared browser can't lose your gam
 When the game starts it loads whichever copy is newer. "Start a new game" erases both.
 To back up a game, copy `saves/save.json`.
 
+**More than one copy of the game open** (two browser tabs, or a browser and the app's browser pane)
+used to lose progress: a tab you weren't playing in saved its old copy when it was hidden, with a
+newer time, and that old copy won. Now:
+- a tab only saves once you have clicked into the game in it, and only when something changed;
+- every save carries the tab's id, and the dev server refuses (409) a save from a tab that started
+  before another tab's newer progress;
+- a tab that is out of date (refused, or another tab saved while it was in the background) shows
+  "This game was played further in another tab" and reloads the latest game.
+
 ## Clues, leads and findings
 
 Evidence lives in `src/data/findings.json` (32 findings). Each finding has a **name**, which is its

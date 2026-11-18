@@ -26,13 +26,16 @@ function saveFile() {
       try {
         const d = JSON.parse(body);
         if (d?.version !== 1) throw new Error('not a save');
-        // never let an older save (another tab, a late request) overwrite a newer one
+        // Several game tabs can be open. A tab may write if the save on disk is its own, or is no newer
+        // than the save it started from (?base=). Otherwise another tab has made progress since:
+        // refuse (409), and that tab reloads the newer game instead of overwriting it.
         const old = existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : null;
-        if (!old || (d.savedAt ?? 0) >= (old.savedAt ?? 0)) {
-          mkdirSync(dir, { recursive: true });
-          writeFileSync(`${file}.tmp`, body);
-          renameSync(`${file}.tmp`, file); // all or nothing: a half-written save can't happen
-        }
+        const base = Number(new URL(req.url, 'http://x').searchParams.get('base')) || 0;
+        const mine = old && old.writer && old.writer === d.writer;
+        if (old && !(mine ? (d.savedAt ?? 0) >= (old.savedAt ?? 0) : (old.savedAt ?? 0) <= base)) { res.statusCode = 409; return res.end(); }
+        mkdirSync(dir, { recursive: true });
+        writeFileSync(`${file}.tmp`, body);
+        renameSync(`${file}.tmp`, file); // all or nothing: a half-written save can't happen
         res.statusCode = 204;
       } catch { res.statusCode = 400; }
       res.end();

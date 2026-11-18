@@ -339,6 +339,8 @@ if (hasSave) {
 function syncFreeze() { controller.frozen = hud.readerOpen || hud.notebookOpen || hq.busy || resting; }
 
 function enter() {
+  state.idle = false; // from now on this tab saves your progress
+  state.checkNewer(); // ...unless another tab has moved the game on: then this one reloads it
   audio.start();
   controller.setActive(true);
   overlay.classList.add('hidden');
@@ -363,6 +365,7 @@ function pause() {
 }
 
 function playIntro() {
+  state.idle = false;
   audio.start();
   controller.setActive(false);
   overlay.classList.add('hidden');
@@ -468,7 +471,22 @@ window.addEventListener('beforeunload', savePlayer);
 // closing the tab (even abruptly) or switching away: save now, to the browser and to disk
 const saveNow = () => { if (state.locked) return; savePlayer(); state.flush(); };
 window.addEventListener('pagehide', saveNow);
-document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') saveNow(); });
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') saveNow();
+  else state.checkNewer(); // back to this tab: was the game played somewhere else meanwhile?
+});
+window.addEventListener('focus', () => state.checkNewer());
+window.addEventListener('storage', () => state.checkNewer()); // another tab in this browser saved
+// This tab is out of date (the game was played further in another tab or window): load the latest
+// instead of letting this old copy overwrite it.
+state.onStale = () => {
+  window.removeEventListener('beforeunload', savePlayer);
+  state.locked = true;
+  controller.setActive(false);
+  overlay.classList.remove('hidden');
+  status.textContent = 'This game was played further in another tab. Loading the latest\u2026';
+  setTimeout(() => location.reload(), 1200);
+};
 
 // ---------- loop ----------
 const clock = new THREE.Clock();
