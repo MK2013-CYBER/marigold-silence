@@ -46,11 +46,9 @@ export class InvestigationBoard {
     for (const pl of this.places) {
       if (this.state.data.visited.includes(pl.id)) out.push({ id: `l:${pl.id}`, kind: 'place', title: pl.label, sub: 'Place', body: pl.mapNote });
     }
-    for (const { id } of this.state.data.clues) {
-      const c = this.clueById.get(id);
-      if (!c) continue;
-      const pz = this.puzzleById.get(c.puzzle);
-      out.push({ id: `e:${id}`, kind: 'evidence', title: c.name, sub: `${c.kind}${pz ? ` · ${pz.name}` : ''}`, body: c.text });
+    // proven findings go up on the board (from the evidence system: src/game/evidence.js)
+    for (const f of this.evidence?.established() ?? []) {
+      out.push({ id: `e:${f.id}`, kind: 'evidence', title: f.name, sub: `Proven · ${this.evidence.sources(f.id).length} sources`, body: f.text });
     }
     return out;
   }
@@ -105,7 +103,7 @@ export class InvestigationBoard {
       this.cork.appendChild(el);
     });
     for (const note of this.board.notes) this._noteEl(note);
-    this.empty.textContent = evidence ? '' : 'No evidence yet. Evidence appears here when you solve a puzzle.';
+    this.empty.textContent = evidence ? '' : 'No proven findings yet. A finding goes up here once enough separate sources back it up: see your leads in the case file (J).';
     this.drawStrings();
   }
 

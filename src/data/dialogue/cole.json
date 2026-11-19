@@ -105,6 +105,19 @@
     "ok": "Got it. Let's go."
   },
   "tipsIntro": "Sure, Chief. What do you want to know?",
+  "caseFile": {
+    "empty": "The file is empty. Look around the office (E on anything), talk to people and solve the investigations: everything you turn up is filed here.",
+    "proven": "Proven findings",
+    "provenTag": "Proven",
+    "sources": "sources",
+    "noProven": "Nothing proven yet. A finding is proven once enough separate sources back it up.",
+    "leads": "Leads (not proven yet)",
+    "leadTag": "Lead · {n} of {need} sources",
+    "noLeads": "No open leads.",
+    "solved": "Investigations solved",
+    "noSolved": "None yet.",
+    "found": "Found"
+  },
   "tipsMore": "Anything else?",
   "tipsOther": "Tell me about something else.",
   "tipsBye": "Bye, Danny.",

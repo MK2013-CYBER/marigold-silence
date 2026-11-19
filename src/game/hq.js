@@ -19,7 +19,7 @@ export class HQ {
     this.dialogue = new DialogueBox();
     this.board = new InvestigationBoard({ state: this.state, clues: this.clues, characters: this.characters, places: this.places, puzzles: this.puzzles.puzzles });
     this.reportsScreen = new ReportsScreen({ state: this.state, reports: this.reports });
-    this.caseFile = new CaseFileScreen({ state: this.state, clues: this.clues, puzzles: this.puzzles.puzzles });
+    this.caseFile = new CaseFileScreen({ state: this.state, text: this.lines.caseFile });
     this.timeline = new TimelineScreen({ message: this.lines.timelineEmpty });
     this.screen = null; // the mouse screen currently open
     for (const s of [this.board, this.reportsScreen, this.caseFile, this.timeline]) {

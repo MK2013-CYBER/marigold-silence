@@ -263,6 +263,14 @@ kbd {
 .cf-meta { font: 11px 'Courier New', monospace; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
 .cf-name { font-size: 17px; margin: 2px 0 4px; }
 .cf-text { font-size: 14px; line-height: 1.5; color: #cfc4ac; }
+.cf-head { margin: 22px 0 10px; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); font-weight: normal; }
+.cf-head:first-child { margin-top: 0; }
+.cf-sources { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 4px; }
+.cf-list li.cf-empty, .cf-sources li { display: block; } /* not the picture + text columns of a file entry */
+.cf-sources li { padding-left: 10px; border-left: 2px solid rgba(217, 162, 90, 0.35); }
+.cf-sources .cf-from { display: block; }
+.cf-from { font: 11px 'Courier New', monospace; color: var(--amber); text-transform: uppercase; letter-spacing: 0.05em; }
+.cf-solved { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px 16px; font-size: 14px; color: #cfc4ac; }
 .tl-strip { display: grid; grid-template-columns: repeat(13, 1fr); border-top: 2px solid var(--ink); margin: 20px 0 30px; }
 .tl-tick { border-left: 1px solid rgba(233, 223, 200, 0.4); padding: 6px 4px; font: 12px 'Courier New', monospace; color: var(--muted); height: 80px; }
 

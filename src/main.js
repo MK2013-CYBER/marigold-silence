@@ -182,6 +182,11 @@ const seqScreen = new SequenceScreen({
   },
 });
 seqScreen.onClose = () => { hq.screen = null; hq.onScreenClosed?.(); };
+// the case file (J) files what the evidence system holds: findings, leads, investigations solved
+hq.caseFile.evidence = evidence;
+hq.board.evidence = evidence; // the HQ board pins up proven findings
+hq.caseFile.title = (id) => seqScreen.title(id);
+hq.caseFile.names = new Map(characters.map((c) => [c.id, c.name]));
 const crime = new CrimeScene({
   hangar, interaction, state, evidence, hud, audio, data: sequencesData, cast: castData.people, trust, spend,
   dialogue: hq.dialogue, openSequence: (id) => hq.openScreen(seqScreen.setId(id)),
