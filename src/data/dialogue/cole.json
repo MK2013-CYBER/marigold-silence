@@ -23,7 +23,8 @@
     "bye": "That's all for now.",
     "back": "Let's talk about something else.",
     "thanks": "Thanks, Danny.",
-    "more": "Can you be more specific?"
+    "more": "Can you be more specific?",
+    "tips": "Remind me how things work."
   },
   "situation": [
     "Here's where we stand, Chief. Cornelius Pryce, the man who owns this airfield, was found dead this morning, locked inside his office in the hangar.",
@@ -98,5 +99,60 @@
     "S5": "Four papers in one safe, and nearly every one is somebody's secret. He kept everyone on a leash, didn't he?",
     "S6": "A trapdoor. Chief, there's something under this airfield."
   },
-  "startRadio": "Chief, it's Danny. Nobody can leave Sable Flat: the dust storm has every plane grounded until about half past five this evening. When it lifts, everyone flies home, including whoever killed Pryce. So we've got until 5:30 to solve this. Press R if you need me."
+  "startRadio": "Chief, it's Danny. Nobody can leave Sable Flat: the dust storm has every plane grounded until about half past five this evening. When it lifts, everyone flies home, including whoever killed Pryce. So we've got until 5:30 to solve this. Press R if you need me.",
+  "startChoices": {
+    "tips": "Any tips before I start, Danny?",
+    "ok": "Got it. Let's go."
+  },
+  "tipsIntro": "Sure, Chief. What do you want to know?",
+  "tipsMore": "Anything else?",
+  "tipsOther": "Tell me about something else.",
+  "tipsBye": "Bye, Danny.",
+  "tipsDone": "Good luck, Chief. Press R any time if you need me, and ask me to remind you how things work.",
+  "tipsList": [
+    {
+      "label": "How do I look around?",
+      "lines": [
+        "Walk up to anything that catches your eye and press E to look at it, pick it up or open it. When you're aiming at something you can use, a little prompt tells you what E will do, and how many minutes it takes.",
+        "Tab opens your notebook: your leads, what you've noticed, and your own notes. You can write in it any time. J is the case file, M is the map, F is your flashlight."
+      ]
+    },
+    {
+      "label": "How do the investigations work?",
+      "lines": [
+        "The big pieces of work are numbered, S1 to S26. We do them in order: one only opens when every one before it is solved. If you open one too early, I'll tell you what's still left.",
+        "Stuck? Radio me and ask 'What should I do next?'. Each hint costs five minutes, and the third one practically gives it away.",
+        "One exception: S21, the stakeout, only works at dusk, half past four, so the ones after it don't wait for it. At the very end you file your theory at the typewriter here at HQ (S26). Nobody goes down any trapdoors before that."
+      ]
+    },
+    {
+      "label": "How do I get people to talk?",
+      "lines": [
+        "Walk up to someone and press E. Ask about the topics they offer, show them something you found, or watch them closely for a tell.",
+        "Every one of them has a trust level: you'll see it next to their name. It starts at 50. Friendly questions raise it, and so does showing them the right evidence. Pressing them hard lowers it.",
+        "Some things they'll only tell you once they trust you. Ask too early and they'll say 'not yet', and it costs you a little trust. Be kind first, then come back and ask again."
+      ]
+    },
+    {
+      "label": "What counts as evidence?",
+      "lines": [
+        "One clue on its own is only a lead. A finding counts once you've got enough separate sources for it: something you found, a puzzle you solved, what somebody told you. Most need two or three.",
+        "Your notebook shows each lead and how many sources it has. Once a finding is proven, it goes up on the board here at HQ. Your theory at the end can only use proven findings."
+      ]
+    },
+    {
+      "label": "What about the time?",
+      "lines": [
+        "The clock's in the corner. Everything takes time: looking at things, asking questions, puzzles, even walking. About a minute for every forty metres.",
+        "Calling me on the radio costs five minutes unless I'm standing next to you. If you're worn out, the cot here at HQ gives you half an hour's rest.",
+        "I'll radio at three and at half past four. At half past five the storm lifts and everyone flies home. If we haven't solved it by then, it goes cold."
+      ]
+    },
+    {
+      "label": "Does the game save?",
+      "lines": [
+        "It saves itself all the time, Chief: after everything you do, and when you close it. Come back whenever you like and you'll pick up right where you left off."
+      ]
+    }
+  ]
 }

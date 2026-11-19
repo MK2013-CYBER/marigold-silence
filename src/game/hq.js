@@ -125,6 +125,7 @@ export class HQ {
         : (this.state.setFlag('heardSituation'), this.sayLines(L.situation, () => this.menuChoices()))) },
       { label: M.people, onPick: () => this.people() },
       { label: M.next, onPick: () => this.next() },
+      { label: M.tips, onPick: () => this.tips(L.tipsIntro) },
       { label: M.reports + (unread ? ` (${unread} new)` : ''), onPick: () => this.say(unread ? L.reportsNew.replace('{n}', unread) : L.reportsNone, [{ label: M.back, onPick: back }]) },
     ];
     if (mode !== 'follow') c.push({ label: M.follow, onPick: () => { this._mode('follow'); this.say(this.remote ? L.radioFollow : L.follow, this.menuChoices()); } });
@@ -244,12 +245,32 @@ export class HQ {
   }
 
   /** The start of a new game: Danny radios in with the deadline (once). */
+  /**
+   * The first time you're in control, Danny radios in: the 17:30 deadline, then an offer of tips
+   * on how everything works (the same tips are always in his menu: "Remind me how things work").
+   */
   startCall() {
-    if (this.state.flag('startCall')) return;
+    if (this.state.flag('startCall') || this.dialogue.open) return;
     this.state.setFlag('startCall');
     this.state.save();
     this.audio.click();
-    this.hud.caption(`Danny (radio): ${this.lines.startRadio}`, 14);
+    const L = this.lines;
+    this.remote = true; // it's a radio call (and it's free: he's calling you)
+    this.say(L.startRadio, [
+      { label: L.startChoices.tips, onPick: () => this.tips(L.tipsIntro) },
+      { label: L.startChoices.ok, onPick: () => this.dialogue.close() },
+    ]);
+  }
+
+  /** Danny's tips: pick a topic, hear it, come back to the list. */
+  tips(line) {
+    const L = this.lines;
+    const list = L.tipsList.map((t) => ({ label: t.label, onPick: () => this.sayLines(t.lines, () => [
+      { label: L.tipsOther, onPick: () => this.tips(L.tipsMore) },
+      { label: L.menu.thanks, onPick: () => this.say(L.tipsDone, [{ label: L.tipsBye, onPick: () => this.dialogue.close() }]) },
+    ]) }));
+    list.push({ label: L.menu.thanks, onPick: () => this.say(L.tipsDone, [{ label: L.tipsBye, onPick: () => this.dialogue.close() }]) });
+    this.say(line, list);
   }
 
   // ------------------------------------------------------------------ per frame

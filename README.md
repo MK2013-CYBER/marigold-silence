@@ -21,7 +21,7 @@ Open http://localhost:5173 in Chrome or Safari, then click the screen.
 | E | Interact with what you're looking at |
 | Tab | Notebook: your leads, what you noticed, and your own notes (type, then Enter to add; Shift+Enter for a new line; "delete" twice to remove one) |
 | M | Full airfield map (a minimap is always in the corner) |
-| R | Radio Danny Cole (walkie-talkie, 5 min); 1-6 pick a reply |
+| R | Radio Danny Cole (walkie-talkie, 5 min); 1-6 pick a reply. "Remind me how things work" gives his tips: looking around, the numbered investigations, trust, evidence, time, saving (he also offers them in his first call, about the 17:30 deadline) |
 | J | Case file (all your evidence) |
 | F | Flashlight |
 | Esc | Pause |
