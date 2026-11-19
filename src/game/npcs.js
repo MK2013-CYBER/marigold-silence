@@ -192,7 +192,8 @@ export class People {
         label: `${t.label}${done ? ' ✓' : ''}`,
         onPick: () => {
           if (locked) {
-            this.trust.change(id, -1);
+            // asking before they trust you costs a little, but only the first time
+            if (!heard[`${id}.${t.id}.refused`]) { heard[`${id}.${t.id}.refused`] = true; this.trust.change(id, -1); this.state.save(); }
             return this._say(id, "I'd rather not talk about that. Not with you. Not yet.", [{ label: U.back, onPick: () => this.topics(id) }]);
           }
           this.spend(3);

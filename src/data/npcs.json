@@ -196,7 +196,7 @@
         {
           "id": "hands",
           "label": "What happened to your hands?",
-          "minTrust": 60,
+          "minTrust": 56,
           "text": "A cockpit fire in '29. I don't talk about it. And before you ask: no, I don't talk about the Marigold either.",
           "trust": 1,
           "press": {
@@ -317,7 +317,7 @@
         {
           "id": "vivienne",
           "label": "What do you know about Mrs. Pryce?",
-          "minTrust": 55,
+          "minTrust": 50,
           "text": "That she was leaving him, and that she deserved to. Draw no more conclusions from that than it will bear.",
           "gives": [
             [
@@ -369,7 +369,7 @@
         {
           "id": "floor",
           "label": "Is there anything under the hangar, Ox?",
-          "minTrust": 65,
+          "minTrust": 55,
           "text": "He prays under his breath before he answers. \"Old fuel line. Under everything. I'm not supposed to talk about it.\"",
           "gives": [
             [
@@ -456,7 +456,7 @@
         {
           "id": "safe",
           "label": "Do you know the safe combination?",
-          "minTrust": 60,
+          "minTrust": 52,
           "text": "Nineteen, three, seventeen. Left, right, left. He made me memorise it in case he dropped dead. Funny.",
           "flag": "tamsinCombo",
           "trust": -2
@@ -541,7 +541,7 @@
         {
           "id": "floor",
           "label": "Is there anything under the hangar?",
-          "minTrust": 55,
+          "minTrust": 54,
           "text": "The old fuel culvert runs right under it. Draughty as a church. You can hear the wind in it some nights. Or something.",
           "gives": [
             [

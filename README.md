@@ -194,7 +194,11 @@ and Tamsin on the south), Dr. Lindqvist in Pryce's office by the body and his ba
 maintenance shed, Hobbs in the radio shack. A warm lamp lights the
 room of whoever you are near. They fidget and turn to face you. E to talk: ask about topics (some unlock as you find things
 or need trust), show them something you found, or watch them for a tell. Trust starts at 50: kind
-questions raise it, pressing lowers it. Data: `src/data/npcs.json`. Code: `src/game/npcs.js`.
+questions raise it, pressing lowers it, and asking something before they trust you costs 1 (only the
+first time). Every trust-locked answer can be reached by being kind (asking the friendly questions and
+showing them the right evidence) with 2 points to spare; the story check makes sure of it. For
+example, Tamsin gives the safe combination at 52: ask why she hated him and what he said yesterday,
+and show her the typed note under the door. Data: `src/data/npcs.json`. Code: `src/game/npcs.js`.
 
 ## Saving
 

@@ -147,6 +147,22 @@ for (const l of seq.S23.lifted) {
   if (`${P.order}` !== `${puzzles.map((p) => p.id).sort((a, b) => a.slice(1) - b.slice(1))}`) bad(`Order: puzzles.json order is not S1..S${puzzles.length} in number order`);
   for (const id of P.sequential.afterDusk) if (seq[id]?.from !== P.sequential.duskAt) bad(`Order: ${id} opens at ${seq[id]?.from}, but puzzles.json says dusk is ${P.sequential.duskAt}`);
 }
+// trust: everyone starts at 50; every answer locked behind trust must be reachable by being kind
+// (the friendly questions and the right evidence), with two points to spare (for asking too early)
+{
+  const max = (id) => {
+    const p = npcs.people[id];
+    return 50 + p.topics.filter((t) => t.trust > 0 && !t.minTrust).reduce((a, t) => a + t.trust, 0)
+      + Object.values(p.present ?? {}).filter((r) => r.trust > 0).reduce((a, r) => a + r.trust, 0);
+  };
+  for (const [id, p] of Object.entries(npcs.people)) for (const t of p.topics) {
+    if (t.minTrust && t.minTrust > max(id) - 2) bad(`Trust: ${id}.${t.id} needs ${t.minTrust}, but the most anyone can earn with ${id} is ${max(id)}`);
+  }
+  const gates = [['lindqvist', seq.S22.routes.find((r) => r.trustNeeded)?.trustNeeded, 'S22 (open the case)'],
+    ...seq.S4.chartRoutes.filter((r) => r.trustNeeded).map((r) => [r.who, r.trustNeeded, 'S4 (the chart)']),
+    ...finale.standoff.options.filter((o) => o.trust).map((o) => ['ox', o.trust, 'the trapdoor'])];
+  for (const [id, need, where] of gates) if (need > max(id) - 2) bad(`Trust: ${where} needs ${id} at ${need}, but the most anyone can earn is ${max(id)}`);
+}
 // Danny's hints about walking places don't point at things that give nothing
 for (const p of puzzles) for (const h of p.hints ?? []) if (/Waco's fuel cap/.test(h)) bad(`${p.id}: Danny sends you to the Waco's fuel cap, which proves nothing`);
 

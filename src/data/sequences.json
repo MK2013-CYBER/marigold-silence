@@ -1302,7 +1302,7 @@
       {
         "id": "ask",
         "label": "Ask Lindqvist to open it (needs his trust)",
-        "trustNeeded": 65,
+        "trustNeeded": 53,
         "ok": "He looks at you for a long time, then unlocks it himself. \"Ask me again when you know the whole truth.\"",
         "no": "\"Certainly not, Inspector. A doctor's case is private.\""
       },
