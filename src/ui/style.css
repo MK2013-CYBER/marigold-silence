@@ -140,6 +140,16 @@ kbd {
 .nb-text { margin-top: 4px; font-size: 14px; line-height: 1.5; color: #cfc4ac; white-space: pre-line; }
 .nb-pocket li { font-size: 14px; color: #cfc4ac; }
 .nb-empty { font-style: italic; color: var(--muted) !important; border: none !important; }
+.nb-write { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 14px; }
+.nb-box { flex: 1; min-height: 3.2em; resize: vertical; padding: 8px 10px; font: 15px/1.5 Georgia, 'Times New Roman', serif;
+  background: #e2d6b8; color: #2a2016; border: 1px solid #8a7656; border-radius: 2px; }
+.nb-box:focus { outline: 2px solid var(--amber); }
+.nb-add, .nb-del { cursor: pointer; font: 12px 'Courier New', monospace; letter-spacing: 0.08em; text-transform: uppercase; }
+.nb-add { padding: 8px 12px; background: #3a2e20; color: var(--ink); border: 1px solid rgba(217, 162, 90, 0.6); }
+.nb-add:hover { background: #4d3c28; }
+.nb-del { margin-left: auto; padding: 0 4px; background: none; border: none; color: var(--muted); text-transform: none; }
+.nb-del:hover, .nb-del.armed { color: #e08a6a; }
+.nb-own { font-size: 15px; color: var(--ink); }
 .nb-page footer { margin-top: 24px; font-size: 11px; letter-spacing: 0.15em; color: var(--muted); text-align: right; }
 
 .overlay-actions { margin-top: 26px; }

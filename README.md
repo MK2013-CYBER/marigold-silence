@@ -19,7 +19,7 @@ Open http://localhost:5173 in Chrome or Safari, then click the screen.
 | Shift | Sprint |
 | C | Walk slowly |
 | E | Interact with what you're looking at |
-| Tab | Notebook |
+| Tab | Notebook: your leads, what you noticed, and your own notes (type, then Enter to add; Shift+Enter for a new line; "delete" twice to remove one) |
 | M | Full airfield map (a minimap is always in the corner) |
 | R | Radio Danny Cole (walkie-talkie, 5 min); 1-6 pick a reply |
 | J | Case file (all your evidence) |

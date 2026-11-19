@@ -236,6 +236,12 @@ hq.onScreenClosed = () => {
   syncFreeze();
   if (controller.active && !controller.locked) controller.lock();
 };
+// the notebook (Tab) needs the mouse while it's open, to click and type your own notes
+hud.onNotebook = (open) => {
+  if (open && controller.locked) { releasingForScreen = true; document.exitPointerLock(); }
+  // closing it: take the mouse back for looking around, unless the game was paused at the same time
+  if (!open) setTimeout(() => { if (controller.active && !controller.locked && !hq.screen && !hud.notebookOpen && overlay.classList.contains('hidden')) controller.lock(); }, 0);
+};
 let resting = false;
 hq.onFreezeChange = (rest) => { if (rest !== undefined) resting = rest; syncFreeze(); };
 

@@ -97,6 +97,8 @@ export class Hud {
     el('h2', '', head, 'Notebook');
     el('div', 'nb-time', head, `${this.config.clock.dayLabel} · ${state.clockLabel()}`);
 
+    this._myNotes(p, state);
+
     // Leads: findings you have at least one source for (established ones go on the HQ board)
     el('h3', '', p, 'Leads');
     const list = el('ol', 'nb-list', p);
@@ -123,15 +125,74 @@ export class Hud {
       const it = this.items[id];
       if (it) el('li', '', pocket, `${it.name} — ${it.text}`);
     }
-    el('footer', '', p, 'Tab — close');
+    el('footer', '', p, 'Tab or Esc — close');
 
     this.notebook.classList.remove('hidden');
+    const was = this.notebookOpen;
     this.notebookOpen = true;
+    if (!was) this.onNotebook?.(true); // main.js frees the mouse so you can click and type
+    this._noteBox?.focus();
+  }
+
+  /**
+   * "Your notes": anything you want to write down, kept in your save (state.data.myNotes), each
+   * stamped with the time on the game clock. Enter adds it (Shift+Enter for a new line).
+   */
+  _myNotes(p, state) {
+    const d = state.data;
+    d.myNotes ??= [];
+    el('h3', '', p, 'Your notes');
+    const form = el('div', 'nb-write', p);
+    const box = this._noteBox = el('textarea', 'nb-box', form);
+    box.placeholder = 'Write a note… (Enter to add it, Shift+Enter for a new line)';
+    box.maxLength = 2000;
+    box.rows = 2;
+    box.value = d.noteDraft ?? '';
+    const add = el('button', 'nb-add', form, 'Add note');
+    add.type = 'button';
+    const save = () => {
+      const text = box.value.trim();
+      if (!text) return;
+      d.myNotes.unshift({ t: d.minutes, text });
+      d.noteDraft = '';
+      state.save();
+      this.openNotebook(state); // redraw with the new note at the top
+    };
+    // while you type, keys are words, not game controls (Tab and Esc still close the notebook)
+    box.addEventListener('keydown', (e) => {
+      if (e.code === 'Tab' || e.code === 'Escape') return;
+      e.stopPropagation();
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); save(); }
+    });
+    box.addEventListener('keyup', (e) => e.stopPropagation());
+    box.addEventListener('input', () => { d.noteDraft = box.value; });
+    add.addEventListener('click', (e) => { e.stopPropagation(); save(); });
+
+    const list = el('ol', 'nb-list nb-mine', p);
+    if (!d.myNotes.length) el('li', 'nb-empty', list, 'No notes yet.');
+    d.myNotes.forEach((n, i) => {
+      const li = el('li', '', list);
+      const meta = el('div', 'nb-meta', li);
+      el('span', 'nb-kind', meta, formatTime(n.t));
+      const del = el('button', 'nb-del', meta, 'delete');
+      del.type = 'button';
+      del.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!del.classList.contains('armed')) { del.classList.add('armed'); del.textContent = 'click again to delete'; return; }
+        d.myNotes.splice(i, 1);
+        state.save();
+        this.openNotebook(state);
+      });
+      el('div', 'nb-text nb-own', li, n.text);
+    });
   }
 
   closeNotebook() {
+    if (!this.notebookOpen) return;
+    this._noteBox?.blur();
     this.notebook.classList.add('hidden');
     this.notebookOpen = false;
+    this.onNotebook?.(false); // main.js takes the mouse back for looking around
   }
 
   closeAll() {
