@@ -154,7 +154,8 @@ export class SequenceScreen {
 
     const ph = document.createElement('div');
     ph.className = 'seq-section';
-    ph.innerHTML = `<h3>Camera plates: ${plates - st.photos.length} of ${plates} left</h3><p class="seq-dim">${esc(d.platesNote)}</p>`;
+    // shown per box: 12 of 12, down to 0 of 12; a spare box (only offered at 0) fills it back up to 12
+    ph.innerHTML = `<h3>Camera plates: ${plates - st.photos.length} of ${d.plates} left</h3><p class="seq-dim">${esc(d.platesNote)}</p>`;
     const ex2 = this.state.data.examined.filter((k) => this.data.examine[k]);
     if (!ex2.length) ph.insertAdjacentHTML('beforeend', '<p class="seq-dim">Examine things in the room (E), then photograph them here.</p>');
     for (const k of ex2) {

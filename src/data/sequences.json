@@ -180,7 +180,7 @@
     ],
     "plates": 12,
     "platesNote": "You don't need a photo of everything, only of what matters to the case. Run out, and Danny has spare boxes at HQ.",
-    "spareBox": { "label": "Fetch a spare box of plates from HQ (20 min)", "minutes": 20, "got": "Danny sends over a fresh box: {n} more plates. Every photo you've taken is kept." },
+    "spareBox": { "label": "Fetch a spare box of plates from HQ (20 min)", "minutes": 20, "got": "Danny sends over a fresh box: you're back to {n} plates. Every photo you've taken is kept." },
     "mustPhotograph": [
       "body",
       "decanter",
@@ -206,7 +206,7 @@
       ]
     ],
     "missingPhotos": "Still not on film: {list}. Anything not in your list above hasn't been examined yet: find it in the room and press E on it first.",
-    "noPlates": "You're out of plates. Fetch a spare box from HQ (the button below): it adds 12 more, and keeps every photo you've taken."
+    "noPlates": "You're out of plates. Fetch a spare box from HQ (the button below): it fills you back up to 12, and keeps every photo you've taken."
   },
   "S2": {
     "title": "The Body",
