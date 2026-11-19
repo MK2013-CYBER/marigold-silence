@@ -136,6 +136,8 @@ export class SequenceScreen {
     const st = this.s();
     st.marks ??= {};
     st.photos ??= [];
+    st.boxes ??= 1; // boxes of plates you have: each spare box from HQ adds another full box
+    const plates = d.plates * st.boxes;
     const ex = this.state.data.examined;
     const exits = document.createElement('div');
     exits.className = 'seq-section';
@@ -152,13 +154,13 @@ export class SequenceScreen {
 
     const ph = document.createElement('div');
     ph.className = 'seq-section';
-    ph.innerHTML = `<h3>Camera plates: ${d.plates - st.photos.length} of ${d.plates} left</h3>`;
+    ph.innerHTML = `<h3>Camera plates: ${plates - st.photos.length} of ${plates} left</h3><p class="seq-dim">${esc(d.platesNote)}</p>`;
     const ex2 = this.state.data.examined.filter((k) => this.data.examine[k]);
     if (!ex2.length) ph.insertAdjacentHTML('beforeend', '<p class="seq-dim">Examine things in the room (E), then photograph them here.</p>');
     for (const k of ex2) {
       const r = this._row(ph, `<span class="seq-label">${esc(this.data.examine[k].name)}</span>`);
       if (st.photos.includes(k)) r.insertAdjacentHTML('beforeend', '<span class="seq-ok">photographed</span>');
-      else if (st.photos.length < d.plates) r.appendChild(this._btn('Photograph', () => { st.photos.push(k); this.audio?.click(); this.spend(1); this.render(); }));
+      else if (st.photos.length < plates) r.appendChild(this._btn('Photograph', () => { st.photos.push(k); this.audio?.click(); this.spend(1); this.render(); }));
     }
     this.body.appendChild(ph);
     if (this.solved('S1')) return;
@@ -171,13 +173,21 @@ export class SequenceScreen {
       if (missing.length) {
         const names = missing.map((k) => this.data.examine[k]?.name.toLowerCase() ?? k);
         const list = names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0];
-        return this.msg(d.missingPhotos.replace('{list}', list) + (st.photos.length >= d.plates ? ` ${d.noPlates}` : ''));
+        return this.msg(d.missingPhotos.replace('{list}', list) + (st.photos.length >= plates ? ` ${d.noPlates}` : ''));
       }
       this.solve('S1');
       this.render();
       this.msg(d.done, true);
     }, 'primary'));
-    if (st.photos.length >= d.plates) this.body.appendChild(this._btn('Fetch a spare box of plates from HQ (20 min)', () => { st.photos = st.photos.filter((k) => d.mustPhotograph.includes(k)); this.spend(20); this.render(); }));
+    // out of plates: a spare box from HQ adds a whole new box, and every photo you took is kept
+    if (st.photos.length >= plates) {
+      this.body.appendChild(this._btn(d.spareBox.label, () => {
+        st.boxes++;
+        this.spend(d.spareBox.minutes);
+        this.render();
+        this.msg(d.spareBox.got.replace('{n}', d.plates));
+      }));
+    }
   }
 
   // ------------------------------------------------------------------ S2 The Body
