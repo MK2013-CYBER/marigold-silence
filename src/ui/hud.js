@@ -99,20 +99,7 @@ export class Hud {
 
     this._myNotes(p, state);
 
-    // Leads: findings you have at least one source for (established ones go on the HQ board)
-    el('h3', '', p, 'Leads');
-    const list = el('ol', 'nb-list', p);
-    const known = this.evidence?.known() ?? [];
-    if (!known.length) el('li', 'nb-empty', list, 'Nothing yet. Look around; press E on anything that catches your eye.');
-    for (const f of known) {
-      const li = el('li', '', list);
-      const meta = el('div', 'nb-meta', li);
-      const n = this.evidence.sources(f.id).length;
-      const est = this.evidence.isEstablished(f.id);
-      el('span', 'nb-kind', meta, est ? 'Established' : `Lead ${n} of ${f.need}`);
-      if (est) el('div', 'nb-name', li, f.name);
-      else for (const s of this.evidence.sources(f.id)) el('div', 'nb-name', li, this.evidence.lead(f.id, s));
-    }
+    // (your leads and proven findings are in the case file, J)
     el('h3', '', p, 'Things you noticed');
     const notes = el('ol', 'nb-list', p);
     if (!state.data.notes?.length) el('li', 'nb-empty', notes, 'Nothing yet.');

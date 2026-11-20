@@ -127,7 +127,7 @@
       "label": "How do I look around?",
       "lines": [
         "Walk up to anything that catches your eye and press E to look at it, pick it up or open it. When you're aiming at something you can use, a little prompt tells you what E will do, and how many minutes it takes.",
-        "Tab opens your notebook: your leads, what you've noticed, and your own notes. You can write in it any time. J is the case file, M is the map, F is your flashlight."
+        "Tab opens your notebook: what you've noticed, what's in your pocket, and your own notes. You can write in it any time. J is the case file, with all your evidence. M is the map, F is your flashlight."
       ]
     },
     {
@@ -150,7 +150,7 @@
       "label": "What counts as evidence?",
       "lines": [
         "One clue on its own is only a lead. A finding counts once you've got enough separate sources for it: something you found, a puzzle you solved, what somebody told you. Most need two or three.",
-        "Your notebook shows each lead and how many sources it has. Once a finding is proven, it goes up on the board here at HQ. Your theory at the end can only use proven findings."
+        "The case file (J) shows each lead and how many sources it has. Once a finding is proven, it goes up on the board here at HQ. Your theory at the end can only use proven findings."
       ]
     },
     {

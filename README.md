@@ -19,7 +19,7 @@ Open http://localhost:5173 in Chrome or Safari, then click the screen.
 | Shift | Sprint |
 | C | Walk slowly |
 | E | Interact with what you're looking at |
-| Tab | Notebook: your leads, what you noticed, and your own notes (type, then Enter to add; Shift+Enter for a new line; "delete" twice to remove one) |
+| Tab | Notebook: what you noticed, your pocket, and your own notes (type, then Enter to add; Shift+Enter for a new line; "delete" twice to remove one) |
 | M | Full airfield map (a minimap is always in the corner) |
 | R | Radio Danny Cole (walkie-talkie, 5 min); 1-6 pick a reply. "Remind me how things work" gives his tips: looking around, the numbered investigations, trust, evidence, time, saving (he also offers them in his first call, about the 17:30 deadline) |
 | J | Case file (all your evidence) |
@@ -224,7 +224,7 @@ newer time, and that old copy won. Now:
 Evidence lives in `src/data/findings.json` (32 findings). Each finding has a **name**, which is its
 conclusion ("Tamsin was blackmailing Pryce"), and **leads**: one plain sentence for each source, saying only
 what that source showed ("A typed note under the door demanding money"). Until a finding is established,
-the toasts, the notebook and the "show them something" list only show its leads. The name appears
+the toasts, the case file (J) and the "show them something" list only show its leads. The name appears
 once it is proven. (The old `clues.json` is from Stage B and no longer handed out.)
 
 ### Story check
