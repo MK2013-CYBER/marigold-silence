@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- The Marigold Silence: a marigold, for the browser tab -->
+  <g transform="translate(32 32)">
+    <g fill="#c4501a">
+      <ellipse rx="8" ry="15" transform="rotate(0) translate(0 -14)"/>
+      <ellipse rx="8" ry="15" transform="rotate(45) translate(0 -14)"/>
+      <ellipse rx="8" ry="15" transform="rotate(90) translate(0 -14)"/>
+      <ellipse rx="8" ry="15" transform="rotate(135) translate(0 -14)"/>
+      <ellipse rx="8" ry="15" transform="rotate(180) translate(0 -14)"/>
+      <ellipse rx="8" ry="15" transform="rotate(225) translate(0 -14)"/>
+      <ellipse rx="8" ry="15" transform="rotate(270) translate(0 -14)"/>
+      <ellipse rx="8" ry="15" transform="rotate(315) translate(0 -14)"/>
+    </g>
+    <g fill="#e8962a">
+      <ellipse rx="6" ry="11" transform="rotate(22.5) translate(0 -10)"/>
+      <ellipse rx="6" ry="11" transform="rotate(67.5) translate(0 -10)"/>
+      <ellipse rx="6" ry="11" transform="rotate(112.5) translate(0 -10)"/>
+      <ellipse rx="6" ry="11" transform="rotate(157.5) translate(0 -10)"/>
+      <ellipse rx="6" ry="11" transform="rotate(202.5) translate(0 -10)"/>
+      <ellipse rx="6" ry="11" transform="rotate(247.5) translate(0 -10)"/>
+      <ellipse rx="6" ry="11" transform="rotate(292.5) translate(0 -10)"/>
+      <ellipse rx="6" ry="11" transform="rotate(337.5) translate(0 -10)"/>
+    </g>
+    <circle r="8" fill="#f6c453"/>
+    <circle r="4" fill="#7a3a12"/>
+  </g>
+</svg>

@@ -207,6 +207,10 @@ hidden or closed. There are two copies, so a cleared browser can't lose your gam
 - the browser's own storage (localStorage, key `marigold-silence.save.v1`)
 - `saves/save.json` in this folder, written by the dev server (`npm run dev`, see `vite.config.js`)
 
+The disk copy only exists while the game runs from this Mac's dev server (`npm run dev`). The published
+game (`npm run build`, e.g. on Cloudflare) keeps each player's save in their own browser and never asks
+for the disk copy.
+
 When the game starts it loads whichever copy is newer. "Start a new game" erases both.
 To back up a game, copy `saves/save.json`.
 

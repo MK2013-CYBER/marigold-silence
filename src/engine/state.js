@@ -3,6 +3,10 @@ const SAVE_KEY = 'marigold-silence.save.v1';
 // The browser's own storage can be wiped (private windows, cleared site data, the in-app browser
 // being restarted), so on start the game loads whichever copy is newer.
 const SAVE_URL = '/__save';
+// That disk copy only exists while the game runs from this Mac's dev server (npm run dev). The
+// published game (npm run build, e.g. on Cloudflare) saves in the player's browser only, and never
+// asks for it.
+const DISK = import.meta.env.DEV;
 // Several copies of the game can be open at once (two browser tabs, the app's browser pane).
 // Each one is a "tab" with its own id. A tab only writes once you actually play in it, and it never
 // overwrites progress another tab saved after the save it started from: it reloads that instead.
@@ -84,7 +88,7 @@ export class GameState {
   async loadBest() {
     const local = this._readLocal();
     let disk = null;
-    try {
+    if (DISK) try {
       const ctl = new AbortController();
       const t = setTimeout(() => ctl.abort(), 1500);
       const r = await fetch(SAVE_URL, { cache: 'no-store', signal: ctl.signal });
@@ -111,7 +115,7 @@ export class GameState {
     if (this.stale) return;
     this.stale = true;
     clearTimeout(this._diskTimer);
-    if (fromDisk) {
+    if (fromDisk && DISK) {
       try {
         const r = await fetch(SAVE_URL, { cache: 'no-store' });
         if (r.ok) localStorage.setItem(SAVE_KEY, await r.text());
@@ -124,6 +128,7 @@ export class GameState {
   async checkNewer() {
     if (this.locked || this.stale) return;
     if (this._newerElsewhere(this._readLocal())) return this._goStale();
+    if (!DISK) return;
     try {
       const r = await fetch(SAVE_URL, { cache: 'no-store' });
       if (r.ok && this._newerElsewhere(await r.json())) this._goStale(true);
@@ -157,7 +162,7 @@ export class GameState {
 
   _toDisk(closing) {
     const json = this._json;
-    if (this.locked || !json || json === this._diskSent) return;
+    if (!DISK || this.locked || !json || json === this._diskSent) return;
     this._diskSent = json;
     this._diskAt = Date.now();
     try {
@@ -177,7 +182,7 @@ export class GameState {
     clearTimeout(this._diskTimer);
     try { localStorage.removeItem(SAVE_KEY); } catch { /* storage unavailable */ }
     this.data = this._fresh();
-    try { await fetch(SAVE_URL, { method: 'DELETE' }); } catch { /* no dev server */ }
+    if (DISK) try { await fetch(SAVE_URL, { method: 'DELETE' }); } catch { /* no dev server */ }
   }
 
   /** Moves the clock forward; returns the minutes actually spent. */
