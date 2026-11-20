@@ -1,0 +1,10 @@
+// Cloudflare settings: how the game is published (Workers & Pages, connected to GitHub).
+// Cloudflare runs `npm run build`, then `npx wrangler deploy`, which uploads the built game in
+// ./dist as a website. The name must match the project name in the Cloudflare dashboard.
+{
+  "name": "marigold-silence",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./dist"
+  }
+}
